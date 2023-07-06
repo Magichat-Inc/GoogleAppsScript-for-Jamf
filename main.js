@@ -27,6 +27,15 @@ const SHEET_NAME = PROPERTIES.SHEET_NAME;
 
 let bearerToken = {};
 
+function onOpen(e) {
+  // Adds a custom menu to the spreadsheet
+  // カスタム メニューをスプレッドシートに追加する
+  SpreadsheetApp.getUi()
+      .createMenu('Settings')
+      .addItem('Run', 'mainFunction')
+      .addToUi();
+}
+
 // Get all data from spreadsheet (excluding EA)
 // スプレッドシートから全データを取得する（EAを除く）
 /*
