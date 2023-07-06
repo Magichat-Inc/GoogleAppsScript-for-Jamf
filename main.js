@@ -32,7 +32,7 @@ function onOpen(e) {
   // カスタム メニューをスプレッドシートに追加する
   SpreadsheetApp.getUi()
       .createMenu('Settings')
-      .addItem('Run', 'mainFunction')
+      .addItem('⏯ Run', 'mainFunction')
       .addToUi();
 }
 
@@ -425,4 +425,26 @@ function mainFunction() {
   checkTokenExpiration();
   uploadDeviceDataToJamf();
   invalidateBearerToken();
+  showSidebar(Logger.getLog());
+}
+
+// Shows execution logs
+// ログを表示する
+function showSidebar(executionLogs) {
+  let array = executionLogs.split("\n");
+  let html = array.map(line => `<p>${line.trim()}</p>`).join("");
+
+  let css = `
+    <style>
+      p {
+        margin: 0;
+        font-size: 12px; 
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  `;
+  
+  const widget = HtmlService.createHtmlOutput(css + html);
+  widget.setTitle("Execution log");
+  SpreadsheetApp.getUi().showSidebar(widget);
 }
