@@ -4,32 +4,32 @@
 
 **アップデートが意図したとおりに機能することを確認するために、最初は必ず小数台のデバイスのみでテスト更新を実行してください。**
 
-- [ツールのご紹介](#introduction)
-- [手順概要](#steps-for-use)
-  - [Googleアカウント](#google-account)   
+- [Introduction](#introduction)
+- [Beginning Steps](#beginning-steps)
+  - [Google Account](#google-account)   
   - [Jamf Pro](#jamf-pro)
-    - [Basic認証許可](#basic-authorization)
-    - [API用アカウント](#api-account)
-  - [スプレッドシート](#spreadsheet)
-    - [スプレッドシートのコピー](#copy-master-spreadsheet)
-    - [スプレッドシートの初期設定](#initial-settings)
-- [データ入力](#inputting-data)
-  - [各属性の説明](#attributes)
-  - [拡張属性の更新](#updating-extension-attributes)
-  - [既存の属性値のクリア](#clearing-existing-attributes)
-- [最初の実行](#first-run)
-- [スプレッドシートでの一括更新](#mass-updating)
+    - [Basic Authorization](#basic-authorization)
+    - [API Account](#api-account)
+  - [Google Spreadsheet](#google-spreadsheet)
+    - [Make A Copy](#make-a-copy)
+    - [Initial Settings](#initial-settings)
+- [Data Input](#data-input)
+  - [Updating Attributes](#updating-attributes)
+  - [Updating Extension Attributes](#updating-extension-attributes)
+  - [Clearing Existing Attributes](#clearing-existing-attributes)
+- [First Run](#first-run)
+- [Mass Updating](#mass-updating)
 
-## [ツールの紹介](#introduction)
+## [Introduction](#introduction)
 この一括更新ツールは、Web アプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。 これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
 
 ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
 ![メインシート](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zbboHMtTv4-9HEI8tVBPIPrWJDW5_gyK5K2l7hrXqOG6k4Afdf-TIOOMkwFq7N_4FqPTOauHDciw5jKgesjqKG59nP=w2848-h1668 "メインシート")
 
-## [手順概要](#steps-for-use)
+## [Beginning Steps](#beginning-steps)
 このツールを使用するには、以下の手順を該当する順序で事前準備を行ってください。
-### [Googleアカウント](#google-account)
+### [Google Account](#google-account)
 https://www.google.com/accounts/NewAccount にアクセスします。​指示に従ってアカウントを作成してください。
 ※既にアカウントをお持ちの場合は、新しいアカウントを作成する必要はありません。​[参照](https://support.google.com/accounts/answer/27441?hl=ja&ref_topic=3382296&sjid=12686068683038764892-AP​)
 
@@ -38,10 +38,10 @@ Googleアカウントにログインします。
 ### [Jamf Pro](#jamf-pro)
 お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
 
-#### [Basic認証許可](#basic-authentication)
+#### [Basic Authorization](#basic-authentication)
 ![Basic認証許可](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zaXjF1evr30IGrtAMhW79-tOzgX8wi_Nl9RM30bXmGHEvs48R3E8rED8JQHS3d6_VVuKRFtfT97nsnUgjb-PvRF2DsBw=w2848-h1668 "Basic認証許可")
 
-#### [API用アカウント](#api-account)
+#### [API Account](#api-account)
 Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 
 1. 画面右上の「⻭車マーク」をクリック。
@@ -65,9 +65,9 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
      - モバイルデバイス名称設定コマンドを送信
 7. 「保存」をクリック。
 
-### [スプレッドシート](#spreadsheet)
+### [Google Spreadsheet](#google-spreadsheet)
 
-#### [スプレッドシートのコピー](#copy-spreadsheet)
+#### [Make A Copy](#make-a-copy)
 1. 以下リンクにアクセス。
    - https://docs.google.com/spreadsheets/d/1fTqvaqtE9LxwskzQJHS6nNf19dpdizMRXHypr9010ak
 2. ファイル > コピーを作成 にクリック。
@@ -82,7 +82,7 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 
 ![スプレッドシートのコピー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wGQ6qYW5zpjKshne7DdX_sZyQUkreLQymRzNPY5Cwr2pR_RzD8G1RnkHfCqE1Iopq15Yrh7wY6kQ0oU1NPkJCh0V4rGA=w2850-h1668 "スプレッドシートのコピー")
 
-#### [スプレッドシートの初期設定](#initial-settings)
+#### [Initial Settings](#initial-settings)
 コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
 
 1. 拡張属性 > Apps Script にクリック。
@@ -104,7 +104,7 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 
 ![スプレッドシートの初期設定](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zlH3NxuyE5gQkIstLLRhg5ToMgKBN0akjJWfLeFd7Vl4wuZUNwsHA0-INSqmyWmzcKjJkGJNDZLe4g0U9L9uwzfg6WHg=w2850-h1668 "スプレッドシートの初期設定")
 
-## [データ入力](#inputting-data)
+## [Data Input](#data-input)
 ![データ入力](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y40QvB7i9812mPvx87-YGfy9RP8eLN_CyPRRJ3FdsqprfRhcJbXbIoy0dg0Ci0Oq8rl2DzssUNnP3CK2L5AYXtBZtTWA=w2850-h1668 "データ入力")
 
 一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
@@ -112,7 +112,7 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。
 ![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xSUzDQtk-nU37w413lfhTOeSIPGI1SwQVhz4446MLRzygnsvCU-MvxMYPj2jZGLufu5Dij0JnY0gfcPsZlG0YwmwT-TQ=w2850-h1668 "スプレッドシート名")
 
-### [各属性の説明](#attributes)
+### [Updating Attributes](#updating-attributes)
 スプレッドシートにある客ヘッダ名の使い方についてです。
 
 - Mobile Device Serial [入力必須]
@@ -158,7 +158,7 @@ Department、Building については、Jamf Proに登録されている
   - yyyy-mm-dd形
 - AppleCare ID: 「AppleCare ID」
 
-### [拡張属の更新](#updating-extension-attributes)  
+### [Updating Extension Attributes](#updating-extension-attributes)  
 デバイス用の拡張属性を更新するのは可能です。  
 まず拡張属性の ID を特定する必要があります。
 
@@ -182,7 +182,7 @@ Department、Building については、Jamf Proに登録されている
 | A1234567 | | TRUE | MH-12 | | | New Value | New Value |
 | B1234567 | | FALSE | MH-15 | | | New Value | New Value |
 
-### [既存の属性値のクリア](#clearing-existing-attributes)  
+### [Clearing Existing Attributes](#clearing-existing-attributes)  
 ツールのもう 1 つの機能として、既存の属性をクリアすることはできます。  
 たとえば、デバイスのグループが新しいユーザーに再配布されるか、廃止され、ユーザー名と関連情報を削除する必要がある場合に発生します。
 
@@ -199,7 +199,7 @@ Department、Building については、Jamf Proに登録されている
 | A1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
 | B1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
 
-## [最初の実行](#first-run)
+## [First Run](#first-run)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。
@@ -225,7 +225,7 @@ Department、Building については、Jamf Proに登録されている
 
 ![「許可」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w3B3Su2tvxxeym_HuviqzVZEg_FaDthMzTPzi6NSYZHD7w2JVNJaxaVtvsPM8I2gYEIZCbmbqGPQLF0NptzV5gS8nN=w2854-h1668 "「許可」ポップアップ")
 
-## [スプレッドシートでの一括更新](#mass-updating)
+## [Mass Updating](#mass-updating)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。
