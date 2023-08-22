@@ -1,5 +1,5 @@
 # GoogleAppsScript-for-Jamf
-このプログラムは、スプレッドシート、Google Apps Scriptおよび Jamf Pro の API の組み合わせを利用します。  
+このプログラムは、スプレッドシート、Google Apps Script および Jamf Pro の API の組み合わせを利用します。  
 スプレッドシート内の情報に基づいて、プログラムは API 呼び出しを行い、ユーザーが指定した Jamf Pro インスタンス内の関連情報を更新します。
 
 **アップデートが意図したとおりに機能することを確認するために、最初は必ず数台のデバイスのみでテスト更新を実行してください。**
@@ -21,7 +21,7 @@
 - [Mass Updating](#mass-updating)
 
 ## [Introduction](#introduction)
-この一括更新ツールは、Web アプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。 これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
+この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
 
 ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
@@ -42,7 +42,7 @@ Googleアカウントにログインします。
 ![Basic認証許可](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zaXjF1evr30IGrtAMhW79-tOzgX8wi_Nl9RM30bXmGHEvs48R3E8rED8JQHS3d6_VVuKRFtfT97nsnUgjb-PvRF2DsBw=w2848-h1668 "Basic認証許可")
 
 #### [API Account](#api-account)
-Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
+Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 
 1. 画面右上の「⻭車マーク」をクリック。
 2. 「Jamf Proユーザアカウントとグループ」をクリック。 
@@ -57,10 +57,10 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 ![API用アカウント](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zDZK9pOjH8Y9jAbX56EThbJPogQ2hBd0vpMdHNIgCICajV4-XpA2hrZiOBu0hzEstdP18mc1g9mlMUicS6Q2ikTSvu=w2848-h1668 "API用アカウント")
 
 6. 権限タブにて以下にチェックを付けてください。
-   - **Jamf Pro サーバオブジェクト**
+   - **Jamf Proサーバオブジェクト**
      - Mobile Devices (作成・読み取り・アップデート）
      - ユーザ (読み取り・アップデート）
-   - **Jamf Pro サーバアクション**
+   - **Jamf Proサーバアクション**
      - モバイルデバイスへのユーザ割当
      - モバイルデバイス名称設定コマンドを送信
 7. 「保存」をクリック。
@@ -74,11 +74,10 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 3. ドキュメントをコピーのプップアップの設定。
    - 名前：変更可能
    - Apps Script ファイル：一括更新を動くために、スクリプトを使います。スクリプトを確認したい場合、クリックするとコードが開けます。
-   - フォルダ：マイドライブ　（そのままにしてください。）
+   - フォルダ：マイドライブ（そのままにしてください。）
 4. 「 コピーを作成」にクリック。
 5. コピーしたスプレッドシートは自動的に新しいタブで開けます。  
 ※ 使用しているGoogleアカウントのドライブにスプレッドシートは保存されますので、今後ドライブから開くことができます。
-
 
 ![スプレッドシートのコピー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wGQ6qYW5zpjKshne7DdX_sZyQUkreLQymRzNPY5Cwr2pR_RzD8G1RnkHfCqE1Iopq15Yrh7wY6kQ0oU1NPkJCh0V4rGA=w2850-h1668 "スプレッドシートのコピー")
 
@@ -118,45 +117,45 @@ Jamf ProでAPI用ユーザアカウントを以下の様に作成します。
 - Mobile Device Serial [入力必須]
   - インベントリ情報を更新したいデバイスのシリアルナンバーを半角英数文字で入力する。 
 
-**Jamf Proにてインベントリ画面の「一般」タブで更新可能な項目**
-- Display Name: 「モバイルデバイス名」 (実機のデバイス名も更新される)  
-- Enforce Name: 「モバイルデバイス名を強制する」
+**Jamf Pro にてインベントリ画面の「一般」タブで更新可能な項目**
+- Display Name:「モバイルデバイス名」(実機のデバイス名も更新される)  
+- Enforce Name:「モバイルデバイス名を強制する」
   - ユーザによってデバイス名が変更された場合、モバイルデバイス名は入力された値に戻る
-  - 指定値に戻す → 「TRUE」 or そのままにする → 「FALSE」
-- Asset Tag: 「アセットタグ」  
-- Site:　「サイト」
+  - 指定値に戻す →「TRUE」or そのままにする →「FALSE」
+- Asset Tag:「アセットタグ」  
+- Site:「サイト」
   - ID or サイト名
-  - Jamf Proに登録されていない「サイト」を入力した場合は更新されない。
-- AirPlay Password (tvOS): 「AirPlay パスワード」
+  - Jamf Pro に登録されていない「サイト」を入力した場合は更新されない。
+- AirPlay Password (tvOS):「AirPlay パスワード」
 
-**Jamf Proにてインベントリ画面の「ユーザと位置」タブで更新可能な項目**
-- Username: 「ユーザ名」
+**Jamf Pro にてインベントリ画面の「ユーザと位置」タブで更新可能な項目**
+- Username:「ユーザ名」
 - Real Name:「氏名」
-- Email Address: 「Ｅメールアドレス」
-- Position: 「ポジション」
-- Phone Number: 「電話番号」
-- Department: 「部署」
-- Building: 「建物」
-- Room: 「ルーム」
+- Email Address:「Ｅメールアドレス」
+- Position:「ポジション」
+- Phone Number:「電話番号」
+- Department:「部署」
+- Building:「建物」
+- Room:「ルーム」
 
 【注意事項】  
-Department、Building については、Jamf Proに登録されている  
+Department、Building については、Jamf Pro に登録されている  
  「部署」「建物」と同じ値 (文字列) を入力する必要がある。  
- Jamf Proに登録されていない「部署」「建物」を入力した場合は更新されない。 
+ Jamf Pro に登録されていない「部署」「建物」を入力した場合は更新されない。 
 
-**Jamf Proにてインベントリ画面の「購入」タブで更新可能な項目**
-- PO Number: 「購入番号」
+**Jamf Pro にてインベントリ画面の「購入」タブで更新可能な項目**
+- PO Number:「購入番号」
 - Vendor:「ベンダー」
-- Purchase Price: 「購入価格」
-- PO Date: 「購入日」
+- Purchase Price:「購入価格」
+- PO Date:「購入日」
   - yyyy-mm-dd形
-- Warranty Expires: 「品質保証期限電」
+- Warranty Expires:「品質保証期限電」
   - yyyy-mm-dd形
-- Is Leased: 「購入またはリース」
-  - 指定値に戻す → 「TRUE」 or そのままにする → 「FALSE」
-- Lease Expires: 「リース有効期限」
+- Is Leased:「購入またはリース」
+  - 指定値に戻す →「TRUE」or そのままにする →「FALSE」
+- Lease Expires:「リース有効期限」
   - yyyy-mm-dd形
-- AppleCare ID: 「AppleCare ID」
+- AppleCare ID:「AppleCare ID」
 
 ### [Updating Extension Attributes](#updating-extension-attributes)  
 デバイス用の拡張属性を更新するのは可能です。  
@@ -165,7 +164,7 @@ Department、Building については、Jamf Proに登録されている
 1. Jamf Pro の GUI で歯車アイコンをクリック。
 2. デバイス管理 > 拡張属性を選択。
 3. 更新する EA をクリック。
-4. 該当EAのURLからIDを取得する。
+4. 該当 EA の URL から ID を取得する。
 
 例えば、ここで表示されている拡張属性のEA IDは「17」です。
 ![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-z-pk9ZZipPjBklE_i0K6oDaPeqBSDwbmFjMP84pH_cN9RM9hgYO7R_Fc_NgbuCJNtQVjB9GGMvkFYNQ2RpVf-TDeoQQQ=w2854-h1668 "スプレッドシート名")
@@ -217,7 +216,7 @@ Department、Building については、Jamf Proに登録されている
 
 ![「このアプリは Google で確認されていません」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y4r96nFvdHYjpXTFoyLBR6R_8H8h5fg1iX_iZy5jWvtUKHNJ0IQ75CtklY0sFrGcPiKe778iywxUBp-EEiFZkPRsjoXg=w2854-h1668 "「このアプリは Google で確認されていません」ポップアップ")
 
- 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」 をクリック。
+ 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。
 
  ![「移動」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y6uh3xIk5mECCDaWcFrUSduSP42CP7kqAT0d-xG2myZEJfYtzn4V8gYzoK45Y-jK-Kuy9MzcXH7Myxo3YzL7fbu9tRcQ=w2854-h1668 "「移動」ポップアップ")
 
@@ -229,7 +228,7 @@ Department、Building については、Jamf Proに登録されている
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。
-4. 「Create Standard Account」に チェック、次へ押下。
+4. 「Create Standard Account」にチェック、次へ押下。
 
 ![プログラム実行](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xoelBTPSky9Xe_Sj4biRLX9lb4UnQgYh4e_QXpvwodrOaihCPEvXQnfvHaFkZNuxbU06kKtYwyLAbkf4g2GtnUF7iMaQ=w2854-h1668 "プログラム実行")
 
