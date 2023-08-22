@@ -2,7 +2,7 @@
 このプログラムは、スプレッドシート、Google Apps Scriptおよび Jamf Pro の API の組み合わせを利用します。  
 スプレッドシート内の情報に基づいて、プログラムは API 呼び出しを行い、ユーザーが指定した Jamf Pro インスタンス内の関連情報を更新します。
 
-**アップデートが意図したとおりに機能することを確認するために、最初は必ず小数台のデバイスのみでテスト更新を実行してください。**
+**アップデートが意図したとおりに機能することを確認するために、最初は必ず数台のデバイスのみでテスト更新を実行してください。**
 
 - [Introduction](#introduction)
 - [Beginning Steps](#beginning-steps)
@@ -240,7 +240,7 @@ Department、Building については、Jamf Proに登録されている
 更新完了↓
 ![更新完了](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-yuRfwBs-kz4r4uboIrDrT2FnLpiCjEq8mpZPIBEdmOhsgAq1TqNhumMTZIxJqncIE826y-CB4dL2raJk-nzXC8MrzsUg=w2854-h1668 "更新完了")
 
-Settings > Run ボタンを押すと、敵的に以下のエラーとなります。
+Settings > Run ボタンを押すと、ときどき以下のエラーとなります。
 ![エラー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wRIzreDfz55PClqdnukcIakVDfSrXVPTrj8QUWKhFvhg06LuuLFOI8OnheeUyUUqPs2L7p-7IAbb_Q8eoJhKBjcDo5lg=w2854-h1668 "エラー")
 この場合、以下をやってみてください。  
 「表示しない」をクリック。  
