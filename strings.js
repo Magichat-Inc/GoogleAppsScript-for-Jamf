@@ -1,7 +1,7 @@
 // USED STRING LITERALS
 // 使用してる文字列
 
-const VALID_TOKEN = 'Token valid until the following epoch time:, ';
+const VALID_TOKEN = 'Token valid until the following epoch time: ';
 const INVALID_TOKEN = 'Token already invalid.';
 const NO_VALID_TOKEN = 'No valid token available, getting new token.';
 const INVALIDATE_TOKEN = 'Token successfully invalidated.'
