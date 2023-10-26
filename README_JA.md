@@ -25,7 +25,7 @@
 
 ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
-![メインシート](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zbboHMtTv4-9HEI8tVBPIPrWJDW5_gyK5K2l7hrXqOG6k4Afdf-TIOOMkwFq7N_4FqPTOauHDciw5jKgesjqKG59nP=w2848-h1668 "メインシート")
+<img width="1423" alt="メインシート" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/ede00b3a-d4fe-4168-8462-a2d0473b27e4">
 
 ## [Beginning Steps](#beginning-steps)
 このツールを使用するには、以下の手順を該当する順序で事前準備を行ってください。
@@ -39,7 +39,12 @@ Googleアカウントにログインします。
 お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
 
 #### [Basic Authorization](#basic-authentication)
-![Basic認証許可](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zaXjF1evr30IGrtAMhW79-tOzgX8wi_Nl9RM30bXmGHEvs48R3E8rED8JQHS3d6_VVuKRFtfT97nsnUgjb-PvRF2DsBw=w2848-h1668 "Basic認証許可")
+1. 画面右上の「⻭車マーク」をクリック。
+2. 「Jamf Proユーザアカウントとグループ」をクリック。
+3. 「Bearerトークン認証に加えて Basic認証を許可」に チェックを入れる。
+4. 「保存」をクリック。
+
+<img width="245" alt="Basic認証許可" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/88543c7e-8f8d-4377-aaf9-61bab0b26c63">
 
 #### [API Account](#api-account)
 Jamf Pro で API用ユーザアカウントを以下の様に作成します。
@@ -54,7 +59,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
    - 権限セット：カスタム
    - パスワード
 
-![API用アカウント](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zDZK9pOjH8Y9jAbX56EThbJPogQ2hBd0vpMdHNIgCICajV4-XpA2hrZiOBu0hzEstdP18mc1g9mlMUicS6Q2ikTSvu=w2848-h1668 "API用アカウント")
+<img width="268" alt="API用アカウント" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/ffd6956a-e751-4a39-ae75-7fceef823985">
 
 6. 権限タブにて以下にチェックを付けてください。
    - **Jamf Proサーバオブジェクト**
@@ -79,7 +84,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 5. コピーしたスプレッドシートは自動的に新しいタブで開けます。  
 ※ 使用しているGoogleアカウントのドライブにスプレッドシートは保存されますので、今後ドライブから開くことができます。
 
-![スプレッドシートのコピー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wGQ6qYW5zpjKshne7DdX_sZyQUkreLQymRzNPY5Cwr2pR_RzD8G1RnkHfCqE1Iopq15Yrh7wY6kQ0oU1NPkJCh0V4rGA=w2850-h1668 "スプレッドシートのコピー")
+<img width="320" alt="スプレッドシートのコピー" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/aca38666-487e-4184-bdc7-ccafe5722bdf">
 
 #### [Initial Settings](#initial-settings)
 コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
@@ -101,15 +106,15 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
 スプレッドシート ID は「abc1234567」となります。
 
-![スプレッドシートの初期設定](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zlH3NxuyE5gQkIstLLRhg5ToMgKBN0akjJWfLeFd7Vl4wuZUNwsHA0-INSqmyWmzcKjJkGJNDZLe4g0U9L9uwzfg6WHg=w2850-h1668 "スプレッドシートの初期設定")
+<img width="406" alt="スプレッドシートの初期設定" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/56802fa0-e260-4718-b750-4bba382c5f1f">
 
 ## [Data Input](#data-input)
-![データ入力](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y40QvB7i9812mPvx87-YGfy9RP8eLN_CyPRRJ3FdsqprfRhcJbXbIoy0dg0Ci0Oq8rl2DzssUNnP3CK2L5AYXtBZtTWA=w2850-h1668 "データ入力")
+<img width="1419" alt="データ入力" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/244a8987-5804-4869-86b9-298dd20e7e90">
 
 一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
 
 スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。
-![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xSUzDQtk-nU37w413lfhTOeSIPGI1SwQVhz4446MLRzygnsvCU-MvxMYPj2jZGLufu5Dij0JnY0gfcPsZlG0YwmwT-TQ=w2850-h1668 "スプレッドシート名")
+<img width="527" alt="スプレッドシート名" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/c7631527-b1e9-46d8-85c9-25a8da5e7e28">
 
 ### [Updating Attributes](#updating-attributes)
 スプレッドシートにある客ヘッダ名の使い方についてです。
@@ -166,8 +171,8 @@ Department、Building については、Jamf Pro に登録されている
 3. 更新する EA をクリック。
 4. 該当 EA の URL から ID を取得する。
 
-例えば、ここで表示されている拡張属性のEA IDは「17」です。
-![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-z-pk9ZZipPjBklE_i0K6oDaPeqBSDwbmFjMP84pH_cN9RM9hgYO7R_Fc_NgbuCJNtQVjB9GGMvkFYNQ2RpVf-TDeoQQQ=w2854-h1668 "スプレッドシート名")
+例えば、ここで表示されている拡張属性のEA IDは「17」です。  
+<img width="508" alt="EA ID" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/06c07088-cf31-43ce-9e6f-f0328a2ab7c6">
 
 拡張属性を更新するには、テンプレートの既存のすべての列の後に新しい列に独自のヘッダーを追加し、そのヘッダーに文字列「EA_#」を入力します。「#」は更新する EA の ID です。
 
@@ -202,45 +207,37 @@ Department、Building については、Jamf Pro に登録されている
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。
-4. 「Create Standard Account」に チェック、次へ押下。
+<img width="370" alt="最初の実行" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/c8df69e5-b727-44e8-a6ef-17359b1b9308">
 
-![最初の実行](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xoelBTPSky9Xe_Sj4biRLX9lb4UnQgYh4e_QXpvwodrOaihCPEvXQnfvHaFkZNuxbU06kKtYwyLAbkf4g2GtnUF7iMaQ=w2854-h1668 "最初の実行")
-
-5. 最初実行時に承認が必要。（写真参照）  
+4. 最初実行時に承認が必要。（写真参照）  
   「続行」ボタンをクリック。
-
-![「承認が必要」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w_24DmZL0UDrGyDz-kygZaoyWQj3-9VC3hywMC-4HkQV76-fUM7knUTOaV3-3iwQz4ysfI1m5fZHHqLIm8GJXCe_C8_g=w2854-h1668 "「承認が必要」ポップアップ")
+<img width="252" alt="「承認が必要」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/8c61e3bc-ac64-4631-8691-bd73e99c4ffa">
   
-  Googleアカウント選択。  
+5. Googleアカウント選択。  
   「このアプリは Google で確認されていません」出た時に詳細」をクリック。
+<img width="246" alt="「このアプリは Google で確認されていません」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/4caf2e8e-6073-4a35-90a8-481900ad85a4">
 
-![「このアプリは Google で確認されていません」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y4r96nFvdHYjpXTFoyLBR6R_8H8h5fg1iX_iZy5jWvtUKHNJ0IQ75CtklY0sFrGcPiKe778iywxUBp-EEiFZkPRsjoXg=w2854-h1668 "「このアプリは Google で確認されていません」ポップアップ")
+6. 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。
+<img width="378" alt="「移動」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/e27e4bfe-8ae7-451a-a1aa-eb884e1c69ed">
 
- 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。
-
- ![「移動」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y6uh3xIk5mECCDaWcFrUSduSP42CP7kqAT0d-xG2myZEJfYtzn4V8gYzoK45Y-jK-Kuy9MzcXH7Myxo3YzL7fbu9tRcQ=w2854-h1668 "「移動」ポップアップ")
-
-最後に「許可」を押下。
-
-![「許可」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w3B3Su2tvxxeym_HuviqzVZEg_FaDthMzTPzi6NSYZHD7w2JVNJaxaVtvsPM8I2gYEIZCbmbqGPQLF0NptzV5gS8nN=w2854-h1668 "「許可」ポップアップ")
+7. 最後に「許可」を押下。  
+<img width="214" alt="「許可」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/207dbdc3-5e6b-4be0-8ed5-1e138d180fe2">
 
 ## [Mass Updating](#mass-updating)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
-3. メニューでヘルプの右にある Settings > Run を押下。
-4. 「Create Standard Account」にチェック、次へ押下。
+3. メニューでヘルプの右にある Settings > Run を押下。  
+<img width="370" alt="プログラム実行" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/c8df69e5-b727-44e8-a6ef-17359b1b9308">
 
-![プログラム実行](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xoelBTPSky9Xe_Sj4biRLX9lb4UnQgYh4e_QXpvwodrOaihCPEvXQnfvHaFkZNuxbU06kKtYwyLAbkf4g2GtnUF7iMaQ=w2854-h1668 "プログラム実行")
-
-更新中↓
-![更新中](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xjaobuuDVZjtSM0NYpJH7bpzcRyxLakahHBfMWcTbQYMOZ-pTH0miboAUxtiBc9jKeByDqjO4CX36c1O_-VG1YWjqzUw=w2854-h1668 "更新中")
+更新中↓  
+<img width="772" alt="更新中" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/e72cb104-77a1-4b47-9532-e37340369435">
 
 更新完了したら、右にログのサイドバーが開きます。
 更新完了↓
-![更新完了](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-yuRfwBs-kz4r4uboIrDrT2FnLpiCjEq8mpZPIBEdmOhsgAq1TqNhumMTZIxJqncIE826y-CB4dL2raJk-nzXC8MrzsUg=w2854-h1668 "更新完了")
+<img width="772" alt="更新完了" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/0ff72aaf-32b0-431a-8b4b-f15d47e1f103">
 
 Settings > Run ボタンを押すと、ときどき以下のエラーとなります。
-![エラー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wRIzreDfz55PClqdnukcIakVDfSrXVPTrj8QUWKhFvhg06LuuLFOI8OnheeUyUUqPs2L7p-7IAbb_Q8eoJhKBjcDo5lg=w2854-h1668 "エラー")
+<img width="557" alt="エラー" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/5b966fa3-7509-490d-91f3-afac39faadf8">  
 この場合、以下をやってみてください。  
 「表示しない」をクリック。  
 5-10秒を待つ。  
