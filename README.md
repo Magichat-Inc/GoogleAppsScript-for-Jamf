@@ -1,5 +1,5 @@
 # GoogleAppsScript-for-Jamf
-This program utilizes a combination of Google Sheets, Google Apps Script, and the Jamf Pro API. 
+This program utilizes a combination of Google Sheets, Google Apps Script, and the Jamf Pro API.  
 Based on information within the spreadsheet, the program makes API calls to update relevant data within the specified Jamf Pro instance.
 
 **Always run a small test update on just a couple devices to make sure your updates are working as intended.**
@@ -21,18 +21,19 @@ Based on information within the spreadsheet, the program makes API calls to upda
 - [Mass Updating](#mass-updating)
 
 ## [Introduction](#introduction)
-This mass update tool is a web application written in JavaScript under the Google Apps Script (GAS) web application framework. 
+This mass update tool is a web application written in JavaScript under the Google Apps Script (GAS) web application framework.  
 This enables Jamf administrators to perform mass updates for devices within Jamf (limited to iOS, iPadOS, and tvOS) and user attributes (such as username, asset tag, or custom attributes, etc).
 
 Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
-![メインシート](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zbboHMtTv4-9HEI8tVBPIPrWJDW5_gyK5K2l7hrXqOG6k4Afdf-TIOOMkwFq7N_4FqPTOauHDciw5jKgesjqKG59nP=w2848-h1668 "メインシート")
+<img width="1423" alt="Main spreadsheet" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/6c98df6e-4163-480a-80d5-07246b82869e">
 
 ## [Beginning Steps](#beginning-steps)
 To use this tool, please complete the following steps in the appropriate order.
 ### [Google Account](#google-account)
-Access https://www.google.com/accounts/NewAccount and follow the instructions to create an account.
-If you already have an account, there is no need to create a new one. ​[Reference page for creating a Google Account](https://support.google.com/accounts/answer/27441?hl=en&ref_topic=3382296&sjid=13201858824406738012-EU​)
+Access https://www.google.com/accounts/NewAccount and follow the instructions to create an account.  
+If you already have an account, there is no need to create a new one.  
+​[Reference page for creating a Google Account](https://support.google.com/accounts/answer/27441?hl=en&ref_topic=3382296&sjid=13201858824406738012-EU​)
 
 Log in to your Google account.
 
@@ -46,7 +47,7 @@ When setting things up for the first time, please follow the steps below in your
 3. Check "Allow Basic authentication in addition to Bearer Token authentication".
 4. Click "Save."
 
-![Basic認証許可](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zaXjF1evr30IGrtAMhW79-tOzgX8wi_Nl9RM30bXmGHEvs48R3E8rED8JQHS3d6_VVuKRFtfT97nsnUgjb-PvRF2DsBw=w2848-h1668 "Basic認証許可")
+<img width="518" alt="Allow Basic authentication" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/77cac870-999e-4a01-b8b3-0c39c5733fd4">
 
 #### [API Account](#api-account)
 In Jamf Pro, create an API user account as follows.
@@ -61,7 +62,7 @@ In Jamf Pro, create an API user account as follows.
    - Permission Set: Custom
    - Password
 
-![API用アカウント](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zDZK9pOjH8Y9jAbX56EThbJPogQ2hBd0vpMdHNIgCICajV4-XpA2hrZiOBu0hzEstdP18mc1g9mlMUicS6Q2ikTSvu=w2848-h1668 "API用アカウント")
+<img width="369" alt="API account" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/b016d731-161c-4f35-9979-e0ae8f3f86af">  
 
 6. In the "Privileges" tab, please check the following:
    - **Jamf Pro Server Objects**
@@ -87,13 +88,13 @@ In Jamf Pro, create an API user account as follows.
 
 _Note: The copied spreadsheet is saved in your Google account's Drive, allowing you to access it from your Drive in the future._
 
-![スプレッドシートのコピー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wGQ6qYW5zpjKshne7DdX_sZyQUkreLQymRzNPY5Cwr2pR_RzD8G1RnkHfCqE1Iopq15Yrh7wY6kQ0oU1NPkJCh0V4rGA=w2850-h1668 "スプレッドシートのコピー")
+<img width="340" alt="Copy spreadsheet" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/2ac80e80-75bf-448d-8bdc-e92d7e16bfd6">
 
 #### [Initial Settings](#initial-settings)
 Please open the copied spreadsheet and follow these initial setup steps:
 
 1. Click on "Extensions" > "Apps Script".
-2. Click on the "Gear Icon" in the middle left of the screen (Project Settings).
+2. Click on the "⚙️" icon in the middle left of the screen (Project Settings).
 3. Click on "Add script property" at the bottom.
 4. Configure as shown below then click "Save".
 
@@ -107,17 +108,16 @@ Please open the copied spreadsheet and follow these initial setup steps:
 
 You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
-![スプレッドシートの初期設定](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zlH3NxuyE5gQkIstLLRhg5ToMgKBN0akjJWfLeFd7Vl4wuZUNwsHA0-INSqmyWmzcKjJkGJNDZLe4g0U9L9uwzfg6WHg=w2850-h1668 "スプレッドシートの初期設定")
+<img width="730" alt="Initial spreadsheet settings" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/a71e70fb-d7ef-4957-afbf-6aaf12d0dee1">
 
 ## [Data Input](#data-input)
-![データ入力](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y40QvB7i9812mPvx87-YGfy9RP8eLN_CyPRRJ3FdsqprfRhcJbXbIoy0dg0Ci0Oq8rl2DzssUNnP3CK2L5AYXtBZtTWA=w2850-h1668 "データ入力")
+<img width="1419" alt="Inputting data" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/f1bf1c6b-fd3d-4420-be5f-2b055c6b2008">
 
+When executing a mass update, validation checks are performed on the spreadsheet's header row. **Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.**
 
-When executing a mass update, validation checks are performed on the spreadsheet's header row. Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.
+*Please do not rename the spreadsheet.* Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.
 
-Please don't rename the spreadsheet. Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.
-
-![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xSUzDQtk-nU37w413lfhTOeSIPGI1SwQVhz4446MLRzygnsvCU-MvxMYPj2jZGLufu5Dij0JnY0gfcPsZlG0YwmwT-TQ=w2850-h1668 "スプレッドシート名")
+<img width="527" alt="Spreadsheet name" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/503a0f6f-cba2-41e0-8d24-ecb9a9bb245d">
 
 ### [Updating Attributes](#updating-attributes)
 This section explains how to use and input data under each header in the spreadsheet.
@@ -146,7 +146,7 @@ This section explains how to use and input data under each header in the spreads
 - Building
 - Room
 
-**Important Note**
+**Important Note**  
 For the "Department" and "Building" attributes you must input values (strings) that match existing "Department" or "Building" names in your Jamf Pro instance. If you input non-existent "Department" or "Building" values, they will not be updated.
 
 **Attributes that can be updated based on the "Purchasing" tab of the "Inventory" in Jamf Pro.**
@@ -172,8 +172,8 @@ In order to do this, you must first identify the Extension Attribute ID number.
 3. Click on the EA you want to update.
 4. Obtain the ID from the URL of the relevant EA.
 
-For example, the EA ID for this Extension Attribute is "17."
-![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-z-pk9ZZipPjBklE_i0K6oDaPeqBSDwbmFjMP84pH_cN9RM9hgYO7R_Fc_NgbuCJNtQVjB9GGMvkFYNQ2RpVf-TDeoQQQ=w2854-h1668 "スプレッドシート名")
+For example, the EA ID for this Extension Attribute is "17."  
+<img width="508" alt="EA ID" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/88555ac7-0d0e-412c-81d8-8a0527dfc663">
 
 To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
 
@@ -206,31 +206,29 @@ When clearing user information from a device, the spreadsheet will look like thi
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
 3. Click on "Settings" in the menu to the right of Help, and then select "Run."
-4. Authorization is required the first time you run it. (See the image below.)  Click the "OK" button.
+4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.
+<img width="436" alt="Allow authorization" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/154b0396-e026-46bb-bbcf-97f1dc3538c7">
 
-![「承認が必要」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w_24DmZL0UDrGyDz-kygZaoyWQj3-9VC3hywMC-4HkQV76-fUM7knUTOaV3-3iwQz4ysfI1m5fZHHqLIm8GJXCe_C8_g=w2854-h1668 "「承認が必要」ポップアップ")
-  
-Select your Google account.  
-Finally, click "Allow."
-
-![「許可」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w3B3Su2tvxxeym_HuviqzVZEg_FaDthMzTPzi6NSYZHD7w2JVNJaxaVtvsPM8I2gYEIZCbmbqGPQLF0NptzV5gS8nN=w2854-h1668 "「許可」ポップアップ")
+5. Select your Google account.  
+6. Finally, click "Allow."  
+<img width="428" alt="Allow authorization 2" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/9dcb4c98-cce1-43d4-a0a2-30cf9aeceec2">
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
 3. Click on "Settings" in the menu to the right of Help, and then select "Run."
 
-![プログラム実行](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xoelBTPSky9Xe_Sj4biRLX9lb4UnQgYh4e_QXpvwodrOaihCPEvXQnfvHaFkZNuxbU06kKtYwyLAbkf4g2GtnUF7iMaQ=w2854-h1668 "プログラム実行")
+<img width="250" alt="Running the tool" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/81843df0-dcc1-4433-be53-c7dc938bd951">
 
 Updating in progress ↓  
-![更新中](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xjaobuuDVZjtSM0NYpJH7bpzcRyxLakahHBfMWcTbQYMOZ-pTH0miboAUxtiBc9jKeByDqjO4CX36c1O_-VG1YWjqzUw=w2854-h1668 "更新中")
+<img width="1418" alt="Mass updating in progress" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/899c0545-e055-4a98-af0b-22a9f5e32579">
 
-After the update is complete, a sidebar with logs will open on the right.
+After the update is complete, a sidebar with logs will open on the right.  
 Update completed ↓  
-![更新完了](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-yuRfwBs-kz4r4uboIrDrT2FnLpiCjEq8mpZPIBEdmOhsgAq1TqNhumMTZIxJqncIE826y-CB4dL2raJk-nzXC8MrzsUg=w2854-h1668 "更新完了")
+<img width="1423" alt="Mass update completed" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/1bbd6ed2-676a-4d0d-adb6-e0e84dff7c4b">
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
-![エラー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wRIzreDfz55PClqdnukcIakVDfSrXVPTrj8QUWKhFvhg06LuuLFOI8OnheeUyUUqPs2L7p-7IAbb_Q8eoJhKBjcDo5lg=w2854-h1668 "エラー")  
+<img width="531" alt="Error" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/3c7a624f-30ee-4687-86fc-8a6ed2e5904f">  
 In this case, please try the following:
 Click "Dismiss."
 Wait for 5-10 seconds.
