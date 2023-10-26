@@ -1,8 +1,8 @@
 # GoogleAppsScript-for-Jamf
-このプログラムは、スプレッドシート、Google Apps Script および Jamf Pro の API の組み合わせを利用します。  
-スプレッドシート内の情報に基づいて、プログラムは API 呼び出しを行い、ユーザーが指定した Jamf Pro インスタンス内の関連情報を更新します。
+This program utilizes a combination of Google Sheets, Google Apps Script, and the Jamf Pro API. 
+Based on information within the spreadsheet, the program makes API calls to update relevant data within the specified Jamf Pro instance.
 
-**アップデートが意図したとおりに機能することを確認するために、最初は必ず数台のデバイスのみでテスト更新を実行してください。**
+**Always run a small test update on just a couple devices to make sure your updates are working as intended.**
 
 - [Introduction](#introduction)
 - [Beginning Steps](#beginning-steps)
@@ -21,177 +21,181 @@
 - [Mass Updating](#mass-updating)
 
 ## [Introduction](#introduction)
-この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
+This mass update tool is a web application written in JavaScript under the Google Apps Script (GAS) web application framework. 
+This enables Jamf administrators to perform mass updates for devices within Jamf (limited to iOS, iPadOS, and tvOS) and user attributes (such as username, asset tag, or custom attributes, etc).
 
-ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
+Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
 ![メインシート](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zbboHMtTv4-9HEI8tVBPIPrWJDW5_gyK5K2l7hrXqOG6k4Afdf-TIOOMkwFq7N_4FqPTOauHDciw5jKgesjqKG59nP=w2848-h1668 "メインシート")
 
 ## [Beginning Steps](#beginning-steps)
-このツールを使用するには、以下の手順を該当する順序で事前準備を行ってください。
+To use this tool, please complete the following steps in the appropriate order.
 ### [Google Account](#google-account)
-https://www.google.com/accounts/NewAccount にアクセスします。​指示に従ってアカウントを作成してください。
-※既にアカウントをお持ちの場合は、新しいアカウントを作成する必要はありません。​[参照](https://support.google.com/accounts/answer/27441?hl=ja&ref_topic=3382296&sjid=12686068683038764892-AP​)
+Access https://www.google.com/accounts/NewAccount and follow the instructions to create an account.
+If you already have an account, there is no need to create a new one. ​[Reference page for creating a Google Account](https://support.google.com/accounts/answer/27441?hl=en&ref_topic=3382296&sjid=13201858824406738012-EU​)
 
-Googleアカウントにログインします。
+Log in to your Google account.
 
 ### [Jamf Pro](#jamf-pro)
-お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
+When setting things up for the first time, please follow the steps below in your Jamf Pro environment.
 
 #### [Basic Authorization](#basic-authentication)
+1. Click on the "⚙️" icon (Settings).
+2. Click on "User accounts and groups".
+3. Click on "Password Policy".
+3. Check "Allow Basic authentication in addition to Bearer Token authentication".
+4. Click "Save."
+
 ![Basic認証許可](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zaXjF1evr30IGrtAMhW79-tOzgX8wi_Nl9RM30bXmGHEvs48R3E8rED8JQHS3d6_VVuKRFtfT97nsnUgjb-PvRF2DsBw=w2848-h1668 "Basic認証許可")
 
 #### [API Account](#api-account)
-Jamf Pro で API用ユーザアカウントを以下の様に作成します。
+In Jamf Pro, create an API user account as follows.
 
-1. 画面右上の「⻭車マーク」をクリック。
-2. 「Jamf Proユーザアカウントとグループ」をクリック。 
-3. 画面右上の「新規」をクリック。 
-4. 「Create Standard Account」に チェック、次へ押下。
-5. アカウントタブにて以下を設定してください。
-   - ユーザ名(例）：api-user
-   - アクセスレベル：フルアクセス
-   - 権限セット：カスタム
-   - パスワード
+1. Click on the "⚙️" icon (Settings).
+2. Click on "User accounts and groups".
+3. Click on "New" in the top right corner.
+4. Check "Create Standard Account" and click "Next."
+5. In the "Account" tab, please configure the following:
+   - Username (e.g., api-user)
+   - Access Level: Full Access
+   - Permission Set: Custom
+   - Password
 
 ![API用アカウント](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zDZK9pOjH8Y9jAbX56EThbJPogQ2hBd0vpMdHNIgCICajV4-XpA2hrZiOBu0hzEstdP18mc1g9mlMUicS6Q2ikTSvu=w2848-h1668 "API用アカウント")
 
-6. 権限タブにて以下にチェックを付けてください。
-   - **Jamf Proサーバオブジェクト**
-     - Mobile Devices (作成・読み取り・アップデート）
-     - ユーザ (読み取り・アップデート）
-   - **Jamf Proサーバアクション**
-     - モバイルデバイスへのユーザ割当
-     - モバイルデバイス名称設定コマンドを送信
-7. 「保存」をクリック。
+6. In the "Privileges" tab, please check the following:
+   - **Jamf Pro Server Objects**
+     - Mobile Devices (Create, Read, Update）
+     - Users (Read, Update）
+   - **Jamf Pro Server Actions**
+     - Assign User to Mobile Devices
+     - Send Mobile Device Set Device Name Command
+7. Click "Save".
 
 ### [Google Spreadsheet](#google-spreadsheet)
 
 #### [Make A Copy](#make-a-copy)
-1. 以下リンクにアクセス。
+1. Access the following link:
    - https://docs.google.com/spreadsheets/d/1fTqvaqtE9LxwskzQJHS6nNf19dpdizMRXHypr9010ak
-2. ファイル > コピーを作成 にクリック。
-3. ドキュメントをコピーのプップアップの設定。
-   - 名前：変更可能
-   - Apps Script ファイル：一括更新を動くために、スクリプトを使います。スクリプトを確認したい場合、クリックするとコードが開けます。
-   - フォルダ：マイドライブ（そのままにしてください。）
-4. 「 コピーを作成」にクリック。
-5. コピーしたスプレッドシートは自動的に新しいタブで開けます。  
-※ 使用しているGoogleアカウントのドライブにスプレッドシートは保存されますので、今後ドライブから開くことができます。
+2. Click on "File" > "Make a copy".
+3. Configure the settings in the "Copy document" popup:
+   - Name: Change it as you please
+   - Apps Script File: To make the mass update work, we use a script. If you would like to review it, click on it.
+   - Folder: My Drive (leave it as is)
+4. Click on "Make a copy".
+5. The copied spreadsheet will automatically open in a new tab.  
+
+_Note: The copied spreadsheet is saved in your Google account's Drive, allowing you to access it from your Drive in the future._
 
 ![スプレッドシートのコピー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wGQ6qYW5zpjKshne7DdX_sZyQUkreLQymRzNPY5Cwr2pR_RzD8G1RnkHfCqE1Iopq15Yrh7wY6kQ0oU1NPkJCh0V4rGA=w2850-h1668 "スプレッドシートのコピー")
 
 #### [Initial Settings](#initial-settings)
-コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
+Please open the copied spreadsheet and follow these initial setup steps:
 
-1. 拡張属性 > Apps Script にクリック。
-2. 画面左中の「歯車マーク」をクリック。（プロジェクトの設定）
-3. 下にある「スクリプト プロパティを追加」にクリック。
-4. 以下の内容を設定して「保存」をクリック。
+1. Click on "Extensions" > "Apps Script".
+2. Click on the "Gear Icon" in the middle left of the screen (Project Settings).
+3. Click on "Add script property" at the bottom.
+4. Configure as shown below then click "Save".
 
-| プロパティ | 値 |
+| Property | Value |
 | :---   | :---   |
-| CLASSIC_API_URL | https://インスタンス名.jamfcloud.com/JSSResource |
-| JAMF_PRO_API_URL | https://インスタンス名.jamfcloud.com/api/ |
-| CREDENTIALS | 作成したJamfAPIユーザー名:Jamfパスワード<br />例: ユーザー名がaaa、パスワードがbbbであれば<br />「aaa:bbb」となる。 |
+| CLASSIC_API_URL | https://instance-name.jamfcloud.com/JSSResource |
+| JAMF_PRO_API_URL | https://instance-name.jamfcloud.com/api/ |
+| CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb." |
 | SHEET_NAME | MobileDeviceTemplate |
-| SPREADSHEET_ID | コピーしたスプレッドシートID (取得方は以下の説明をご覧） |
+| SPREADSHEET_ID | The ID of the copied spreadsheet (see the instructions below on how to obtain it) |
 
-スプレッドシート ID は URL から抽出できます。  
-例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
-スプレッドシート ID は「abc1234567」となります。
+You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
 ![スプレッドシートの初期設定](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-zlH3NxuyE5gQkIstLLRhg5ToMgKBN0akjJWfLeFd7Vl4wuZUNwsHA0-INSqmyWmzcKjJkGJNDZLe4g0U9L9uwzfg6WHg=w2850-h1668 "スプレッドシートの初期設定")
 
 ## [Data Input](#data-input)
 ![データ入力](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y40QvB7i9812mPvx87-YGfy9RP8eLN_CyPRRJ3FdsqprfRhcJbXbIoy0dg0Ci0Oq8rl2DzssUNnP3CK2L5AYXtBZtTWA=w2850-h1668 "データ入力")
 
-一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
 
-スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。
+When executing a mass update, validation checks are performed on the spreadsheet's header row. Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.
+
+Please don't rename the spreadsheet. Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.
+
 ![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xSUzDQtk-nU37w413lfhTOeSIPGI1SwQVhz4446MLRzygnsvCU-MvxMYPj2jZGLufu5Dij0JnY0gfcPsZlG0YwmwT-TQ=w2850-h1668 "スプレッドシート名")
 
 ### [Updating Attributes](#updating-attributes)
-スプレッドシートにある客ヘッダ名の使い方についてです。
+This section explains how to use and input data under each header in the spreadsheet.
 
-- Mobile Device Serial [入力必須]
-  - インベントリ情報を更新したいデバイスのシリアルナンバーを半角英数文字で入力する。 
+- Mobile Device Serial [Input required]
+  - Enter the serial number of the device for which you want to update inventory information. 
 
-**Jamf Pro にてインベントリ画面の「一般」タブで更新可能な項目**
-- Display Name:「モバイルデバイス名」(実機のデバイス名も更新される)  
-- Enforce Name:「モバイルデバイス名を強制する」
-  - ユーザによってデバイス名が変更された場合、モバイルデバイス名は入力された値に戻る
-  - 指定値に戻す →「TRUE」or そのままにする →「FALSE」
-- Asset Tag:「アセットタグ」  
-- Site:「サイト」
-  - ID or サイト名
-  - Jamf Pro に登録されていない「サイト」を入力した場合は更新されない。
-- AirPlay Password (tvOS):「AirPlay パスワード」
+**Attributes that can be updated based on the "General" tab of the "Inventory" in Jamf Pro.**
+- Display Name: Mobile Device Name (This will also update the actual device name.)  
+- Enforce Name: Enforce Mobile Device Name
+  - "Enforce the name → TRUE or do not enforce → FALSE
+  - If name enforcing was configured during ADE, even if you set Enforce Name to TRUE, it will revert back to the name that was configured during ADE.
+- Asset Tag
+- Site
+  - You can use either the Site ID or the Site name.
+  - It will not be updated if the Site is non-existent in the Jamf Pro instance.
+- AirPlay Password (tvOS)
 
-**Jamf Pro にてインベントリ画面の「ユーザと位置」タブで更新可能な項目**
-- Username:「ユーザ名」
-- Real Name:「氏名」
-- Email Address:「Ｅメールアドレス」
-- Position:「ポジション」
-- Phone Number:「電話番号」
-- Department:「部署」
-- Building:「建物」
-- Room:「ルーム」
+**Attributes that can be updated based on the "User and Location" tab of the "Inventory" in Jamf Pro.**
+- Username
+- Real Name: Full Name
+- Email Address
+- Position
+- Phone Number
+- Department
+- Building
+- Room
 
-【注意事項】  
-Department、Building については、Jamf Pro に登録されている  
- 「部署」「建物」と同じ値 (文字列) を入力する必要がある。  
- Jamf Pro に登録されていない「部署」「建物」を入力した場合は更新されない。 
+**Important Note**
+For the "Department" and "Building" attributes you must input values (strings) that match existing "Department" or "Building" names in your Jamf Pro instance. If you input non-existent "Department" or "Building" values, they will not be updated.
 
-**Jamf Pro にてインベントリ画面の「購入」タブで更新可能な項目**
-- PO Number:「購入番号」
-- Vendor:「ベンダー」
-- Purchase Price:「購入価格」
-- PO Date:「購入日」
-  - yyyy-mm-dd形
-- Warranty Expires:「品質保証期限電」
-  - yyyy-mm-dd形
-- Is Leased:「購入またはリース」
-  - 指定値に戻す →「TRUE」or そのままにする →「FALSE」
-- Lease Expires:「リース有効期限」
-  - yyyy-mm-dd形
-- AppleCare ID:「AppleCare ID」
+**Attributes that can be updated based on the "Purchasing" tab of the "Inventory" in Jamf Pro.**
+- PO Number
+- Vendor
+- Purchase Price
+- PO Date
+  - yyyy-mm-dd format
+- Warranty Expires
+  - yyyy-mm-dd format
+- Is Leased:
+  - Is Leased → TRUE or not leased → FALSE
+- Lease Expires
+  - yyyy-mm-dd format
+- AppleCare ID
 
 ### [Updating Extension Attributes](#updating-extension-attributes)  
-デバイス用の拡張属性を更新するのは可能です。  
-まず拡張属性の ID を特定する必要があります。
+It is possible to update Extension Attributes for devices.  
+In order to do this, you must first identify the Extension Attribute ID number. 
 
-1. Jamf Pro の GUI で歯車アイコンをクリック。
-2. デバイス管理 > 拡張属性を選択。
-3. 更新する EA をクリック。
-4. 該当 EA の URL から ID を取得する。
+1. Click on the "⚙️" icon (Settings) in the Jamf Pro GUI.
+2. Select Device management > Extension attributes.
+3. Click on the EA you want to update.
+4. Obtain the ID from the URL of the relevant EA.
 
-例えば、ここで表示されている拡張属性のEA IDは「17」です。
+For example, the EA ID for this Extension Attribute is "17."
 ![スプレッドシート名](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-z-pk9ZZipPjBklE_i0K6oDaPeqBSDwbmFjMP84pH_cN9RM9hgYO7R_Fc_NgbuCJNtQVjB9GGMvkFYNQ2RpVf-TDeoQQQ=w2854-h1668 "スプレッドシート名")
 
-拡張属性を更新するには、テンプレートの既存のすべての列の後に新しい列に独自のヘッダーを追加し、そのヘッダーに文字列「EA_#」を入力します。「#」は更新する EA の ID です。
+To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
 
-たとえば、ID が「17」の拡張属性を更新するには、ヘッダーが「EA_17」の新しい列を追加し、その EA の値をその列に配置します。
+For example, to update an Extension Attribute with the ID of "17", you would add a new column with the header "EA_17", and place the values of that EA in the column.
 
-スプレッドシートは次のようになります。  
-(適合させるために一部の列が表示されていません。スプレッドシートから列を削除しないでください)。
+Your spreadsheet will look like this:
+(For simplicity not all columns are shown here. Please **DO NOT** remove any columns from the spreadsheet. Removing columns will cause errors.)
 
 | Mobile Device Serial | Display Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
 | :---   | :---   |  :---   |  :---   |  :---   |  :---   |  :---  |  :---   |
 | A1234567 | | TRUE | MH-12 | | | New Value | New Value |
 | B1234567 | | FALSE | MH-15 | | | New Value | New Value |
 
-### [Clearing Existing Attributes](#clearing-existing-attributes)  
-ツールのもう 1 つの機能として、既存の属性をクリアすることはできます。  
-たとえば、デバイスのグループが新しいユーザーに再配布されるか、廃止され、ユーザー名と関連情報を削除する必要がある場合に発生します。
+### [Clearing Existing Attributes](#clearing-existing-attributes)
+As another feature of the tool, you can clear existing attributes. This occurs, for example, when a device group is reassigned to new users, or when it's retired and user information needs to be removed.
 
-値をクリアするには、特定の文字列を使用する必要があります。  
-この文字列は現在「CLEAR!」です。
+To clear a value, you need to use a specific string, which is currently "CLEAR!"
 
-【注意事項】  
-・ Display Name、Is Leased、PO Date、Warranty Expires、Lease Expires は対象外。
+**Important Note**  
+Display Name, Is Leased, PO Date, Warranty Expires, and Lease Expires are not subject to this.
 
-デバイスからユーザー情報を消去する場合、スプレッドシートは次のようになります (省略記号の後に列があります)。
+When clearing user information from a device, the spreadsheet will look like this (columns continue after the ellipsis).
 
 | Mobile Device Serial | Display Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
 | :---   | :---   |  :---   |  :---   |  :---   |  :---   |  :---  |  :---   |
@@ -199,49 +203,35 @@ Department、Building については、Jamf Pro に登録されている
 | B1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
 
 ## [First Run](#first-run)
-1. コピーしたスプレッドシートを開く。
-2. 更新したいデータを入力する。
-3. メニューでヘルプの右にある Settings > Run を押下。
-4. 「Create Standard Account」に チェック、次へ押下。
-
-![最初の実行](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xoelBTPSky9Xe_Sj4biRLX9lb4UnQgYh4e_QXpvwodrOaihCPEvXQnfvHaFkZNuxbU06kKtYwyLAbkf4g2GtnUF7iMaQ=w2854-h1668 "最初の実行")
-
-5. 最初実行時に承認が必要。（写真参照）  
-  「続行」ボタンをクリック。
+1. Open the copied spreadsheet.
+2. Enter the data you want to update.
+3. Click on "Settings" in the menu to the right of Help, and then select "Run."
+4. Authorization is required the first time you run it. (See the image below.)  Click the "OK" button.
 
 ![「承認が必要」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w_24DmZL0UDrGyDz-kygZaoyWQj3-9VC3hywMC-4HkQV76-fUM7knUTOaV3-3iwQz4ysfI1m5fZHHqLIm8GJXCe_C8_g=w2854-h1668 "「承認が必要」ポップアップ")
   
-  Googleアカウント選択。  
-  「このアプリは Google で確認されていません」出た時に詳細」をクリック。
-
-![「このアプリは Google で確認されていません」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y4r96nFvdHYjpXTFoyLBR6R_8H8h5fg1iX_iZy5jWvtUKHNJ0IQ75CtklY0sFrGcPiKe778iywxUBp-EEiFZkPRsjoXg=w2854-h1668 "「このアプリは Google で確認されていません」ポップアップ")
-
- 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。
-
- ![「移動」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-y6uh3xIk5mECCDaWcFrUSduSP42CP7kqAT0d-xG2myZEJfYtzn4V8gYzoK45Y-jK-Kuy9MzcXH7Myxo3YzL7fbu9tRcQ=w2854-h1668 "「移動」ポップアップ")
-
-最後に「許可」を押下。
+Select your Google account.  
+Finally, click "Allow."
 
 ![「許可」ポップアップ](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-w3B3Su2tvxxeym_HuviqzVZEg_FaDthMzTPzi6NSYZHD7w2JVNJaxaVtvsPM8I2gYEIZCbmbqGPQLF0NptzV5gS8nN=w2854-h1668 "「許可」ポップアップ")
 
 ## [Mass Updating](#mass-updating)
-1. コピーしたスプレッドシートを開く。
-2. 更新したいデータを入力する。
-3. メニューでヘルプの右にある Settings > Run を押下。
-4. 「Create Standard Account」にチェック、次へ押下。
+1. Open the copied spreadsheet.
+2. Enter the data you want to update.
+3. Click on "Settings" in the menu to the right of Help, and then select "Run."
 
 ![プログラム実行](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xoelBTPSky9Xe_Sj4biRLX9lb4UnQgYh4e_QXpvwodrOaihCPEvXQnfvHaFkZNuxbU06kKtYwyLAbkf4g2GtnUF7iMaQ=w2854-h1668 "プログラム実行")
 
-更新中↓
+Updating in progress ↓  
 ![更新中](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-xjaobuuDVZjtSM0NYpJH7bpzcRyxLakahHBfMWcTbQYMOZ-pTH0miboAUxtiBc9jKeByDqjO4CX36c1O_-VG1YWjqzUw=w2854-h1668 "更新中")
 
-更新完了したら、右にログのサイドバーが開きます。
-更新完了↓
+After the update is complete, a sidebar with logs will open on the right.
+Update completed ↓  
 ![更新完了](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-yuRfwBs-kz4r4uboIrDrT2FnLpiCjEq8mpZPIBEdmOhsgAq1TqNhumMTZIxJqncIE826y-CB4dL2raJk-nzXC8MrzsUg=w2854-h1668 "更新完了")
 
-Settings > Run ボタンを押すと、ときどき以下のエラーとなります。
-![エラー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wRIzreDfz55PClqdnukcIakVDfSrXVPTrj8QUWKhFvhg06LuuLFOI8OnheeUyUUqPs2L7p-7IAbb_Q8eoJhKBjcDo5lg=w2854-h1668 "エラー")
-この場合、以下をやってみてください。  
-「表示しない」をクリック。  
-5-10秒を待つ。  
-Settings > Run をもう一度押下。  
+When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
+![エラー](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-wRIzreDfz55PClqdnukcIakVDfSrXVPTrj8QUWKhFvhg06LuuLFOI8OnheeUyUUqPs2L7p-7IAbb_Q8eoJhKBjcDo5lg=w2854-h1668 "エラー")  
+In this case, please try the following:
+Click "Dismiss."
+Wait for 5-10 seconds.
+Press "Settings > Run" again.
