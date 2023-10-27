@@ -206,12 +206,20 @@ When clearing user information from a device, the spreadsheet will look like thi
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
 3. Click on "Settings" in the menu to the right of Help, and then select "Run."
+<img width="250" alt="Running the tool" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/81843df0-dcc1-4433-be53-c7dc938bd951">  
+
 4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.
 <img width="436" alt="Allow authorization" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/154b0396-e026-46bb-bbcf-97f1dc3538c7">
 
-5. Select your Google account.  
-6. Finally, click "Allow."  
-<img width="428" alt="Allow authorization 2" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/9dcb4c98-cce1-43d4-a0a2-30cf9aeceec2">
+5. Select your Google account.
+   When you see "Google hasn't verified this app" click on "Advanced".
+<img width="593" alt="Google hasn't verified this app" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/91ff4025-2ebd-4afb-9b59-39cb674464af">
+
+6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".
+<img width="586" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/d5a39d6c-b20f-416e-b7e7-1341f1f45ba3">
+
+7. Finally, click "Allow."  
+<img width="428" alt="Allow authorization" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/9dcb4c98-cce1-43d4-a0a2-30cf9aeceec2">
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
