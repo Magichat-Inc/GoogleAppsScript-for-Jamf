@@ -26,7 +26,7 @@ This enables Jamf administrators to perform mass updates for devices within Jamf
 
 Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
-![Main spreadsheet](https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/6c98df6e-4163-480a-80d5-07246b82869e)
+![Main spreadsheet](https://github-production-user-asset-6210df.s3.amazonaws.com/15056367/278348006-ede00b3a-d4fe-4168-8462-a2d0473b27e4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231101%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231101T150729Z&X-Amz-Expires=300&X-Amz-Signature=512907543b84d75de1a700537d8b73cd900525810f509d3f5f3829045508a1e6&X-Amz-SignedHeaders=host&actor_id=15056367&key_id=0&repo_id=662490445)
 
 ## [Beginning Steps](#beginning-steps)
 To use this tool, please complete the following steps in the appropriate order.
