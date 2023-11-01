@@ -25,7 +25,7 @@
 
 ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
-<img width="1423" alt="メインシート" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/ede00b3a-d4fe-4168-8462-a2d0473b27e4">
+<img width="1423" alt="メインシート" src="./assets/JA/01.png">
 
 ## [Beginning Steps](#beginning-steps)
 このツールを使用するには、以下の手順を該当する順序で事前準備を行ってください。
@@ -44,7 +44,7 @@ Googleアカウントにログインします。
 3. 「Bearerトークン認証に加えて Basic認証を許可」に チェックを入れる。
 4. 「保存」をクリック。
 
-<img width="245" alt="Basic認証許可" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/88543c7e-8f8d-4377-aaf9-61bab0b26c63">
+<img width="245" alt="Basic認証許可" src="./assets/JA/02.png">
 
 #### [API Account](#api-account)
 Jamf Pro で API用ユーザアカウントを以下の様に作成します。
@@ -59,7 +59,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
    - 権限セット：カスタム
    - パスワード
 
-<img width="268" alt="API用アカウント" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/ffd6956a-e751-4a39-ae75-7fceef823985">
+<img width="268" alt="API用アカウント" src="./assets/JA/03.png">
 
 6. 権限タブにて以下にチェックを付けてください。
    - **Jamf Proサーバオブジェクト**
@@ -84,7 +84,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 5. コピーしたスプレッドシートは自動的に新しいタブで開けます。  
 ※ 使用しているGoogleアカウントのドライブにスプレッドシートは保存されますので、今後ドライブから開くことができます。
 
-<img width="320" alt="スプレッドシートのコピー" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/aca38666-487e-4184-bdc7-ccafe5722bdf">
+<img width="320" alt="スプレッドシートのコピー" src="./assets/JA/04.png">
 
 #### [Initial Settings](#initial-settings)
 コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
@@ -106,15 +106,15 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
 スプレッドシート ID は「abc1234567」となります。
 
-<img width="406" alt="スプレッドシートの初期設定" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/56802fa0-e260-4718-b750-4bba382c5f1f">
+<img width="406" alt="スプレッドシートの初期設定" src="./assets/JA/05.png">
 
 ## [Data Input](#data-input)
-<img width="1419" alt="データ入力" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/244a8987-5804-4869-86b9-298dd20e7e90">
+<img width="1419" alt="データ入力" src="./assets/JA/06.png">
 
 一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
 
 スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。
-<img width="527" alt="スプレッドシート名" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/c7631527-b1e9-46d8-85c9-25a8da5e7e28">
+<img width="527" alt="スプレッドシート名" src="./assets/JA/07.png">
 
 ### [Updating Attributes](#updating-attributes)
 スプレッドシートにある客ヘッダ名の使い方についてです。
@@ -172,7 +172,7 @@ Department、Building については、Jamf Pro に登録されている
 4. 該当 EA の URL から ID を取得する。
 
 例えば、ここで表示されている拡張属性のEA IDは「17」です。  
-<img width="508" alt="EA ID" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/06c07088-cf31-43ce-9e6f-f0328a2ab7c6">
+<img width="508" alt="EA ID" src="./assets/JA/08.png">
 
 拡張属性を更新するには、テンプレートの既存のすべての列の後に新しい列に独自のヘッダーを追加し、そのヘッダーに文字列「EA_#」を入力します。「#」は更新する EA の ID です。
 
@@ -207,37 +207,37 @@ Department、Building については、Jamf Pro に登録されている
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。
-<img width="370" alt="最初の実行" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/c8df69e5-b727-44e8-a6ef-17359b1b9308">
+<img width="370" alt="最初の実行" src="./assets/JA/09.png">
 
 4. 最初実行時に承認が必要。（写真参照）  
   「続行」ボタンをクリック。
-<img width="252" alt="「承認が必要」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/8c61e3bc-ac64-4631-8691-bd73e99c4ffa">
+<img width="252" alt="「承認が必要」ポップアップ" src="./assets/JA/10.png">
   
 5. Googleアカウント選択。  
-  「このアプリは Google で確認されていません」出た時に詳細」をクリック。
-<img width="246" alt="「このアプリは Google で確認されていません」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/4caf2e8e-6073-4a35-90a8-481900ad85a4">
+  「このアプリは Google で確認されていません」出た時に詳細」をクリック。  
+<img width="246" alt="「このアプリは Google で確認されていません」ポップアップ" src="./assets/JA/11.png">
 
 6. 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。
-<img width="378" alt="「移動」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/e27e4bfe-8ae7-451a-a1aa-eb884e1c69ed">
+<img width="378" alt="「移動」ポップアップ" src="./assets/JA/12.png">
 
 7. 最後に「許可」を押下。  
-<img width="214" alt="「許可」ポップアップ" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/207dbdc3-5e6b-4be0-8ed5-1e138d180fe2">
+<img width="214" alt="「許可」ポップアップ" src="./assets/JA/13.png">
 
 ## [Mass Updating](#mass-updating)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。  
-<img width="370" alt="プログラム実行" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/c8df69e5-b727-44e8-a6ef-17359b1b9308">
+<img width="370" alt="プログラム実行" src="./assets/JA/09.png">
 
 更新中↓  
-<img width="772" alt="更新中" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/e72cb104-77a1-4b47-9532-e37340369435">
+<img width="772" alt="更新中" src="./assets/JA/14.png">
 
 更新完了したら、右にログのサイドバーが開きます。
 更新完了↓
-<img width="772" alt="更新完了" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/0ff72aaf-32b0-431a-8b4b-f15d47e1f103">
+<img width="772" alt="更新完了" src="./assets/JA/15.png">
 
 Settings > Run ボタンを押すと、ときどき以下のエラーとなります。
-<img width="557" alt="エラー" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/5b966fa3-7509-490d-91f3-afac39faadf8">  
+<img width="557" alt="エラー" src="./assets/JA/16.png">  
 この場合、以下をやってみてください。  
 「表示しない」をクリック。  
 5-10秒を待つ。  
