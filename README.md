@@ -26,7 +26,7 @@ This enables Jamf administrators to perform mass updates for devices within Jamf
 
 Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
-![Main spreadsheet](https://github-production-user-asset-6210df.s3.amazonaws.com/15056367/278348006-ede00b3a-d4fe-4168-8462-a2d0473b27e4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231101%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231101T150729Z&X-Amz-Expires=300&X-Amz-Signature=512907543b84d75de1a700537d8b73cd900525810f509d3f5f3829045508a1e6&X-Amz-SignedHeaders=host&actor_id=15056367&key_id=0&repo_id=662490445)
+<img width="1423" alt="Main spreadsheet" src="./assets/EN/01.png">
 
 ## [Beginning Steps](#beginning-steps)
 To use this tool, please complete the following steps in the appropriate order.
@@ -47,7 +47,7 @@ When setting things up for the first time, please follow the steps below in your
 3. Check "Allow Basic authentication in addition to Bearer Token authentication".
 4. Click "Save."
 
-<img width="518" alt="Allow Basic authentication" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/77cac870-999e-4a01-b8b3-0c39c5733fd4">
+<img width="518" alt="Allow Basic authentication" src="./assets/EN/02.png">
 
 #### [API Account](#api-account)
 In Jamf Pro, create an API user account as follows.
@@ -62,7 +62,7 @@ In Jamf Pro, create an API user account as follows.
    - Permission Set: Custom
    - Password
 
-<img width="369" alt="API account" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/b016d731-161c-4f35-9979-e0ae8f3f86af">  
+<img width="369" alt="API account" src="./assets/EN/03.png">  
 
 6. In the "Privileges" tab, please check the following:
    - **Jamf Pro Server Objects**
@@ -88,7 +88,7 @@ In Jamf Pro, create an API user account as follows.
 
 _Note: The copied spreadsheet is saved in your Google account's Drive, allowing you to access it from your Drive in the future._
 
-<img width="340" alt="Copy spreadsheet" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/2ac80e80-75bf-448d-8bdc-e92d7e16bfd6">
+<img width="340" alt="Copy spreadsheet" src="./assets/EN/04.png">
 
 #### [Initial Settings](#initial-settings)
 Please open the copied spreadsheet and follow these initial setup steps:
@@ -108,16 +108,16 @@ Please open the copied spreadsheet and follow these initial setup steps:
 
 You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
-<img width="730" alt="Initial spreadsheet settings" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/a71e70fb-d7ef-4957-afbf-6aaf12d0dee1">
+<img width="730" alt="Initial spreadsheet settings" src="./assets/EN/05.png">
 
 ## [Data Input](#data-input)
-<img width="1419" alt="Inputting data" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/f1bf1c6b-fd3d-4420-be5f-2b055c6b2008">
+<img width="1419" alt="Inputting data" src="./assets/EN/06.png">
 
 When executing a mass update, validation checks are performed on the spreadsheet's header row. **Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.**
 
 *Please do not rename the spreadsheet.* Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.
 
-<img width="527" alt="Spreadsheet name" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/503a0f6f-cba2-41e0-8d24-ecb9a9bb245d">
+<img width="527" alt="Spreadsheet name" src="./assets/EN/07.png">
 
 ### [Updating Attributes](#updating-attributes)
 This section explains how to use and input data under each header in the spreadsheet.
@@ -173,7 +173,7 @@ In order to do this, you must first identify the Extension Attribute ID number.
 4. Obtain the ID from the URL of the relevant EA.
 
 For example, the EA ID for this Extension Attribute is "17."  
-<img width="508" alt="EA ID" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/88555ac7-0d0e-412c-81d8-8a0527dfc663">
+<img width="508" alt="EA ID" src="./assets/EN/08.png">
 
 To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
 
@@ -205,38 +205,38 @@ When clearing user information from a device, the spreadsheet will look like thi
 ## [First Run](#first-run)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
-3. Click on "Settings" in the menu to the right of Help, and then select "Run."
-<img width="250" alt="Running the tool" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/81843df0-dcc1-4433-be53-c7dc938bd951">  
+3. Click on "Settings" in the menu to the right of Help, and then select "Run."  
+<img width="250" alt="Running the tool" src="./assets/EN/09.png">  
 
-4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.
-<img width="436" alt="Allow authorization" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/154b0396-e026-46bb-bbcf-97f1dc3538c7">
+4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.  
+<img width="436" alt="Allow authorization" src="./assets/EN/10.png">
 
 5. Select your Google account.
-   When you see "Google hasn't verified this app" click on "Advanced".
-<img width="593" alt="Google hasn't verified this app" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/91ff4025-2ebd-4afb-9b59-39cb674464af">
+   When you see "Google hasn't verified this app" click on "Advanced".  
+<img width="593" alt="Google hasn't verified this app" src="./assets/EN/11.png">
 
-6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".
-<img width="586" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/d5a39d6c-b20f-416e-b7e7-1341f1f45ba3">
+6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".  
+<img width="586" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/12.png">
 
 7. Finally, click "Allow."  
-<img width="428" alt="Allow authorization" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/9dcb4c98-cce1-43d4-a0a2-30cf9aeceec2">
+<img width="428" alt="Allow authorization" src="./assets/EN/13.png">
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
 3. Click on "Settings" in the menu to the right of Help, and then select "Run."
 
-<img width="250" alt="Running the tool" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/81843df0-dcc1-4433-be53-c7dc938bd951">
+<img width="250" alt="Running the tool" src="./assets/EN/09.png">
 
 Updating in progress ↓  
-<img width="1418" alt="Mass updating in progress" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/899c0545-e055-4a98-af0b-22a9f5e32579">
+<img width="1418" alt="Mass updating in progress" src="./assets/EN/14.png">
 
 After the update is complete, a sidebar with logs will open on the right.  
 Update completed ↓  
-<img width="1423" alt="Mass update completed" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/1bbd6ed2-676a-4d0d-adb6-e0e84dff7c4b">
+<img width="1423" alt="Mass update completed" src="./assets/EN/15.png">
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
-<img width="531" alt="Error" src="https://github.com/Magichat-Inc/GoogleAppsScript-for-Jamf/assets/15056367/3c7a624f-30ee-4687-86fc-8a6ed2e5904f">  
+<img width="531" alt="Error" src="./assets/EN/16.png">  
 In this case, please try the following:
 Click "Dismiss."
 Wait for 5-10 seconds.
