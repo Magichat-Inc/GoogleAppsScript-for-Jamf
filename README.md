@@ -9,7 +9,9 @@ Based on information within the spreadsheet, the program makes API calls to upda
   - [Google Account](#google-account)   
   - [Jamf Pro](#jamf-pro)
     - [Basic Authorization](#basic-authorization)
-    - [API Account](#api-account)
+    - [API Setup](#api-setup)
+      - [API Account](#api-account)
+      - [API Roles and Clients](#api-roles-and-clients)
   - [Google Spreadsheet](#google-spreadsheet)
     - [Make A Copy](#make-a-copy)
     - [Initial Settings](#initial-settings)
@@ -49,8 +51,13 @@ When setting things up for the first time, please follow the steps below in your
 
 <img width="518" alt="Allow Basic authentication" src="./assets/EN/02.png">
 
-#### [API Account](#api-account)
-In Jamf Pro, create an API user account as follows.
+#### [API Setup](#api-setup)
+For the next step, you have two options:  
+You can either create an API user account OR use [API Roles and Clients](https://learn.jamf.com/bundle/jamf-pro-documentation-current/page/API_Roles_and_Clients.html) in Jamf Pro.  
+You must choose one of these options. 
+
+##### [API Account](#api-account)
+If you'd like to create an API user account, follow these steps:
 
 1. Click on the "⚙️" icon (Settings).
 2. Click on "User accounts and groups".
@@ -72,6 +79,52 @@ In Jamf Pro, create an API user account as follows.
      - Assign User to Mobile Devices
      - Send Mobile Device Set Device Name Command
 7. Click "Save".
+
+##### [API Roles and Clients](#api-roles-and-clients)
+If you'd like to use the API Roles and Clients functionality instead, follow these steps:
+
+1. Click on the "⚙️" icon (Settings).
+2. Click on "API Roles and Clients".
+3. Click on the "API Roles" tab.
+4. Click on "New" in the top right corner.
+5. Set "Display Name".
+6. Set these Privileges:
+    * Assign Users to Mobile Devices
+    * Create Mobile Devices
+    * Update Mobile Devices
+    * Read Mobile Devices
+    * Update User
+    * Read User
+    * Send Mobile Device Set Device Name Command
+7. Save
+
+<img width="730" alt="API Roles and Clients - API Role" src="./assets/EN/17.png">
+
+With the above steps, our API Role is now created.  
+
+Next, we need to create an API Client.  
+We will use this API Client later to generate a Client Secret, which the Jamf Pro API can then use to generate access tokens.
+
+1. Click on the "API Clients" tab.
+2. Click on "New" in the top right corner.
+3. Assign the "API Role" you just created.
+4. Set the "Access Token Lifetime".
+5. Click on "Enable API Client".
+6. Save
+
+<img width="369" alt="API Roles and Clients - API Role" src="./assets/EN/18.png">
+
+After creating an API Client, proceed to generate a Client Secret.  
+This secret is crucial for generating access tokens.
+
+1. Click on the "API Client" you just created.
+2. Click on "Generate Client Secret."
+3. A pop-up window will appear with the Client Secret.
+
+<img width="369" alt="API Roles and Clients - API Role" src="./assets/EN/19.png">
+
+*Note: The client secret will only be displayed once*  
+*Ensure that you save it in a secure location before dismissing the dialog, as __it will be needed later__.*
 
 ### [Google Spreadsheet](#google-spreadsheet)
 
@@ -98,17 +151,29 @@ Please open the copied spreadsheet and follow these initial setup steps:
 3. Click on "Add script property" at the bottom.
 4. Configure as shown below then click "Save".
 
+If you created an **API account**, you need to create the following properties:  
+CLASSIC_API_URL, JAMF_PRO_API_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
+
+Otherwise, if you used **API Roles and Clients**, you need to create the following ones:  
+CLASSIC_API_URL, JAMF_PRO_API_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
+
 | Property | Value |
 | :---   | :---   |
 | CLASSIC_API_URL | https://instance-name.jamfcloud.com/JSSResource |
 | JAMF_PRO_API_URL | https://instance-name.jamfcloud.com/api/ |
 | CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb." |
+| CLIENT_ID | ClientIDFromCreatedAPIClient |
+| CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
 | SHEET_NAME | MobileDeviceTemplate |
 | SPREADSHEET_ID | The ID of the copied spreadsheet (see the instructions below on how to obtain it) |
 
 You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
+In case of using Jamf API Account:   
 <img width="730" alt="Initial spreadsheet settings" src="./assets/EN/05.png">
+
+In case of using Jamf API Roles and Clients:  
+<img width="730" alt="Initial spreadsheet settings" src="./assets/EN/20.png">
 
 ## [Data Input](#data-input)
 <img width="1419" alt="Inputting data" src="./assets/EN/06.png">
