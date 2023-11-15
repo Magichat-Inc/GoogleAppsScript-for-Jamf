@@ -28,7 +28,7 @@ This enables Jamf administrators to perform mass updates for devices within Jamf
 
 Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
-<img width="1423" alt="Main spreadsheet" src="./assets/EN/01.png">
+<img width="1420" alt="Main spreadsheet" src="./assets/EN/01.png">
 
 ## [Beginning Steps](#beginning-steps)
 To use this tool, please complete the following steps in the appropriate order.
@@ -49,7 +49,7 @@ When setting things up for the first time, please follow the steps below in your
 3. Check "Allow Basic authentication in addition to Bearer Token authentication".
 4. Click "Save."
 
-<img width="518" alt="Allow Basic authentication" src="./assets/EN/02.png">
+<img width="515" alt="Allow Basic authentication" src="./assets/EN/02.png">
 
 #### [API Setup](#api-setup)
 For the next step, you have two options:  
@@ -69,7 +69,7 @@ If you'd like to create an API user account, follow these steps:
    - Permission Set: Custom
    - Password
 
-<img width="369" alt="API account" src="./assets/EN/03.png">  
+<img width="365" alt="API account" src="./assets/EN/03.png">  
 
 6. In the "Privileges" tab, please check the following:
    - **Jamf Pro Server Objects**
@@ -98,7 +98,7 @@ If you'd like to use the API Roles and Clients functionality instead, follow the
     * Send Mobile Device Set Device Name Command
 7. Save
 
-<img width="730" alt="API Roles and Clients - API Role" src="./assets/EN/17.png">
+<img width="730" alt="API Roles and Clients - API Role Creation" src="./assets/EN/17.png">
 
 With the above steps, our API Role is now created.  
 
@@ -107,12 +107,13 @@ We will use this API Client later to generate a Client Secret, which the Jamf Pr
 
 1. Click on the "API Clients" tab.
 2. Click on "New" in the top right corner.
-3. Assign the "API Role" you just created.
-4. Set the "Access Token Lifetime".
-5. Click on "Enable API Client".
-6. Save
+3. Set "Display Name".
+4. Assign the "API Role" you just created.
+5. Set the "Access Token Lifetime".
+6. Click on "Enable API Client".
+7. Save
 
-<img width="369" alt="API Roles and Clients - API Role" src="./assets/EN/18.png">
+<img width="365" alt="API Roles and Clients - API Client Creation" src="./assets/EN/18.png">
 
 After creating an API Client, proceed to generate a Client Secret.  
 This secret is crucial for generating access tokens.
@@ -121,9 +122,9 @@ This secret is crucial for generating access tokens.
 2. Click on "Generate Client Secret."
 3. A pop-up window will appear with the Client Secret.
 
-<img width="369" alt="API Roles and Clients - API Role" src="./assets/EN/19.png">
+<img width="365" alt="API Roles and Clients - Client Secret Generation" src="./assets/EN/19.png">
 
-*Note: The client secret will only be displayed once*  
+*Note: The client secret will only be displayed once.*  
 *Ensure that you save it in a secure location before dismissing the dialog, as __it will be needed later__.*
 
 ### [Google Spreadsheet](#google-spreadsheet)
@@ -176,7 +177,7 @@ In case of using Jamf API Roles and Clients:
 <img width="730" alt="Initial spreadsheet settings" src="./assets/EN/20.png">
 
 ## [Data Input](#data-input)
-<img width="1419" alt="Inputting data" src="./assets/EN/06.png">
+<img width="1415" alt="Inputting data" src="./assets/EN/06.png">
 
 When executing a mass update, validation checks are performed on the spreadsheet's header row. **Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.**
 
@@ -238,7 +239,7 @@ In order to do this, you must first identify the Extension Attribute ID number.
 4. Obtain the ID from the URL of the relevant EA.
 
 For example, the EA ID for this Extension Attribute is "17."  
-<img width="508" alt="EA ID" src="./assets/EN/08.png">
+<img width="505" alt="EA ID" src="./assets/EN/08.png">
 
 To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
 
@@ -274,17 +275,17 @@ When clearing user information from a device, the spreadsheet will look like thi
 <img width="250" alt="Running the tool" src="./assets/EN/09.png">  
 
 4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.  
-<img width="436" alt="Allow authorization" src="./assets/EN/10.png">
+<img width="435" alt="Allow authorization" src="./assets/EN/10.png">
 
 5. Select your Google account.
    When you see "Google hasn't verified this app" click on "Advanced".  
-<img width="593" alt="Google hasn't verified this app" src="./assets/EN/11.png">
+<img width="590" alt="Google hasn't verified this app" src="./assets/EN/11.png">
 
 6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".  
-<img width="586" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/12.png">
+<img width="585" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/12.png">
 
 7. Finally, click "Allow."  
-<img width="428" alt="Allow authorization" src="./assets/EN/13.png">
+<img width="425" alt="Allow authorization" src="./assets/EN/13.png">
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
@@ -294,14 +295,14 @@ When clearing user information from a device, the spreadsheet will look like thi
 <img width="250" alt="Running the tool" src="./assets/EN/09.png">
 
 Updating in progress ↓  
-<img width="1418" alt="Mass updating in progress" src="./assets/EN/14.png">
+<img width="1415" alt="Mass updating in progress" src="./assets/EN/14.png">
 
 After the update is complete, a sidebar with logs will open on the right.  
 Update completed ↓  
-<img width="1423" alt="Mass update completed" src="./assets/EN/15.png">
+<img width="1415" alt="Mass update completed" src="./assets/EN/15.png">
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
-<img width="531" alt="Error" src="./assets/EN/16.png">  
+<img width="530" alt="Error" src="./assets/EN/16.png">  
 In this case, please try the following:
 Click "Dismiss."
 Wait for 5-10 seconds.

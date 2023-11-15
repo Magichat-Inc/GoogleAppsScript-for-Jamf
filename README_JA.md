@@ -9,7 +9,9 @@
   - [Google Account](#google-account)   
   - [Jamf Pro](#jamf-pro)
     - [Basic Authorization](#basic-authorization)
-    - [API Account](#api-account)
+    - [API Setup](#api-setup)
+      - [API Account](#api-account)
+      - [API Roles and Clients](#api-roles-and-clients)
   - [Google Spreadsheet](#google-spreadsheet)
     - [Make A Copy](#make-a-copy)
     - [Initial Settings](#initial-settings)
@@ -23,9 +25,9 @@
 ## [Introduction](#introduction)
 この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
 
-ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
+ツールはブラウザー上で動きますので、OS と関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
-<img width="1423" alt="メインシート" src="./assets/JA/01.png">
+<img width="1420" alt="メインシート" src="./assets/JA/01.png">
 
 ## [Beginning Steps](#beginning-steps)
 このツールを使用するには、以下の手順を該当する順序で事前準備を行ってください。
@@ -36,21 +38,28 @@ https://www.google.com/accounts/NewAccount にアクセスします。​指示�
 Googleアカウントにログインします。
 
 ### [Jamf Pro](#jamf-pro)
-お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
+お使いの Jamf Pro において 初めて当作業を実施する際は以下を実施してください。
 
 #### [Basic Authorization](#basic-authentication)
 1. 画面左中の「⻭車マーク」をクリック。
-2. 「Jamf Proユーザアカウントとグループ」をクリック。
+2. 「ユーザアカウントとグループ」をクリック。
+3. 「パスワードポリシー」をクリック
 3. 「Bearerトークン認証に加えて Basic認証を許可」に チェックを入れる。
 4. 「保存」をクリック。
 
-<img width="245" alt="Basic認証許可" src="./assets/JA/02.png">
+<img width="515" alt="Basic認証許可" src="./assets/JA/02.png">
 
-#### [API Account](#api-account)
-Jamf Pro で API用ユーザアカウントを以下の様に作成します。
+#### [API Setup](#api-setup)
+次のステップでは、2つのオプションがあります：  
+API 用ユーザーアカウントを作成することにします。  か   
+[API ロールとクライアント](https://learn.jamf.com/ja-JP/bundle/jamf-pro-documentation-current/page/API_Roles_and_Clients.html)機能を使用することにします。  
+上のオプションから1つを選んでください。
+
+##### [API Account](#api-account)
+API 用ユーザーアカウントを作成したい場合、以下の手順に従って設定してください：
 
 1. 画面左中の「⻭車マーク」をクリック。
-2. 「Jamf Proユーザアカウントとグループ」をクリック。 
+2. 「ユーザアカウントとグループ」をクリック。 
 3. 画面右上の「新規」をクリック。 
 4. 「Create Standard Account」に チェック、次へ押下。
 5. アカウントタブにて以下を設定してください。
@@ -59,7 +68,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
    - 権限セット：カスタム
    - パスワード
 
-<img width="268" alt="API用アカウント" src="./assets/JA/03.png">
+<img width="365" alt="API用アカウント" src="./assets/JA/03.png">
 
 6. 権限タブにて以下にチェックを付けてください。
    - **Jamf Proサーバオブジェクト**
@@ -67,8 +76,55 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
      - ユーザ (読み取り・アップデート）
    - **Jamf Proサーバアクション**
      - モバイルデバイスへのユーザ割当
-     - モバイルデバイス名称設定コマンドを送信
+     - モバイルデバイス名称設定コマンドを送信
 7. 「保存」をクリック。
+
+##### [API Roles and Clients](#api-roles-and-clients)
+API ロールとクラインとの機能を使いたい場合は、以下の手順に従って設定してください：
+
+1. 画面左中の「⻭車マーク」をクリック。
+2. 「API ロールとクライアント」をクリック。 
+3. 上の「API ロール」タブをクリック。
+4. 画面右上の「新規」をクリック。
+5. 「表示名」を入力。
+6. 以下の権限を選択してください：
+    * Assign Users to Mobile Devices
+    * Create Mobile Devices
+    * Update Mobile Devices
+    * Read Mobile Devices
+    * Update User
+    * Read User
+    * Send Mobile Device Set Device Name Command
+7. 「保存」をクリック。
+
+<img width="730" alt="API ロールとクラインと - API ロール作成" src="./assets/JA/17.png">
+
+上記の手順で、API ロールは作成されました。
+
+次に、API クライアントを作成する必要があります。  
+Jamf Pro API がアクセストークンを生成するためにAPI クライアントを作ります。ここに作成される API クライアントを後で使います。
+
+1. 上の「API クライアント」タブをクリック。
+2. 画面右上の「新規」をクリック。
+3. 「表示名」を入力。
+4. 作成した「API ロール」を割り当てる。
+5. 「アクセストークンの有効期限」を設定する。
+6. 「Enable API Client」をクリック。
+7. 「保存」をクリック。
+
+<img width="365" alt="API ロールとクライアント - API クライアント作成" src="./assets/JA/18.png">
+
+API クライアントを作成した後に、次にクライアントシークレットを生成します。
+シークレットはアクセストークンを生成するために重要です。
+
+1. 先ほど作成した「API　クライアント」をクリック。
+2. 「クライアントシークレットの生成」をクリック。
+3. ポップアップでクライアントシークレットが表示される。
+
+<img width="365" alt="API ロールとクライアント - クライアントシークレット生成" src="./assets/JA/19.png">
+
+*注意: クライアントシークレットは一度だけ表示されます。*  
+*ダイアログを閉じる前に、安全な場所に保存してください。__後で必要になります__。*
 
 ### [Google Spreadsheet](#google-spreadsheet)
 
@@ -84,7 +140,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 5. コピーしたスプレッドシートは自動的に新しいタブで開けます。  
 ※ 使用しているGoogleアカウントのドライブにスプレッドシートは保存されますので、今後ドライブから開くことができます。
 
-<img width="320" alt="スプレッドシートのコピー" src="./assets/JA/04.png">
+<img width="340" alt="スプレッドシートのコピー" src="./assets/JA/04.png">
 
 #### [Initial Settings](#initial-settings)
 コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
@@ -94,11 +150,19 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 3. 下にある「スクリプト プロパティを追加」にクリック。
 4. 以下の内容を設定して「保存」をクリック。
 
+**API アカウント**を作成した場合、以下のプロパティを作成する必要があります：  
+CLASSIC_API_URL, JAMF_PRO_API_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
+
+**API ロールとクライアント**機能を使用した場合は、以下のプロパティを作成する必要があります：  
+CLASSIC_API_URL, JAMF_PRO_API_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
+
 | プロパティ | 値 |
 | :---   | :---   |
 | CLASSIC_API_URL | https://インスタンス名.jamfcloud.com/JSSResource |
 | JAMF_PRO_API_URL | https://インスタンス名.jamfcloud.com/api/ |
 | CREDENTIALS | 作成したJamfAPIユーザー名:Jamfパスワード<br />例: ユーザー名がaaa、パスワードがbbbであれば<br />「aaa:bbb」となる。 |
+| CLIENT_ID | ClientIDFromCreatedAPIClient |
+| CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
 | SHEET_NAME | MobileDeviceTemplate |
 | SPREADSHEET_ID | コピーしたスプレッドシートID (取得方は以下の説明をご覧） |
 
@@ -106,14 +170,18 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
 スプレッドシート ID は「abc1234567」となります。
 
-<img width="406" alt="スプレッドシートの初期設定" src="./assets/JA/05.png">
+Jamf API アカウントを使用する場合：  
+<img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/05.png">
+
+Jamf API ロールとクライアント機能を使用する場合：  
+<img width="730" alt="スプレッドシートの初期設定" src="./assets/EN/20.png">
 
 ## [Data Input](#data-input)
-<img width="1419" alt="データ入力" src="./assets/JA/06.png">
+<img width="1415" alt="データ入力" src="./assets/JA/06.png">
 
 一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
 
-スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。
+スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。  
 <img width="527" alt="スプレッドシート名" src="./assets/JA/07.png">
 
 ### [Updating Attributes](#updating-attributes)
@@ -172,7 +240,7 @@ Department、Building については、Jamf Pro に登録されている
 4. 該当 EA の URL から ID を取得する。
 
 例えば、ここで表示されている拡張属性のEA IDは「17」です。  
-<img width="508" alt="EA ID" src="./assets/JA/08.png">
+<img width="505" alt="EA ID" src="./assets/JA/08.png">
 
 拡張属性を更新するには、テンプレートの既存のすべての列の後に新しい列に独自のヘッダーを追加し、そのヘッダーに文字列「EA_#」を入力します。「#」は更新する EA の ID です。
 
@@ -206,38 +274,38 @@ Department、Building については、Jamf Pro に登録されている
 ## [First Run](#first-run)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
-3. メニューでヘルプの右にある Settings > Run を押下。
-<img width="370" alt="最初の実行" src="./assets/JA/09.png">
+3. メニューでヘルプの右にある Settings > Run を押下。  
+<img width="250" alt="最初の実行" src="./assets/JA/09.png">
 
 4. 最初実行時に承認が必要。（写真参照）  
-  「続行」ボタンをクリック。
-<img width="252" alt="「承認が必要」ポップアップ" src="./assets/JA/10.png">
+  「続行」ボタンをクリック。  
+<img width="435" alt="「承認が必要」ポップアップ" src="./assets/JA/10.png">
   
 5. Googleアカウント選択。  
   「このアプリは Google で確認されていません」出た時に詳細」をクリック。  
 <img width="246" alt="「このアプリは Google で確認されていません」ポップアップ" src="./assets/JA/11.png">
 
-6. 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。
-<img width="378" alt="「移動」ポップアップ" src="./assets/JA/12.png">
+6. 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。  
+<img width="585" alt="「移動」ポップアップ" src="./assets/JA/12.png">
 
 7. 最後に「許可」を押下。  
-<img width="214" alt="「許可」ポップアップ" src="./assets/JA/13.png">
+<img width="425" alt="「許可」ポップアップ" src="./assets/JA/13.png">
 
 ## [Mass Updating](#mass-updating)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。  
-<img width="370" alt="プログラム実行" src="./assets/JA/09.png">
+<img width="250" alt="プログラム実行" src="./assets/JA/09.png">
 
 更新中↓  
-<img width="772" alt="更新中" src="./assets/JA/14.png">
+<img width="1415" alt="更新中" src="./assets/JA/14.png">
 
 更新完了したら、右にログのサイドバーが開きます。
-更新完了↓
-<img width="772" alt="更新完了" src="./assets/JA/15.png">
+更新完了↓  
+<img width="1415" alt="更新完了" src="./assets/JA/15.png">
 
-Settings > Run ボタンを押すと、ときどき以下のエラーとなります。
-<img width="557" alt="エラー" src="./assets/JA/16.png">  
+Settings > Run ボタンを押すと、ときどき以下のエラーとなります。  
+<img width="530" alt="エラー" src="./assets/JA/16.png">  
 この場合、以下をやってみてください。  
 「表示しない」をクリック。  
 5-10秒を待つ。  
