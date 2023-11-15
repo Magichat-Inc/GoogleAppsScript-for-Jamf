@@ -26,7 +26,7 @@ This enables Jamf administrators to perform mass updates for devices within Jamf
 
 Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
-<img width="1423" alt="Main spreadsheet" src="./assets/EN/01.png">
+<img width="1420" alt="Main spreadsheet" src="./assets/EN/01.png">
 
 ## [Beginning Steps](#beginning-steps)
 To use this tool, please complete the following steps in the appropriate order.
@@ -47,7 +47,7 @@ When setting things up for the first time, please follow the steps below in your
 3. Check "Allow Basic authentication in addition to Bearer Token authentication".
 4. Click "Save."
 
-<img width="518" alt="Allow Basic authentication" src="./assets/EN/02.png">
+<img width="515" alt="Allow Basic authentication" src="./assets/EN/02.png">
 
 #### [API Account](#api-account)
 In Jamf Pro, create an API user account as follows.
@@ -62,7 +62,7 @@ In Jamf Pro, create an API user account as follows.
    - Permission Set: Custom
    - Password
 
-<img width="369" alt="API account" src="./assets/EN/03.png">  
+<img width="365" alt="API account" src="./assets/EN/03.png">  
 
 6. In the "Privileges" tab, please check the following:
    - **Jamf Pro Server Objects**
@@ -111,13 +111,12 @@ You can extract the spreadsheet ID from the URL. For example, if the URL is http
 <img width="730" alt="Initial spreadsheet settings" src="./assets/EN/05.png">
 
 ## [Data Input](#data-input)
-<img width="1419" alt="Inputting data" src="./assets/EN/06.png">
+<img width="1415" alt="Inputting data" src="./assets/EN/06.png">
 
 When executing a mass update, validation checks are performed on the spreadsheet's header row. **Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.**
 
-*Please do not rename the spreadsheet.* Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.
-
-<img width="527" alt="Spreadsheet name" src="./assets/EN/07.png">
+*Please do not rename the spreadsheet.* Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.  
+<img width="525" alt="Spreadsheet name" src="./assets/EN/07.png">
 
 ### [Updating Attributes](#updating-attributes)
 This section explains how to use and input data under each header in the spreadsheet.
@@ -173,7 +172,7 @@ In order to do this, you must first identify the Extension Attribute ID number.
 4. Obtain the ID from the URL of the relevant EA.
 
 For example, the EA ID for this Extension Attribute is "17."  
-<img width="508" alt="EA ID" src="./assets/EN/08.png">
+<img width="505" alt="EA ID" src="./assets/EN/08.png">
 
 To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
 
@@ -209,34 +208,33 @@ When clearing user information from a device, the spreadsheet will look like thi
 <img width="250" alt="Running the tool" src="./assets/EN/09.png">  
 
 4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.  
-<img width="436" alt="Allow authorization" src="./assets/EN/10.png">
+<img width="435" alt="Allow authorization" src="./assets/EN/10.png">
 
 5. Select your Google account.
    When you see "Google hasn't verified this app" click on "Advanced".  
-<img width="593" alt="Google hasn't verified this app" src="./assets/EN/11.png">
+<img width="590" alt="Google hasn't verified this app" src="./assets/EN/11.png">
 
 6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".  
-<img width="586" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/12.png">
+<img width="585" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/12.png">
 
 7. Finally, click "Allow."  
-<img width="428" alt="Allow authorization" src="./assets/EN/13.png">
+<img width="425" alt="Allow authorization" src="./assets/EN/13.png">
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
-3. Click on "Settings" in the menu to the right of Help, and then select "Run."
-
+3. Click on "Settings" in the menu to the right of Help, and then select "Run."  
 <img width="250" alt="Running the tool" src="./assets/EN/09.png">
 
 Updating in progress ↓  
-<img width="1418" alt="Mass updating in progress" src="./assets/EN/14.png">
+<img width="1415" alt="Mass updating in progress" src="./assets/EN/14.png">
 
 After the update is complete, a sidebar with logs will open on the right.  
 Update completed ↓  
-<img width="1423" alt="Mass update completed" src="./assets/EN/15.png">
+<img width="1415" alt="Mass update completed" src="./assets/EN/15.png">
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
-<img width="531" alt="Error" src="./assets/EN/16.png">  
+<img width="530" alt="Error" src="./assets/EN/16.png">  
 In this case, please try the following:
 Click "Dismiss."
 Wait for 5-10 seconds.
