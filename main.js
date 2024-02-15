@@ -7,10 +7,9 @@
  Author: Magic Hat Inc. (Melinda Magyar)           
  著者: 株式会社マジックハット (マジャル メリンダ)
 
- Last modified: 2023/07/05
- 最終更新日: 2023年 7月 5日
+ Last modified: 2024/02/15
+ 最終更新日: 2024年 2月 15日
 #################################################################################################### */
-
 
 // MAIN FUNCTIONS
 // メインの関数群
@@ -145,19 +144,19 @@ function getDeviceDataFromSpreadsheet() {
       username,
       realName,
       emailAddress,
-      position,
       phoneNumber,
+      position,
       department,
       building,
       room,
-      poNumber,
-      vendor,
-      purchasePrice,
-      poDate,
-      warrantyExpires,
       isLeased,
-      leaseExpires,
+      poNumber,
+      poDate,
+      vendor,
+      warrantyExpires,
       appleCareID,
+      leaseExpires,
+      purchasePrice,
       airplayPassword,
       site,
       ...extensionAttributes
@@ -173,19 +172,19 @@ function getDeviceDataFromSpreadsheet() {
       username,
       realName,
       emailAddress,
-      position,
       phoneNumber,
+      position,
       department,
       building,
       room,
-      poNumber,
-      vendor,
-      purchasePrice,
-      poDate,
-      warrantyExpires,
       isLeased,
-      leaseExpires,
+      poNumber,
+      poDate,
+      vendor,
+      warrantyExpires,
       appleCareID,
+      leaseExpires,
+      purchasePrice,
       airplayPassword,
       site,
     };
@@ -320,7 +319,7 @@ function uploadDeviceDataToJamf() {
 
         if (key === 'mobileDeviceSerial') {
           mobileDeviceSerialNumber = item[key];
-          console.log("Device: " + mobileDeviceSerialNumber);
+          Logger.log("Device: " + mobileDeviceSerialNumber);
         }
 
         // Handles different cases
@@ -350,13 +349,13 @@ function uploadDeviceDataToJamf() {
             (item[key] === 'CLEAR!') ? setEmailAddress(mobileDeviceSerialNumber, '')
             : setEmailAddress(mobileDeviceSerialNumber, item[key]);
             break;
-          case 'position':
-            (item[key] === 'CLEAR!') ? setPosition(mobileDeviceSerialNumber, '')
-            : setPosition(mobileDeviceSerialNumber, item[key]);
-            break;
           case 'phoneNumber':
             (item[key] === 'CLEAR!') ? setPhoneNumber(mobileDeviceSerialNumber, '')
             : setPhoneNumber(mobileDeviceSerialNumber, item[key]);
+            break;
+          case 'position':
+            (item[key] === 'CLEAR!') ? setPosition(mobileDeviceSerialNumber, '')
+            : setPosition(mobileDeviceSerialNumber, item[key]);
             break;
           case 'department':
             (item[key] === 'CLEAR!') ? setDepartment(mobileDeviceSerialNumber, '')
@@ -370,33 +369,33 @@ function uploadDeviceDataToJamf() {
             (item[key] === 'CLEAR!') ? setRoom(mobileDeviceSerialNumber, '')
             : setRoom(mobileDeviceSerialNumber, item[key]);
             break;
+          case 'isLeased':
+            setIsLeased(mobileDeviceSerialNumber, item[key]);
+            break;
           case 'poNumber':
             (item[key] === 'CLEAR!') ? setPoNumber(mobileDeviceSerialNumber, '')
             : setPoNumber(mobileDeviceSerialNumber, item[key]);
+            break;
+          case 'poDate':
+            setPoDate(mobileDeviceSerialNumber, item[key]);
             break;
           case 'vendor':
             (item[key] === 'CLEAR!') ? setVendor(mobileDeviceSerialNumber, '')
             : setVendor(mobileDeviceSerialNumber, item[key]);
             break;
-          case 'purchasePrice':
-            (item[key] === 'CLEAR!') ? setPurchasePrice(mobileDeviceSerialNumber, '')
-            : setPurchasePrice(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'poDate':
-            setPoDate(mobileDeviceSerialNumber, item[key]);
-            break;
           case 'warrantyExpires':
             setWarrantyExpires(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'isLeased':
-            setIsLeased(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'leaseExpires':
-            setLeaseExpires(mobileDeviceSerialNumber, item[key]);
             break;
           case 'appleCareID':
             (item[key] === 'CLEAR!') ? setAppleCareID(mobileDeviceSerialNumber, '')
             : setAppleCareID(mobileDeviceSerialNumber, item[key]);
+            break;
+          case 'leaseExpires':
+            setLeaseExpires(mobileDeviceSerialNumber, item[key]);
+            break;
+          case 'purchasePrice':
+            (item[key] === 'CLEAR!') ? setPurchasePrice(mobileDeviceSerialNumber, '')
+            : setPurchasePrice(mobileDeviceSerialNumber, item[key]);
             break;
           case 'airplayPassword':
             (item[key] === 'CLEAR!') ? setAirplayPassword(mobileDeviceSerialNumber, '')
@@ -428,7 +427,7 @@ function mainFunction() {
   showSidebar(Logger.getLog());
 }
 
-// Shows execution logs
+// Displays execution logs
 // ログを表示する
 function showSidebar(executionLogs) {
   let array = executionLogs.split("\n");

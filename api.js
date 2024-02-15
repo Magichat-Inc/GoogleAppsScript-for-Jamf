@@ -91,18 +91,6 @@ function setEmailAddress(serialNumber, emailAddress) {
   validateResponse(201, response.getResponseCode(), "Email Address");
 }
 
-function setPosition(serialNumber, position) {
-  const xmlData = setPayloadData('location', 'position', undefined, position);
-  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
-
-  const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
-    requestOptions
-  );
-
-  validateResponse(201, response.getResponseCode(), "Position");
-}
-
 function setPhoneNumber(serialNumber, phoneNumber) {
   const xmlData = setPayloadData('location', 'phone', undefined, phoneNumber);
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
@@ -113,6 +101,18 @@ function setPhoneNumber(serialNumber, phoneNumber) {
   );
 
   validateResponse(201, response.getResponseCode(), "Phone Number");
+}
+
+function setPosition(serialNumber, position) {
+  const xmlData = setPayloadData('location', 'position', undefined, position);
+  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+
+  const response = UrlFetchApp.fetch(
+    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    requestOptions
+  );
+
+  validateResponse(201, response.getResponseCode(), "Position");
 }
 
 function setDepartment(serialNumber, department) {
@@ -151,6 +151,18 @@ function setRoom(serialNumber, room) {
   validateResponse(201, response.getResponseCode(), "Room");
 }
 
+function setIsLeased(serialNumber, isLeased) {
+  const xmlData = setPayloadData('purchasing', 'is_leased', undefined, isLeased);
+  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+
+  const response = UrlFetchApp.fetch(
+    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    requestOptions
+  );
+
+  validateResponse(201, response.getResponseCode(), "Purchased or Leased");
+}
+
 function setPoNumber(serialNumber, poNumber) {
   const xmlData = setPayloadData('purchasing', 'po_number', undefined, poNumber);
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
@@ -161,30 +173,6 @@ function setPoNumber(serialNumber, poNumber) {
   );
 
   validateResponse(201, response.getResponseCode(), "PO Number");
-}
-
-function setVendor(serialNumber, vendor) {
-  const xmlData = setPayloadData('purchasing', 'vendor', undefined, vendor);
-  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
-
-  const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
-    requestOptions
-  );
-
-  validateResponse(201, response.getResponseCode(), "Vendor");
-}
-
-function setPurchasePrice(serialNumber, purchasePrice) {
-  const xmlData = setPayloadData('purchasing', 'purchase_price', undefined, purchasePrice);
-  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
-
-  const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
-    requestOptions
-  );
-
-  validateResponse(201, response.getResponseCode(), "Purchase Price");
 }
 
 function setPoDate(serialNumber, poDate) {
@@ -199,6 +187,18 @@ function setPoDate(serialNumber, poDate) {
   validateResponse(201, response.getResponseCode(), "PO Date");
 }
 
+function setVendor(serialNumber, vendor) {
+  const xmlData = setPayloadData('purchasing', 'vendor', undefined, vendor);
+  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+
+  const response = UrlFetchApp.fetch(
+    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    requestOptions
+  );
+
+  validateResponse(201, response.getResponseCode(), "Vendor");
+}
+
 function setWarrantyExpires(serialNumber, warrantyExpires) {
   const xmlData = setPayloadData('purchasing', 'warranty_expires', undefined, setDate(warrantyExpires));
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
@@ -211,8 +211,8 @@ function setWarrantyExpires(serialNumber, warrantyExpires) {
   validateResponse(201, response.getResponseCode(), "Warranty Expiration");
 }
 
-function setIsLeased(serialNumber, isLeased) {
-  const xmlData = setPayloadData('purchasing', 'is_leased', undefined, isLeased);
+function setAppleCareID(serialNumber, appleCareID) {
+  const xmlData = setPayloadData('purchasing', 'applecare_id', undefined, appleCareID);
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
@@ -220,7 +220,7 @@ function setIsLeased(serialNumber, isLeased) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Purchased or Leased");
+  validateResponse(201, response.getResponseCode(), "AppleCare ID");
 }
 
 function setLeaseExpires(serialNumber, leaseExpires) {
@@ -235,8 +235,8 @@ function setLeaseExpires(serialNumber, leaseExpires) {
   validateResponse(201, response.getResponseCode(), "Lease Expiration");
 }
 
-function setAppleCareID(serialNumber, appleCareID) {
-  const xmlData = setPayloadData('purchasing', 'applecare_id', undefined, appleCareID);
+function setPurchasePrice(serialNumber, purchasePrice) {
+  const xmlData = setPayloadData('purchasing', 'purchase_price', undefined, purchasePrice);
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
@@ -244,7 +244,7 @@ function setAppleCareID(serialNumber, appleCareID) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "AppleCare ID");
+  validateResponse(201, response.getResponseCode(), "Purchase Price");
 }
 
 function setAirplayPassword(serialNumber, airPlayPassword) {
