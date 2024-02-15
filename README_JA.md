@@ -8,7 +8,6 @@
 - [Beginning Steps](#beginning-steps)
   - [Google Account](#google-account)   
   - [Jamf Pro](#jamf-pro)
-    - [Basic Authorization](#basic-authorization)
     - [API Account](#api-account)
   - [Google Spreadsheet](#google-spreadsheet)
     - [Make A Copy](#make-a-copy)
@@ -38,15 +37,6 @@ Googleアカウントにログインします。
 ### [Jamf Pro](#jamf-pro)
 お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
 
-#### [Basic Authorization](#basic-authentication)
-1. 画面左中の「⻭車マーク」をクリック。
-2. 「ユーザアカウントとグループ」をクリック。
-3. 「パスワードポリシー」をクリック。
-4. 「Bearerトークン認証に加えて Basic認証を許可」に チェックを入れる。
-5. 「保存」をクリック。
-
-<img width="515" alt="Basic認証許可" src="./assets/JA/02.png">
-
 #### [API Account](#api-account)
 Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 
@@ -60,7 +50,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
    - 権限セット：カスタム
    - パスワード
 
-<img width="365" alt="API用アカウント" src="./assets/JA/03.png">
+<img width="365" alt="API用アカウント" src="./assets/JA/02.png">
 
 6. 権限タブにて以下にチェックを付けてください。
    - **Jamf Proサーバオブジェクト**
@@ -75,7 +65,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 
 #### [Make A Copy](#make-a-copy)
 1. 以下リンクにアクセス。
-   - https://docs.google.com/spreadsheets/d/1fTqvaqtE9LxwskzQJHS6nNf19dpdizMRXHypr9010ak
+   - https://docs.google.com/spreadsheets/d/162-odAedSMFttD1qJAfPOhpszU-MlDtM9wlfd5jLq58/
 2. ファイル > コピーを作成 にクリック。
 3. ドキュメントをコピーのプップアップの設定。
    - 名前：変更可能
@@ -85,7 +75,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 5. コピーしたスプレッドシートは自動的に新しいタブで開けます。  
 ※ 使用しているGoogleアカウントのドライブにスプレッドシートは保存されますので、今後ドライブから開くことができます。
 
-<img width="340" alt="スプレッドシートのコピー" src="./assets/JA/04.png">
+<img width="340" alt="スプレッドシートのコピー" src="./assets/JA/03.png">
 
 #### [Initial Settings](#initial-settings)
 コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
@@ -107,61 +97,60 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
 スプレッドシート ID は「abc1234567」となります。
 
-<img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/05.png">
+<img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/04.png">
 
 ## [Data Input](#data-input)
-<img width="1415" alt="データ入力" src="./assets/JA/06.png">
+<img width="1415" alt="データ入力" src="./assets/JA/05.png">
 
 一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
 
 スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。  
-<img width="525" alt="スプレッドシート名" src="./assets/JA/07.png">
+<img width="525" alt="スプレッドシート名" src="./assets/JA/06.png">
 
 ### [Updating Attributes](#updating-attributes)
 スプレッドシートにある客ヘッダ名の使い方についてです。
 
-- Mobile Device Serial [入力必須]
+- シリアル番号 [入力必須]
   - インベントリ情報を更新したいデバイスのシリアルナンバーを半角英数文字で入力する。 
 
 **Jamf Pro にてインベントリ画面の「一般」タブで更新可能な項目**
-- Display Name:「モバイルデバイス名」(実機のデバイス名も更新される)  
-- Enforce Name:「モバイルデバイス名を強制する」
+- モバイルデバイス名 (実機のデバイス名も更新される)  
+- モバイルデバイス名を強制する
   - ユーザによってデバイス名が変更された場合、モバイルデバイス名は入力された値に戻る
   - 指定値に戻す →「TRUE」or そのままにする →「FALSE」
-- Asset Tag:「アセットタグ」  
-- Site:「サイト」
+- アセットタグ 
+- サイト
   - ID or サイト名
   - Jamf Pro に登録されていない「サイト」を入力した場合は更新されない。
-- AirPlay Password (tvOS):「AirPlay パスワード」
+- AirPlay パスワード (tvOSのみ)
 
 **Jamf Pro にてインベントリ画面の「ユーザと位置」タブで更新可能な項目**
-- Username:「ユーザ名」
-- Real Name:「氏名」
-- Email Address:「Ｅメールアドレス」
-- Position:「ポジション」
-- Phone Number:「電話番号」
-- Department:「部署」
-- Building:「建物」
-- Room:「ルーム」
+- ユーザ名
+- 氏名
+- Ｅメールアドレス
+- ポジション
+- 電話番号
+- 部署
+- 建物
+- ルーム
 
 【注意事項】  
-Department、Building については、Jamf Pro に登録されている  
+部署、建物 については、Jamf Pro に登録されている  
  「部署」「建物」と同じ値 (文字列) を入力する必要がある。  
  Jamf Pro に登録されていない「部署」「建物」を入力した場合は更新されない。 
 
 **Jamf Pro にてインベントリ画面の「購入」タブで更新可能な項目**
-- PO Number:「購入番号」
-- Vendor:「ベンダー」
-- Purchase Price:「購入価格」
-- PO Date:「購入日」
-  - yyyy-mm-dd形
-- Warranty Expires:「品質保証期限電」
-  - yyyy-mm-dd形
-- Is Leased:「購入またはリース」
-  - 指定値に戻す →「TRUE」or そのままにする →「FALSE」
-- Lease Expires:「リース有効期限」
-  - yyyy-mm-dd形
-- AppleCare ID:「AppleCare ID」
+- 購入またはリース　→　リースの場合「TRUE」or そのままにする →「FALSE」
+- 購入番号
+- 購入日
+  - yyyy-mm-dd または yyyy/mm/dd形
+- ベンダー
+- 品質保証期限
+  - yyyy-mm-dd または yyyy/mm/dd形
+- AppleCare ID
+- リース有効期限
+  - yyyy-mm-dd または yyyy/mm/dd形
+- 購入価格
 
 ### [Updating Extension Attributes](#updating-extension-attributes)  
 デバイス用の拡張属性を更新するのは可能です。  
@@ -173,7 +162,7 @@ Department、Building については、Jamf Pro に登録されている
 4. 該当 EA の URL から ID を取得する。
 
 例えば、ここで表示されている拡張属性のEA IDは「17」です。  
-<img width="505" alt="EA ID" src="./assets/JA/08.png">
+<img width="505" alt="EA ID" src="./assets/JA/07.png">
 
 拡張属性を更新するには、テンプレートの既存のすべての列の後に新しい列に独自のヘッダーを追加し、そのヘッダーに文字列「EA_#」を入力します。「#」は更新する EA の ID です。
 
@@ -182,7 +171,7 @@ Department、Building については、Jamf Pro に登録されている
 スプレッドシートは次のようになります。  
 (適合させるために一部の列が表示されていません。スプレッドシートから列を削除しないでください)。
 
-| Mobile Device Serial | Display Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
+| シリアル番号 | モバイルデバイス名 | モバイルデバイス名を強制する | アセットタグ | ... | サイト (ID または Name) | EA_17 | EA_18
 | :---   | :---   |  :---   |  :---   |  :---   |  :---   |  :---  |  :---   |
 | A1234567 | | TRUE | MH-12 | | | New Value | New Value |
 | B1234567 | | FALSE | MH-15 | | | New Value | New Value |
@@ -195,11 +184,11 @@ Department、Building については、Jamf Pro に登録されている
 この文字列は現在「CLEAR!」です。
 
 【注意事項】  
-・ Display Name、Is Leased、PO Date、Warranty Expires、Lease Expires は対象外。
+・ 「モバイルデバイス名」、「購入日」、「品質保証期限」、「リース有効期限」 は対象外。
 
 デバイスからユーザー情報を消去する場合、スプレッドシートは次のようになります (省略記号の後に列があります)。
 
-| Mobile Device Serial | Display Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
+| シリアル番号 | モバイルデバイス名 | モバイルデバイス名を強制する | アセットタグ | ... | サイト (ID または Name) | EA_17 | EA_18
 | :---   | :---   |  :---   |  :---   |  :---   |  :---   |  :---  |  :---   |
 | A1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
 | B1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
@@ -208,37 +197,37 @@ Department、Building については、Jamf Pro に登録されている
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。  
-<img width="250" alt="最初の実行" src="./assets/JA/09.png">
+<img width="250" alt="最初の実行" src="./assets/JA/08.png">
 
 4. 最初実行時に承認が必要。（写真参照）  
   「続行」ボタンをクリック。  
-<img width="435" alt="「承認が必要」ポップアップ" src="./assets/JA/10.png">
+<img width="435" alt="「承認が必要」ポップアップ" src="./assets/JA/09.png">
   
 5. Googleアカウント選択。  
   「このアプリは Google で確認されていません」出た時に詳細」をクリック。  
-<img width="590" alt="「このアプリは Google で確認されていません」ポップアップ" src="./assets/JA/11.png">
+<img width="590" alt="「このアプリは Google で確認されていません」ポップアップ" src="./assets/JA/10.png">
 
 6. 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。  
-<img width="585" alt="「移動」ポップアップ" src="./assets/JA/12.png">
+<img width="585" alt="「移動」ポップアップ" src="./assets/JA/11.png">
 
 7. 最後に「許可」を押下。  
-<img width="425" alt="「許可」ポップアップ" src="./assets/JA/13.png">
+<img width="425" alt="「許可」ポップアップ" src="./assets/JA/12.png">
 
 ## [Mass Updating](#mass-updating)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
 3. メニューでヘルプの右にある Settings > Run を押下。  
-<img width="250" alt="プログラム実行" src="./assets/JA/09.png">
+<img width="250" alt="プログラム実行" src="./assets/JA/08.png">
 
 更新中↓  
-<img width="1415" alt="更新中" src="./assets/JA/14.png">
+<img width="1415" alt="更新中" src="./assets/JA/13.png">
 
 更新完了したら、右にログのサイドバーが開きます。
 更新完了↓  
-<img width="1415" alt="更新完了" src="./assets/JA/15.png">
+<img width="1415" alt="更新完了" src="./assets/JA/14.png">
 
 Settings > Run ボタンを押すと、ときどき以下のエラーとなります。  
-<img width="530" alt="エラー" src="./assets/JA/16.png">  
+<img width="530" alt="エラー" src="./assets/JA/15.png">  
 この場合、以下をやってみてください。  
 「表示しない」をクリック。  
 5-10秒を待つ。  
