@@ -2,13 +2,14 @@
 This program utilizes a combination of Google Sheets, Google Apps Script, and the Jamf Pro API.  
 Based on information within the spreadsheet, the program makes API calls to update relevant data within the specified Jamf Pro instance.
 
+日本語版は README_JA.md にあります。
+
 **Always run a small test update on just a couple devices to make sure your updates are working as intended.**
 
 - [Introduction](#introduction)
 - [Beginning Steps](#beginning-steps)
   - [Google Account](#google-account)   
   - [Jamf Pro](#jamf-pro)
-    - [Basic Authorization](#basic-authorization)
     - [API Setup](#api-setup)
       - [API Account](#api-account)
       - [API Roles and Clients](#api-roles-and-clients)
@@ -42,15 +43,6 @@ Log in to your Google account.
 ### [Jamf Pro](#jamf-pro)
 When setting things up for the first time, please follow the steps below in your Jamf Pro environment.
 
-#### [Basic Authorization](#basic-authentication)
-1. Click on the "⚙️" icon (Settings).
-2. Click on "User accounts and groups".
-3. Click on "Password Policy".
-3. Check "Allow Basic authentication in addition to Bearer Token authentication".
-4. Click "Save."
-
-<img width="515" alt="Allow Basic authentication" src="./assets/EN/02.png">
-
 #### [API Setup](#api-setup)
 For the next step, you have two options:  
 You can either create an API user account OR use [API Roles and Clients](https://learn.jamf.com/bundle/jamf-pro-documentation-current/page/API_Roles_and_Clients.html) in Jamf Pro.  
@@ -69,7 +61,7 @@ If you'd like to create an API user account, follow these steps:
    - Permission Set: Custom
    - Password
 
-<img width="365" alt="API account" src="./assets/EN/03.png">  
+<img width="365" alt="API account" src="./assets/EN/02.png">  
 
 6. In the "Privileges" tab, please check the following:
    - **Jamf Pro Server Objects**
@@ -131,7 +123,7 @@ This secret is crucial for generating access tokens.
 
 #### [Make A Copy](#make-a-copy)
 1. Access the following link:
-   - https://docs.google.com/spreadsheets/d/1fTqvaqtE9LxwskzQJHS6nNf19dpdizMRXHypr9010ak
+   - https://docs.google.com/spreadsheets/d/1weWvtPcZa61bRxfyGHFkK7_8iByOEFvT_d3avg_S0fU
 2. Click on "File" > "Make a copy".
 3. Configure the settings in the "Copy document" popup:
    - Name: Change it as you please
@@ -142,7 +134,7 @@ This secret is crucial for generating access tokens.
 
 _Note: The copied spreadsheet is saved in your Google account's Drive, allowing you to access it from your Drive in the future._
 
-<img width="340" alt="Copy spreadsheet" src="./assets/EN/04.png">
+<img width="340" alt="Copy spreadsheet" src="./assets/EN/03.png">
 
 #### [Initial Settings](#initial-settings)
 Please open the copied spreadsheet and follow these initial setup steps:
@@ -170,29 +162,24 @@ CLASSIC_API_URL, JAMF_PRO_API_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADS
 
 You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
-In case of using Jamf API Account:   
-<img width="730" alt="Initial spreadsheet settings" src="./assets/EN/05.png">
-
-In case of using Jamf API Roles and Clients:  
-<img width="730" alt="Initial spreadsheet settings" src="./assets/EN/20.png">
+<img width="730" alt="Initial spreadsheet settings" src="./assets/EN/04.png">
 
 ## [Data Input](#data-input)
-<img width="1415" alt="Inputting data" src="./assets/EN/06.png">
+<img width="1415" alt="Inputting data" src="./assets/EN/05.png">
 
 When executing a mass update, validation checks are performed on the spreadsheet's header row. **Please avoid making changes to the header row, such as deleting columns or rearranging them before performing a mass update. Any changes to the header row may potentially disrupt the proper functioning of the tool.**
 
-*Please do not rename the spreadsheet.* Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.
-
-<img width="527" alt="Spreadsheet name" src="./assets/EN/07.png">
+*Please do not rename the spreadsheet.* Leave the sheet name "MobileDeviceTemplate" at the bottom of the spreadsheet as is.  
+<img width="525" alt="Spreadsheet name" src="./assets/EN/06.png">
 
 ### [Updating Attributes](#updating-attributes)
 This section explains how to use and input data under each header in the spreadsheet.
 
-- Mobile Device Serial [Input required]
+- Mobile Device Serial Number [Input required]
   - Enter the serial number of the device for which you want to update inventory information. 
 
 **Attributes that can be updated based on the "General" tab of the "Inventory" in Jamf Pro.**
-- Display Name: Mobile Device Name (This will also update the actual device name.)  
+- Mobile Device Name (This will also update the actual device name.)  
 - Enforce Name: Enforce Mobile Device Name
   - "Enforce the name → TRUE or do not enforce → FALSE
   - If name enforcing was configured during ADE, even if you set Enforce Name to TRUE, it will revert back to the name that was configured during ADE.
@@ -204,10 +191,10 @@ This section explains how to use and input data under each header in the spreads
 
 **Attributes that can be updated based on the "User and Location" tab of the "Inventory" in Jamf Pro.**
 - Username
-- Real Name: Full Name
+- Full Name
 - Email Address
-- Position
 - Phone Number
+- Position
 - Department
 - Building
 - Room
@@ -216,18 +203,17 @@ This section explains how to use and input data under each header in the spreads
 For the "Department" and "Building" attributes you must input values (strings) that match existing "Department" or "Building" names in your Jamf Pro instance. If you input non-existent "Department" or "Building" values, they will not be updated.
 
 **Attributes that can be updated based on the "Purchasing" tab of the "Inventory" in Jamf Pro.**
+- Purchased or Leased: → TRUE for leased → FALSE for purchased
 - PO Number
-- Vendor
-- Purchase Price
 - PO Date
-  - yyyy-mm-dd format
-- Warranty Expires
-  - yyyy-mm-dd format
-- Is Leased:
-  - Is Leased → TRUE or not leased → FALSE
-- Lease Expires
-  - yyyy-mm-dd format
+  - yyyy-mm-dd OR yyyy/mm/dd format
+- Vendor
+- Warranty Expiration
+  - yyyy-mm-dd OR yyyy/mm/dd format
 - AppleCare ID
+- Lease Expiration
+  - yyyy-mm-dd OR yyyy/mm/dd format
+- Purchase Price
 
 ### [Updating Extension Attributes](#updating-extension-attributes)  
 It is possible to update Extension Attributes for devices.  
@@ -239,7 +225,7 @@ In order to do this, you must first identify the Extension Attribute ID number.
 4. Obtain the ID from the URL of the relevant EA.
 
 For example, the EA ID for this Extension Attribute is "17."  
-<img width="505" alt="EA ID" src="./assets/EN/08.png">
+<img width="505" alt="EA ID" src="./assets/EN/07.png">
 
 To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
 
@@ -248,7 +234,7 @@ For example, to update an Extension Attribute with the ID of "17", you would add
 Your spreadsheet will look like this:
 (For simplicity not all columns are shown here. Please **DO NOT** remove any columns from the spreadsheet. Removing columns will cause errors.)
 
-| Mobile Device Serial | Display Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
+| Mobile Device Serial Number | Mobile Device Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
 | :---   | :---   |  :---   |  :---   |  :---   |  :---   |  :---  |  :---   |
 | A1234567 | | TRUE | MH-12 | | | New Value | New Value |
 | B1234567 | | FALSE | MH-15 | | | New Value | New Value |
@@ -259,11 +245,11 @@ As another feature of the tool, you can clear existing attributes. This occurs, 
 To clear a value, you need to use a specific string, which is currently "CLEAR!"
 
 **Important Note**  
-Display Name, Is Leased, PO Date, Warranty Expires, and Lease Expires are not subject to this.
+Mobile Device Name, PO Date, Warranty Expiration, and Lease Expiration are not subject to this.
 
 When clearing user information from a device, the spreadsheet will look like this (columns continue after the ellipsis).
 
-| Mobile Device Serial | Display Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
+| Mobile Device Serial | Mobile Device Name | Enforce Name | Asset Tag | ... | Site (ID or Name) | EA_17 | EA_18
 | :---   | :---   |  :---   |  :---   |  :---   |  :---   |  :---  |  :---   |
 | A1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
 | B1234567 | | CLEAR! | CLEAR! | | CLEAR! | CLEAR! | CLEAR! |
@@ -272,37 +258,36 @@ When clearing user information from a device, the spreadsheet will look like thi
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
 3. Click on "Settings" in the menu to the right of Help, and then select "Run."  
-<img width="250" alt="Running the tool" src="./assets/EN/09.png">  
+<img width="250" alt="Running the tool" src="./assets/EN/08.png">  
 
 4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.  
-<img width="435" alt="Allow authorization" src="./assets/EN/10.png">
+<img width="435" alt="Allow authorization" src="./assets/EN/09.png">
 
 5. Select your Google account.
    When you see "Google hasn't verified this app" click on "Advanced".  
-<img width="590" alt="Google hasn't verified this app" src="./assets/EN/11.png">
+<img width="590" alt="Google hasn't verified this app" src="./assets/EN/10.png">
 
 6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".  
-<img width="585" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/12.png">
+<img width="585" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/11.png">
 
 7. Finally, click "Allow."  
-<img width="425" alt="Allow authorization" src="./assets/EN/13.png">
+<img width="425" alt="Allow authorization" src="./assets/EN/12.png">
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
-3. Click on "Settings" in the menu to the right of Help, and then select "Run."
-
-<img width="250" alt="Running the tool" src="./assets/EN/09.png">
+3. Click on "Settings" in the menu to the right of Help, and then select "Run."  
+<img width="250" alt="Running the tool" src="./assets/EN/08.png">
 
 Updating in progress ↓  
-<img width="1415" alt="Mass updating in progress" src="./assets/EN/14.png">
+<img width="1415" alt="Mass updating in progress" src="./assets/EN/13.png">
 
 After the update is complete, a sidebar with logs will open on the right.  
 Update completed ↓  
-<img width="1415" alt="Mass update completed" src="./assets/EN/15.png">
+<img width="1415" alt="Mass update completed" src="./assets/EN/14.png">
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
-<img width="530" alt="Error" src="./assets/EN/16.png">  
+<img width="530" alt="Error" src="./assets/EN/15.png">  
 In this case, please try the following:
 Click "Dismiss."
 Wait for 5-10 seconds.
