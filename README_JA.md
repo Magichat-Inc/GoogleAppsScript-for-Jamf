@@ -37,7 +37,7 @@ https://www.google.com/accounts/NewAccount にアクセスします。​指示�
 Googleアカウントにログインします。
 
 ### [Jamf Pro](#jamf-pro)
-お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
+お使いの Jamf Pro において 初めて当作業を実施する際は以下を実施してください。
 
 #### [API Setup](#api-setup)
 次のステップでは、2つのオプションがあります：  
@@ -87,7 +87,7 @@ API ロールとクラインとの機能を使いたい場合は、以下の手�
     * Send Mobile Device Set Device Name Command
 7. 「保存」をクリック。
 
-<img width="730" alt="API ロールとクラインと - API ロール作成" src="./assets/JA/17.png">
+<img width="730" alt="API ロールとクラインと - API ロール作成" src="./assets/JA/16.png">
 
 上記の手順で、API ロールは作成されました。
 
@@ -102,7 +102,7 @@ Jamf Pro API がアクセストークンを生成するためにAPI クライア
 6. 「Enable API Client」をクリック。
 7. 「保存」をクリック。
 
-<img width="365" alt="API ロールとクライアント - API クライアント作成" src="./assets/JA/18.png">
+<img width="365" alt="API ロールとクライアント - API クライアント作成" src="./assets/JA/17.png">
 
 API クライアントを作成した後に、次にクライアントシークレットを生成します。
 シークレットはアクセストークンを生成するために重要です。
@@ -111,7 +111,7 @@ API クライアントを作成した後に、次にクライアントシーク�
 2. 「クライアントシークレットの生成」をクリック。
 3. ポップアップでクライアントシークレットが表示される。
 
-<img width="365" alt="API ロールとクライアント - クライアントシークレット生成" src="./assets/JA/19.png">
+<img width="365" alt="API ロールとクライアント - クライアントシークレット生成" src="./assets/JA/18.png">
 
 *注意: クライアントシークレットは一度だけ表示されます。*  
 *ダイアログを閉じる前に、安全な場所に保存してください。__後で必要になります__。*
@@ -120,7 +120,7 @@ API クライアントを作成した後に、次にクライアントシーク�
 
 #### [Make A Copy](#make-a-copy)
 1. 以下リンクにアクセス。
-   - https://docs.google.com/spreadsheets/d/162-odAedSMFttD1qJAfPOhpszU-MlDtM9wlfd5jLq58/
+   - https://docs.google.com/spreadsheets/d/11nt5WZl4Li5eqEDTPRLaxyqGEsLDQQ_dlJ_V6wXPRCA
 2. ファイル > コピーを作成 にクリック。
 3. ドキュメントをコピーのプップアップの設定。
    - 名前：変更可能
@@ -164,7 +164,7 @@ Jamf API アカウントを使用する場合：
 <img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/04.png">
 
 Jamf API ロールとクライアント機能を使用する場合：  
-<img width="730" alt="スプレッドシートの初期設定" src="./assets/EN/20.png">
+<img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/19.png">
 
 ## [Data Input](#data-input)
 <img width="1415" alt="データ入力" src="./assets/JA/05.png">

@@ -90,7 +90,7 @@ If you'd like to use the API Roles and Clients functionality instead, follow the
     * Send Mobile Device Set Device Name Command
 7. Save
 
-<img width="730" alt="API Roles and Clients - API Role Creation" src="./assets/EN/17.png">
+<img width="730" alt="API Roles and Clients - API Role Creation" src="./assets/EN/16.png">
 
 With the above steps, our API Role is now created.  
 
@@ -105,7 +105,7 @@ We will use this API Client later to generate a Client Secret, which the Jamf Pr
 6. Click on "Enable API Client".
 7. Save
 
-<img width="365" alt="API Roles and Clients - API Client Creation" src="./assets/EN/18.png">
+<img width="365" alt="API Roles and Clients - API Client Creation" src="./assets/EN/17.png">
 
 After creating an API Client, proceed to generate a Client Secret.  
 This secret is crucial for generating access tokens.
@@ -114,7 +114,7 @@ This secret is crucial for generating access tokens.
 2. Click on "Generate Client Secret."
 3. A pop-up window will appear with the Client Secret.
 
-<img width="365" alt="API Roles and Clients - Client Secret Generation" src="./assets/EN/19.png">
+<img width="365" alt="API Roles and Clients - Client Secret Generation" src="./assets/EN/18.png">
 
 *Note: The client secret will only be displayed once.*  
 *Ensure that you save it in a secure location before dismissing the dialog, as __it will be needed later__.*
@@ -123,7 +123,7 @@ This secret is crucial for generating access tokens.
 
 #### [Make A Copy](#make-a-copy)
 1. Access the following link:
-   - https://docs.google.com/spreadsheets/d/1weWvtPcZa61bRxfyGHFkK7_8iByOEFvT_d3avg_S0fU
+   - https://docs.google.com/spreadsheets/d/1iPHLeT6yNvOrIigMwpbOC13pT9gdMcN-6An7DnQU3v0
 2. Click on "File" > "Make a copy".
 3. Configure the settings in the "Copy document" popup:
    - Name: Change it as you please
@@ -162,7 +162,11 @@ CLASSIC_API_URL, JAMF_PRO_API_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADS
 
 You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
+In case of using Jamf API Account:   
 <img width="730" alt="Initial spreadsheet settings" src="./assets/EN/04.png">
+
+In case of using Jamf API Roles and Clients:  
+<img width="730" alt="Initial spreadsheet settings" src="./assets/EN/19.png">
 
 ## [Data Input](#data-input)
 <img width="1415" alt="Inputting data" src="./assets/EN/05.png">
