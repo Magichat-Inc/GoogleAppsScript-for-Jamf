@@ -7,8 +7,8 @@
  Author: Magic Hat Inc. (Melinda Magyar)           
  著者: 株式会社マジックハット (マジャル メリンダ)
 
- Last modified: 2024/02/15
- 最終更新日: 2024年 2月 15日
+ Last modified: 2024/02/22
+ 最終更新日: 2024年 2月 22日
 #################################################################################################### */
 
 // MAIN FUNCTIONS
@@ -25,15 +25,6 @@ const SPREADSHEET_ID = PROPERTIES.SPREADSHEET_ID;
 const SHEET_NAME = PROPERTIES.SHEET_NAME; 
 
 let bearerToken = {};
-
-function onOpen(e) {
-  // Adds a custom menu to the spreadsheet
-  // カスタム メニューをスプレッドシートに追加する
-  SpreadsheetApp.getUi()
-      .createMenu('Settings')
-      .addItem('⏯ Run', 'mainFunction')
-      .addToUi();
-}
 
 // Get all data from spreadsheet (excluding EA)
 // スプレッドシートから全データを取得する（EAを除く）
@@ -262,7 +253,7 @@ function validateResponse(statusCode, responseCode, objectName) {
 // 日付をyyyy-mm-dd形式にフォーマットする
 function setDate(dateValue) {
   try {
-    return Utilities.formatDate(dateValue, SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone(), "yyyy-MM-dd");
+    return Utilities.formatDate(dateValue, SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone(), 'yyyy-MM-dd');
   } catch {
     validateResponse(undefined, 'setDate()', ERROR_DATE);
   }
@@ -319,7 +310,7 @@ function uploadDeviceDataToJamf() {
 
         if (key === 'mobileDeviceSerial') {
           mobileDeviceSerialNumber = item[key];
-          Logger.log("Device: " + mobileDeviceSerialNumber);
+          Logger.log('Device: ' + mobileDeviceSerialNumber);
         }
 
         // Handles different cases
@@ -425,25 +416,4 @@ function mainFunction() {
   uploadDeviceDataToJamf();
   invalidateBearerToken();
   showSidebar(Logger.getLog());
-}
-
-// Displays execution logs
-// ログを表示する
-function showSidebar(executionLogs) {
-  let array = executionLogs.split("\n");
-  let html = array.map(line => `<p>${line.trim()}</p>`).join("");
-
-  let css = `
-    <style>
-      p {
-        margin: 0;
-        font-size: 12px; 
-        font-family: Arial, sans-serif;
-      }
-    </style>
-  `;
-  
-  const widget = HtmlService.createHtmlOutput(css + html);
-  widget.setTitle("Execution log");
-  SpreadsheetApp.getUi().showSidebar(widget);
 }
