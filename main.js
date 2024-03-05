@@ -27,7 +27,6 @@ const SHEET_NAME = PROPERTIES.SHEET_NAME;
 // ユーザーの言語設定を取得する
 const USER_LANGUAGE = Session.getActiveUserLocale();
 
-
 let bearerToken = {};
 
 // Get all data from spreadsheet (excluding EA)
