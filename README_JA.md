@@ -8,7 +8,9 @@
 - [Beginning Steps](#beginning-steps)
   - [Google Account](#google-account)   
   - [Jamf Pro](#jamf-pro)
-    - [API Account](#api-account)
+    - [API Setup](#api-setup)
+      - [API Account](#api-account)
+      - [API Roles and Clients](#api-roles-and-clients)
   - [Google Spreadsheet](#google-spreadsheet)
     - [Make A Copy](#make-a-copy)
     - [Initial Settings](#initial-settings)
@@ -22,7 +24,7 @@
 ## [Introduction](#introduction)
 この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
 
-ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
+ツールはブラウザー上で動きますので、OS と関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
 <img width="1420" alt="メインシート" src="./assets/JA/01.png">
 
@@ -35,10 +37,16 @@ https://www.google.com/accounts/NewAccount にアクセスします。​指示�
 Googleアカウントにログインします。
 
 ### [Jamf Pro](#jamf-pro)
-お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
+お使いの Jamf Pro において 初めて当作業を実施する際は以下を実施してください。
 
-#### [API Account](#api-account)
-Jamf Pro で API用ユーザアカウントを以下の様に作成します。
+#### [API Setup](#api-setup)
+次のステップでは、2つのオプションがあります：  
+API 用ユーザーアカウントを作成することにします。  か   
+[API ロールとクライアント](https://learn.jamf.com/ja-JP/bundle/jamf-pro-documentation-current/page/API_Roles_and_Clients.html)機能を使用することにします。  
+上のオプションから1つを選んでください。
+
+##### [API Account](#api-account)
+API 用ユーザーアカウントを作成したい場合、以下の手順に従って設定してください：
 
 1. 画面左中の「⻭車マーク」をクリック。
 2. 「ユーザアカウントとグループ」をクリック。 
@@ -58,14 +66,61 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
      - ユーザ (読み取り・アップデート）
    - **Jamf Proサーバアクション**
      - モバイルデバイスへのユーザ割当
-     - モバイルデバイス名称設定コマンドを送信
+     - モバイルデバイス名称設定コマンドを送信
 7. 「保存」をクリック。
+
+##### [API Roles and Clients](#api-roles-and-clients)
+API ロールとクラインとの機能を使いたい場合は、以下の手順に従って設定してください：
+
+1. 画面左中の「⻭車マーク」をクリック。
+2. 「API ロールとクライアント」をクリック。 
+3. 上の「API ロール」タブをクリック。
+4. 画面右上の「新規」をクリック。
+5. 「表示名」を入力。
+6. 以下の権限を選択してください：
+    * Assign Users to Mobile Devices
+    * Create Mobile Devices
+    * Update Mobile Devices
+    * Read Mobile Devices
+    * Update User
+    * Read User
+    * Send Mobile Device Set Device Name Command
+7. 「保存」をクリック。
+
+<img width="730" alt="API ロールとクラインと - API ロール作成" src="./assets/JA/16.png">
+
+上記の手順で、API ロールは作成されました。
+
+次に、API クライアントを作成する必要があります。  
+Jamf Pro API がアクセストークンを生成するためにAPI クライアントを作ります。ここに作成される API クライアントを後で使います。
+
+1. 上の「API クライアント」タブをクリック。
+2. 画面右上の「新規」をクリック。
+3. 「表示名」を入力。
+4. 作成した「API ロール」を割り当てる。
+5. 「アクセストークンの有効期限」を設定する。
+6. 「Enable API Client」をクリック。
+7. 「保存」をクリック。
+
+<img width="365" alt="API ロールとクライアント - API クライアント作成" src="./assets/JA/17.png">
+
+API クライアントを作成した後に、次にクライアントシークレットを生成します。
+シークレットはアクセストークンを生成するために重要です。
+
+1. 先ほど作成した「API　クライアント」をクリック。
+2. 「クライアントシークレットの生成」をクリック。
+3. ポップアップでクライアントシークレットが表示される。
+
+<img width="365" alt="API ロールとクライアント - クライアントシークレット生成" src="./assets/JA/18.png">
+
+*注意: クライアントシークレットは一度だけ表示されます。*  
+*ダイアログを閉じる前に、安全な場所に保存してください。__後で必要になります__。*
 
 ### [Google Spreadsheet](#google-spreadsheet)
 
 #### [Make A Copy](#make-a-copy)
 1. 以下リンクにアクセス。
-   - https://docs.google.com/spreadsheets/d/162-odAedSMFttD1qJAfPOhpszU-MlDtM9wlfd5jLq58/
+   - https://docs.google.com/spreadsheets/d/11nt5WZl4Li5eqEDTPRLaxyqGEsLDQQ_dlJ_V6wXPRCA
 2. ファイル > コピーを作成 にクリック。
 3. ドキュメントをコピーのプップアップの設定。
    - 名前：変更可能
@@ -85,11 +140,19 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 3. 下にある「スクリプト プロパティを追加」にクリック。
 4. 以下の内容を設定して「保存」をクリック。
 
+**API アカウント**を作成した場合、以下のプロパティを作成する必要があります：  
+CLASSIC_API_URL, JAMF_PRO_API_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
+
+**API ロールとクライアント**機能を使用した場合は、以下のプロパティを作成する必要があります：  
+CLASSIC_API_URL, JAMF_PRO_API_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
+
 | プロパティ | 値 |
 | :---   | :---   |
 | CLASSIC_API_URL | https://インスタンス名.jamfcloud.com/JSSResource |
 | JAMF_PRO_API_URL | https://インスタンス名.jamfcloud.com/api/ |
 | CREDENTIALS | 作成したJamfAPIユーザー名:Jamfパスワード<br />例: ユーザー名がaaa、パスワードがbbbであれば<br />「aaa:bbb」となる。 |
+| CLIENT_ID | ClientIDFromCreatedAPIClient |
+| CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
 | SHEET_NAME | MobileDeviceTemplate |
 | SPREADSHEET_ID | コピーしたスプレッドシートID (取得方は以下の説明をご覧） |
 
@@ -97,7 +160,11 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
 スプレッドシート ID は「abc1234567」となります。
 
+Jamf API アカウントを使用する場合：  
 <img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/04.png">
+
+Jamf API ロールとクライアント機能を使用する場合：  
+<img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/19.png">
 
 ## [Data Input](#data-input)
 <img width="1415" alt="データ入力" src="./assets/JA/05.png">
