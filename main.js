@@ -7,8 +7,8 @@
  Author: Magic Hat Inc. (Melinda Magyar)           
  著者: 株式会社マジックハット (マジャル メリンダ)
 
- Last modified: 2024/02/20
- 最終更新日: 2024年 2月 20日
+ Last modified: 2024/03/05
+ 最終更新日: 2024年 3月 5日
 #################################################################################################### */
 
 // MAIN FUNCTIONS
@@ -23,18 +23,12 @@ const SPREADSHEET_ID = PROPERTIES.SPREADSHEET_ID;
 // Tab (sheet) name
 // タブ（シート）の名前
 const SHEET_NAME = PROPERTIES.SHEET_NAME; 
+// Get the user's language setting
+// ユーザーの言語設定を取得する
+const USER_LANGUAGE = Session.getActiveUserLocale();
 
 let accessToken = {};
 let bearerToken = {};
-
-function onOpen (e) {
-  // Adds a custom menu to the spreadsheet
-  // カスタム メニューをスプレッドシートに追加する
-  SpreadsheetApp.getUi()
-      .createMenu('Settings')
-      .addItem('⏯ Run', 'mainFunction')
-      .addToUi();
-}
 
 // Get all data from spreadsheet (excluding EA)
 // スプレッドシートから全データを取得する（EAを除く）
@@ -438,27 +432,6 @@ function uploadDeviceDataToJamf () {
       } 
     }
   });
-}
-
-// Displays execution logs
-// ログを表示する
-function showSidebar (executionLogs) {
-  let array = executionLogs.split('\n');
-  let html = array.map(line => `<p>${line.trim()}</p>`).join('');
-
-  let css = `
-    <style>
-      p {
-        margin: 0;
-        font-size: 12px; 
-        font-family: Arial, sans-serif;
-      }
-    </style>
-  `;
-  
-  const widget = HtmlService.createHtmlOutput(css + html);
-  widget.setTitle('Execution log');
-  SpreadsheetApp.getUi().showSidebar(widget);
 }
 
 // Main function (calls other functions)

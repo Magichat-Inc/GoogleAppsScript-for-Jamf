@@ -13,7 +13,7 @@ function getMobileDeviceID(serialNumber) {
     // レスポンスのXMLを解析し、モバイルデバイスのIDを取得する
     return parseJamfXML(response.getContentText());
   } else {
-    validateResponse(200, responseCode, "getMobileDeviceID()");
+    validateResponse(200, responseCode, 'getMobileDeviceID()');
   }
 }
 
@@ -26,7 +26,7 @@ function setDisplayName(serialNumber, displayName) {
     requestOptions
   ); 
 
-  validateResponse(201, response.getResponseCode(), "Display Name");
+  validateResponse(201, response.getResponseCode(), 'Display Name');
 }
 
 // This is going to be a Management Command in Jamf Pro
@@ -40,7 +40,7 @@ function setEnforceName(mobileDeviceID, enforceNameValue) {
     requestOptions
   );
 
-  validateResponse(200, response.getResponseCode(), "Enforce Name");
+  validateResponse(200, response.getResponseCode(), 'Enforce Name');
 }
 
 function setAssetTag(serialNumber, assetTag) {
@@ -52,7 +52,7 @@ function setAssetTag(serialNumber, assetTag) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Asset Tag");
+  validateResponse(201, response.getResponseCode(), 'Asset Tag');
 }
 
 function setUsername(serialNumber, username) {
@@ -63,7 +63,7 @@ function setUsername(serialNumber, username) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Username");
+  validateResponse(201, response.getResponseCode(), 'Username');
 }
 
 function setRealName(serialNumber, realName) {
@@ -75,7 +75,7 @@ function setRealName(serialNumber, realName) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Real Name");
+  validateResponse(201, response.getResponseCode(), 'Real Name');
 }
 
 function setEmailAddress(serialNumber, emailAddress) {
@@ -87,7 +87,7 @@ function setEmailAddress(serialNumber, emailAddress) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Email Address");
+  validateResponse(201, response.getResponseCode(), 'Email Address');
 }
 
 function setPhoneNumber(serialNumber, phoneNumber) {
@@ -99,7 +99,7 @@ function setPhoneNumber(serialNumber, phoneNumber) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Phone Number");
+  validateResponse(201, response.getResponseCode(), 'Phone Number');
 }
 
 function setPosition(serialNumber, position) {
@@ -111,7 +111,7 @@ function setPosition(serialNumber, position) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Position");
+  validateResponse(201, response.getResponseCode(), 'Position');
 }
 
 function setDepartment(serialNumber, department) {
@@ -123,7 +123,7 @@ function setDepartment(serialNumber, department) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Department");
+  validateResponse(201, response.getResponseCode(), 'Department');
 }
 
 function setBuilding(serialNumber, building) {
@@ -135,7 +135,7 @@ function setBuilding(serialNumber, building) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Building");
+  validateResponse(201, response.getResponseCode(), 'Building');
 }
 
 function setRoom(serialNumber, room) {
@@ -147,7 +147,7 @@ function setRoom(serialNumber, room) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Room");
+  validateResponse(201, response.getResponseCode(), 'Room');
 }
 
 function setIsLeased(serialNumber, isLeased) {
@@ -159,7 +159,7 @@ function setIsLeased(serialNumber, isLeased) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Purchased or Leased");
+  validateResponse(201, response.getResponseCode(), 'Purchased or Leased');
 }
 
 function setPoNumber(serialNumber, poNumber) {
@@ -171,7 +171,7 @@ function setPoNumber(serialNumber, poNumber) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "PO Number");
+  validateResponse(201, response.getResponseCode(), 'PO Number');
 }
 
 function setPoDate(serialNumber, poDate) {
@@ -183,7 +183,7 @@ function setPoDate(serialNumber, poDate) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "PO Date");
+  validateResponse(201, response.getResponseCode(), 'PO Date');
 }
 
 function setVendor(serialNumber, vendor) {
@@ -195,7 +195,7 @@ function setVendor(serialNumber, vendor) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Vendor");
+  validateResponse(201, response.getResponseCode(), 'Vendor');
 }
 
 function setWarrantyExpires(serialNumber, warrantyExpires) {
@@ -207,7 +207,7 @@ function setWarrantyExpires(serialNumber, warrantyExpires) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Warranty Expiration");
+  validateResponse(201, response.getResponseCode(), 'Warranty Expiration');
 }
 
 function setAppleCareID(serialNumber, appleCareID) {
@@ -219,7 +219,7 @@ function setAppleCareID(serialNumber, appleCareID) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "AppleCare ID");
+  validateResponse(201, response.getResponseCode(), 'AppleCare ID');
 }
 
 function setLeaseExpires(serialNumber, leaseExpires) {
@@ -231,7 +231,7 @@ function setLeaseExpires(serialNumber, leaseExpires) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Lease Expiration");
+  validateResponse(201, response.getResponseCode(), 'Lease Expiration');
 }
 
 function setPurchasePrice(serialNumber, purchasePrice) {
@@ -243,7 +243,7 @@ function setPurchasePrice(serialNumber, purchasePrice) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Purchase Price");
+  validateResponse(201, response.getResponseCode(), 'Purchase Price');
 }
 
 function setAirplayPassword(serialNumber, airPlayPassword) {
@@ -255,7 +255,7 @@ function setAirplayPassword(serialNumber, airPlayPassword) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "AirPlay Password");
+  validateResponse(201, response.getResponseCode(), 'AirPlay Password');
 }
 
 function setSite(serialNumber, site) {
@@ -268,7 +268,7 @@ function setSite(serialNumber, site) {
     requestOptions
   );
 
-  validateResponse(201, response.getResponseCode(), "Site");
+  validateResponse(201, response.getResponseCode(), 'Site');
 }
 
 function setExtensionAttribute(serialNumber, extensionAttributeID, extensionAttribute) {
