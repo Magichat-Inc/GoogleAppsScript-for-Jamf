@@ -8,7 +8,7 @@
  著者: 株式会社マジックハット (マジャル メリンダ)
 
  Last modified: 2024/03/05
- 最終更新日: 2024年 3月 05日
+ 最終更新日: 2024年 3月 5日
 #################################################################################################### */
 
 // MAIN FUNCTIONS
@@ -23,6 +23,10 @@ const SPREADSHEET_ID = PROPERTIES.SPREADSHEET_ID;
 // Tab (sheet) name
 // タブ（シート）の名前
 const SHEET_NAME = PROPERTIES.SHEET_NAME; 
+// Get the user's language setting
+// ユーザーの言語設定を取得する
+const USER_LANGUAGE = Session.getActiveUserLocale();
+
 
 let bearerToken = {};
 
