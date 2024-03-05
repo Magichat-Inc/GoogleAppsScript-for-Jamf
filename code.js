@@ -9,11 +9,11 @@ function onOpen(e) {
   // Adds custom menus to the spreadsheet
   // カスタム メニューをスプレッドシートに追加する
   SpreadsheetApp.getUi()
-    .createMenu(settingsLabel)
-    .addItem(runLabel, 'mainFunction')
-    .addSeparator()
-    .addItem(aboutLabel, 'showAbout')
-    .addToUi();
+      .createMenu(settingsLabel)
+      .addItem(runLabel, 'mainFunction')
+      .addSeparator()
+      .addItem(aboutLabel, 'showAbout')
+      .addToUi();
 }
 
 function setLabels() {
@@ -46,15 +46,20 @@ function showAbout() {
   let dialogTitle = 'About This Utility';
   let htmlFileName = 'about_en';
 
+  let htmlContent = HtmlService.createTemplateFromFile(htmlFileName)
+      .evaluate()
+      .setWidth(400)
+      .setHeight(190);
+  
   if (USER_LANGUAGE && USER_LANGUAGE.startsWith('ja')) {
     dialogTitle = 'このツールについて';
     htmlFileName = 'about_ja';
-  }
 
-  const htmlContent = HtmlService.createTemplateFromFile(htmlFileName)
-    .evaluate()
-    .setWidth(400)
-    .setHeight(280);
+    htmlContent = HtmlService.createTemplateFromFile(htmlFileName)
+      .evaluate()
+      .setWidth(400)
+      .setHeight(250);
+  }
 
   htmlContent.VERSION = VERSION;
   htmlContent.COPYRIGHT = COPYRIGHT;
