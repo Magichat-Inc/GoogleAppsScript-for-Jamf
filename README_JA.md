@@ -18,9 +18,10 @@
   - [Clearing Existing Attributes](#clearing-existing-attributes)
 - [First Run](#first-run)
 - [Mass Updating](#mass-updating)
+- [Test Environments](#test-environments)
 
 ## [Introduction](#introduction)
-この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script(GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
+この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script (GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (現在は iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
 
 ツールはブラウザー上で動きますので、OSと関係なく、Windows、macOS、iOS デバイスでも使うことは可能となります。
 
@@ -36,6 +37,9 @@ Googleアカウントにログインします。
 
 ### [Jamf Pro](#jamf-pro)
 お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
+
+
+Jamf Pro の「API ロールおよびクライアント」機能を使用したい場合は、ブランチをfeature/client-credentials-auth に変えてください。
 
 #### [API Account](#api-account)
 Jamf Pro で API用ユーザアカウントを以下の様に作成します。
@@ -58,7 +62,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
      - ユーザ (読み取り・アップデート）
    - **Jamf Proサーバアクション**
      - モバイルデバイスへのユーザ割当
-     - モバイルデバイス名称設定コマンドを送信
+     - モバイルデバイス名称設定コマンドを送信
 7. 「保存」をクリック。
 
 ### [Google Spreadsheet](#google-spreadsheet)
@@ -80,15 +84,14 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 #### [Initial Settings](#initial-settings)
 コピーしたスプレッドシートを開いて、以下の手順にそって初期設定を行ってください。
 
-1. 拡張属性 > Apps Script にクリック。
+1. 拡張機能 > Apps Script にクリック。
 2. 画面左中の「歯車マーク」をクリック。（プロジェクトの設定）
 3. 下にある「スクリプト プロパティを追加」にクリック。
 4. 以下の内容を設定して「保存」をクリック。
 
 | プロパティ | 値 |
 | :---   | :---   |
-| CLASSIC_API_URL | https://インスタンス名.jamfcloud.com/JSSResource |
-| JAMF_PRO_API_URL | https://インスタンス名.jamfcloud.com/api/ |
+| JAMF_PRO_URL | https://インスタンス名.jamfcloud.com |
 | CREDENTIALS | 作成したJamfAPIユーザー名:Jamfパスワード<br />例: ユーザー名がaaa、パスワードがbbbであれば<br />「aaa:bbb」となる。 |
 | SHEET_NAME | MobileDeviceTemplate |
 | SPREADSHEET_ID | コピーしたスプレッドシートID (取得方は以下の説明をご覧） |
@@ -104,7 +107,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 
 一括更新を実行する時に、スプレッドシートのヘッダー行に対して検証チェックを実行します。一括更新を行う前に、ヘッダー行の変更 (列の削除や列の再配置など) しないようにしてください。 ヘッダー行に変更があれば、一括購入は正常に動かない可能性は高いです。
 
-スプレッドシートの下にあるシート名「MobileDeviceTemplate」をそのままにしてください。  
+スプレッドシートの下にあるシート名「MobileDeviceTemplate」はそのままにしてください。  
 <img width="525" alt="スプレッドシート名" src="./assets/JA/06.png">
 
 ### [Updating Attributes](#updating-attributes)
@@ -136,8 +139,8 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 
 【注意事項】  
 部署、建物 については、Jamf Pro に登録されている  
- 「部署」「建物」と同じ値 (文字列) を入力する必要がある。  
- Jamf Pro に登録されていない「部署」「建物」を入力した場合は更新されない。 
+ 「部署」「建物」と同じ値 (文字列) を入力する必要があります。  
+ Jamf Pro に登録されていない「部署」「建物」を入力した場合は更新されません。 
 
 **Jamf Pro にてインベントリ画面の「購入」タブで更新可能な項目**
 - 購入またはリース　→　リースの場合「TRUE」or そのままにする →「FALSE」
@@ -196,7 +199,7 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 ## [First Run](#first-run)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
-3. メニューでヘルプの右にある Settings > Run を押下。  
+3. メニューでヘルプの右にある「設定」> 「実行」 を選択。  
 <img width="250" alt="最初の実行" src="./assets/JA/08.png">
 
 4. 最初実行時に承認が必要。（写真参照）  
@@ -210,13 +213,17 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 6. 「詳細」クリック後に「[GAS] MobileDeviceTemplate (安全ではないページ) に移動」をクリック。  
 <img width="585" alt="「移動」ポップアップ" src="./assets/JA/11.png">
 
-7. 最後に「許可」を押下。  
+7. 最後に「許可」を選択。  
 <img width="425" alt="「許可」ポップアップ" src="./assets/JA/12.png">
+
+*初回実行時には、一括更新は実行されません。*  
+*一括更新を行うには、「設定」>「実行」をもう一度選択する必要があります。*
 
 ## [Mass Updating](#mass-updating)
 1. コピーしたスプレッドシートを開く。
 2. 更新したいデータを入力する。
-3. メニューでヘルプの右にある 「設定」 > 「実行」 を押下。  
+3. メニューでヘルプの右にある「設定」>「実行」を押下。  
+
 <img width="250" alt="プログラム実行" src="./assets/JA/08.png">
 
 更新中↓  
@@ -226,9 +233,28 @@ Jamf Pro で API用ユーザアカウントを以下の様に作成します。
 更新完了↓  
 <img width="1415" alt="更新完了" src="./assets/JA/14.png">
 
-Settings > Run ボタンを押すと、ときどき以下のエラーとなります。  
+「設定」>「実行」ボタンを押すと、ときどき以下のエラーとなります。  
 <img width="530" alt="エラー" src="./assets/JA/15.png">  
-この場合、以下をやってみてください。  
+この場合、以下を実行してみてください。  
 「表示しない」をクリック。  
 5-10秒を待つ。  
-Settings > Run をもう一度押下。  
+「設定」>「実行」をもう一度選択。  
+
+## [Test Environments](#test-environment)
+動作確認を行なった環境は以下です。
+
+macOS 14.4.1  
+・Google Chrome v.123.0.6312.59、日本語・英語  
+・Firefox v.124.0.1 (64-bit)、日本語・英語  
+
+iPadOS 16.7.7  
+・Safari 16.7.7、英語 
+
+Windows 11 (arm)  
+・Google Chrome v.123.0.6312.59、日本語  
+・Microsoft Edge v.122.0.2365.92、日本語
+
+Windows 10 (x86)  
+・Google Chrome v.123.0.6312.59、日本語・英語  
+・Microsoft Edge v.122.0.2365.92、日本語・英語  
+・Firefox v.124.0.1 (64-bit)、日本語・英語 
