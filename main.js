@@ -7,8 +7,8 @@
  Author: Magic Hat Inc. (Melinda Magyar)           
  著者: 株式会社マジックハット (マジャル メリンダ)
 
- Last modified: 2024/03/05
- 最終更新日: 2024年 3月 5日
+ Last modified: 2024/03/26
+ 最終更新日: 2024年 3月 26日
 #################################################################################################### */
 
 // MAIN FUNCTIONS
@@ -17,8 +17,7 @@
 // Variable declaration
 // 変数の宣言
 const PROPERTIES = PropertiesService.getScriptProperties().getProperties();
-const CLASSIC_API_URL = PROPERTIES.CLASSIC_API_URL;
-const JAMF_PRO_API_URL = PROPERTIES.JAMF_PRO_API_URL;
+const JAMF_PRO_URL = PROPERTIES.JAMF_PRO_URL;
 const SPREADSHEET_ID = PROPERTIES.SPREADSHEET_ID;
 // Tab (sheet) name
 // タブ（シート）の名前

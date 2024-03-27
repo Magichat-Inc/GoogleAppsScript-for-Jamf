@@ -5,7 +5,7 @@ function getBearerToken() {
   // Encode the credentials using base64
   // ベース64で認証情報をエンコードする
   const ENCODED_CREDENTIALS = Utilities.base64Encode(PROPERTIES.CREDENTIALS);
-  const API_URL = `${JAMF_PRO_API_URL}/v1/auth/token`;
+  const API_URL = `${JAMF_PRO_URL}/api/v1/auth/token`;
 
   // Set HTTP request options
   // HTTPリクエストのオプションを設定する
@@ -43,7 +43,7 @@ function checkTokenExpiration() {
 }
 
 function invalidateBearerToken() {
-  const API_URL = `${JAMF_PRO_API_URL}/v1/auth/invalidate-token`;
+  const API_URL = `${JAMF_PRO_URL}/api/v1/auth/invalidate-token`;
 
   // Set HTTP request options (Authorization header is set to the currently valid Bearer token)
   // HTTPリクエストのオプションを設定する（Authorizationヘッダに現在有効なBearerトークンを設定する）
