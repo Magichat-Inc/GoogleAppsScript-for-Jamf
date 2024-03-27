@@ -315,14 +315,15 @@ function uploadDeviceDataToJamf() {
           Logger.log('Device: ' + mobileDeviceSerialNumber);
         }
 
+        const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
+
         // Handles different cases
         // 異なるケースを処理する
         switch (key) {
           case 'displayName':
-            setDisplayName(mobileDeviceSerialNumber, item[key]);
+            setDisplayName(mobileDeviceID, item[key]);
             break;
           case 'enforceName':
-            const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
             (item[key] === 'CLEAR!') ? setEnforceName(mobileDeviceID, false)
             : setEnforceName(mobileDeviceID, item[key]);
             break;

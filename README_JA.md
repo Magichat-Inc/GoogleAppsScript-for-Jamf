@@ -39,7 +39,7 @@ Googleアカウントにログインします。
 お使いの Jamf Proにおいて 初めて当作業を実施する際は以下を実施してください。
 
 
-Jamf Pro の「API ロールおよびクライアント」機能を使用したい場合は、ブランチをfeature/client-credentials-auth に変えてください。
+Jamf Pro の「API ロールとクライアント」機能を使用したい場合は、ブランチをfeature/client-credentials-auth に変えてください。
 
 #### [API Account](#api-account)
 Jamf Pro で API用ユーザアカウントを以下の様に作成します。

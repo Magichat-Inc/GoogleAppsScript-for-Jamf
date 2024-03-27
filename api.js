@@ -17,16 +17,16 @@ function getMobileDeviceID(serialNumber) {
   }
 }
 
-function setDisplayName(serialNumber, displayName) {
-  const xmlData = setPayloadData('general', 'display_name', undefined, displayName);
+function setDisplayName(mobileDeviceID, displayName) {
+  const jsonData = JSON.stringify({ name: displayName })
 
-  const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+  const requestOptions = setRequestOptions('PATCH', undefined, 'application/json', jsonData);
   const response = UrlFetchApp.fetch(
-    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/api/v2/mobile-devices/${mobileDeviceID}`, 
     requestOptions
-  ); 
+  );
 
-  validateResponse(201, response.getResponseCode(), 'Display Name');
+  validateResponse(200, response.getResponseCode(), 'Display Name');
 }
 
 // This is going to be a Management Command in Jamf Pro
