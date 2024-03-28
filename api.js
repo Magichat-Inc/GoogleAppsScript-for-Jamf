@@ -19,8 +19,8 @@ function getMobileDeviceID(serialNumber) {
 
 function setDisplayName(mobileDeviceID, displayName) {
   const jsonData = JSON.stringify({ name: displayName })
-
   const requestOptions = setRequestOptions('PATCH', getAuthenticationMethod(), 'application/json', jsonData);
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/api/v2/mobile-devices/${mobileDeviceID}`, 
     requestOptions
@@ -279,7 +279,7 @@ function setExtensionAttribute(serialNumber, extensionAttributeID, extensionAttr
 
   const xmlData = setPayloadData('extension_attributes', 'extension_attribute', 'id', extensionAttributeID, 'value', extensionAttribute);
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
-
+  
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions

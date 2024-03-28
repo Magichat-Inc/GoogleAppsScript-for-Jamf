@@ -154,7 +154,7 @@ JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
 | Property | Value |
 | :---   | :---   |
 | JAMF_PRO_URL | https://instance-name.jamfcloud.com |
-| CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb." |
+| CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb". |
 | CLIENT_ID | ClientIDFromCreatedAPIClient |
 | CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
 | SHEET_NAME | MobileDeviceTemplate |
@@ -295,9 +295,9 @@ Update completed ↓
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
 <img width="530" alt="Error" src="./assets/EN/15.png">  
-In this case, please try the following:
-Click "Dismiss."
-Wait for 5-10 seconds.
+In this case, please try the following:  
+Click "Dismiss."  
+Wait for 5-10 seconds.  
 Press "Settings" > "Run" again.
 
 ## [Test Environments](#test-environments)

@@ -423,6 +423,7 @@ function uploadDeviceDataToJamf() {
           default:
             if (key.startsWith('EA_')) {
               const extensionAttributeID = key.substring(3); 
+              
               (item[key] === 'CLEAR!') 
               ? setExtensionAttribute(mobileDeviceSerialNumber, extensionAttributeID, '')
               : setExtensionAttribute(mobileDeviceSerialNumber, extensionAttributeID, item[key]);

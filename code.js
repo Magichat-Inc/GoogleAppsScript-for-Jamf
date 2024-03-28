@@ -36,7 +36,7 @@ function setLabels() {
 
 // Utility function to include content from an HTML file into another HTML file
 // HTML ファイルのコンテンツを別の HTML ファイルに含めるユーティリティ関数
-function include(filename){
+function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
