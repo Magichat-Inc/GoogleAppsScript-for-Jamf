@@ -22,10 +22,11 @@ Based on information within the spreadsheet, the program makes API calls to upda
   - [Clearing Existing Attributes](#clearing-existing-attributes)
 - [First Run](#first-run)
 - [Mass Updating](#mass-updating)
+- [Test Environments](#test-environments)
 
 ## [Introduction](#introduction)
 This mass update tool is a web application written in JavaScript under the Google Apps Script (GAS) web application framework.  
-This enables Jamf administrators to perform mass updates for devices within Jamf (limited to iOS, iPadOS, and tvOS) and user attributes (such as username, asset tag, or custom attributes, etc).
+This enables Jamf administrators to perform mass updates for devices within Jamf (currently limited to iOS, iPadOS, and tvOS) and user attributes (such as username, asset tag, or custom attributes, etc).
 
 Since the tool operates within a web browser, it can be used on devices running various operating systems, including Windows, macOS, and iOS.
 
@@ -56,7 +57,7 @@ If you'd like to create an API user account, follow these steps:
 3. Click on "New" in the top right corner.
 4. Check "Create Standard Account" and click "Next."
 5. In the "Account" tab, please configure the following:
-   - Username (e.g., api-user)
+   - Username (e.g. api-user)
    - Access Level: Full Access
    - Permission Set: Custom
    - Password
@@ -145,15 +146,14 @@ Please open the copied spreadsheet and follow these initial setup steps:
 4. Configure as shown below then click "Save".
 
 If you created an **API account**, you need to create the following properties:  
-CLASSIC_API_URL, JAMF_PRO_API_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
+JAMF_PRO_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
 
 Otherwise, if you used **API Roles and Clients**, you need to create the following ones:  
-CLASSIC_API_URL, JAMF_PRO_API_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
+JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
 
 | Property | Value |
 | :---   | :---   |
-| CLASSIC_API_URL | https://instance-name.jamfcloud.com/JSSResource |
-| JAMF_PRO_API_URL | https://instance-name.jamfcloud.com/api/ |
+| JAMF_PRO_URL | https://instance-name.jamfcloud.com |
 | CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb." |
 | CLIENT_ID | ClientIDFromCreatedAPIClient |
 | CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
@@ -185,8 +185,7 @@ This section explains how to use and input data under each header in the spreads
 **Attributes that can be updated based on the "General" tab of the "Inventory" in Jamf Pro.**
 - Mobile Device Name (This will also update the actual device name.)  
 - Enforce Name: Enforce Mobile Device Name
-  - "Enforce the name → TRUE or do not enforce → FALSE
-  - If name enforcing was configured during ADE, even if you set Enforce Name to TRUE, it will revert back to the name that was configured during ADE.
+  - Enforce the name → TRUE or do not enforce → FALSE
 - Asset Tag
 - Site
   - You can use either the Site ID or the Site name.
@@ -261,7 +260,7 @@ When clearing user information from a device, the spreadsheet will look like thi
 ## [First Run](#first-run)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
-3. Click on "Settings" in the menu to the right of Help, and then select "Run."  
+3. Click on "Settings" in the menu to the right of Help, and then select "Run".  
 <img width="250" alt="Running the tool" src="./assets/EN/08.png">  
 
 4. Authorization is required the first time you run it (see the image below).  Click the "OK" button.  
@@ -271,16 +270,20 @@ When clearing user information from a device, the spreadsheet will look like thi
    When you see "Google hasn't verified this app" click on "Advanced".  
 <img width="590" alt="Google hasn't verified this app" src="./assets/EN/10.png">
 
-6. After clicking "Advanced", click on "Go to [GAS] MobileDeviceTemplate (unsafe)".  
+6. After clicking "Advanced", click on "Go to [GAS_EN] MobileDeviceTemplate (unsafe)".  
 <img width="585" alt="Go to [GAS] MobileDeviceTemplate (unsafe)" src="./assets/EN/11.png">
 
-7. Finally, click "Allow."  
+7. Finally, click "Allow".  
 <img width="425" alt="Allow authorization" src="./assets/EN/12.png">
+
+*At the very first run, mass updates are NOT performed.*  
+*You have to click "Settings" > "Run" once again to perform the mass update.*
 
 ## [Mass Updating](#mass-updating)
 1. Open the copied spreadsheet.
 2. Enter the data you want to update.
-3. Click on "Settings" in the menu to the right of Help, and then select "Run."  
+3. Click on "Settings" in the menu to the right of Help, and then select "Run".
+
 <img width="250" alt="Running the tool" src="./assets/EN/08.png">
 
 Updating in progress ↓  
@@ -295,4 +298,23 @@ When clicking the "Settings" > "Run" button, you may occasionally encounter the 
 In this case, please try the following:
 Click "Dismiss."
 Wait for 5-10 seconds.
-Press "Settings > Run" again.
+Press "Settings" > "Run" again.
+
+## [Test Environments](#test-environments)
+The tool has been tested with the following environments.
+
+macOS 14.4.1  
+・Google Chrome v.123.0.6312.59, EN・JA  
+・Firefox v.124.0.1 (64-bit) EN・JA  
+
+iPadOS 16.7.7  
+・Safari 16.7.7, EN
+
+Windows 11 (arm)  
+・Google Chrome v.123.0.6312.59, JA  
+・Microsoft Edge v.122.0.2365.92, JA
+
+Windows 10 (x86)  
+・Google Chrome v.123.0.6312.59, EN・JA  
+・Microsoft Edge v.122.0.2365.92, EN・JA  
+・Firefox v.124.0.1 (64-bit), EN・JA 

@@ -2,7 +2,7 @@
 // Jamf APIの客エンドポイントに関連する関数　（モバイルデバイス）
 
 function getMobileDeviceID(serialNumber) {
-  const API_URL = `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`;
+  const API_URL = `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`;
 
   const requestOptions = setRequestOptions('GET', getAuthenticationMethod(), 'application/json');
   const response = UrlFetchApp.fetch(API_URL, requestOptions);
@@ -17,26 +17,26 @@ function getMobileDeviceID(serialNumber) {
   }
 }
 
-function setDisplayName(serialNumber, displayName) {
-  const xmlData = setPayloadData('general', 'display_name', undefined, displayName);
+function setDisplayName(mobileDeviceID, displayName) {
+  const jsonData = JSON.stringify({ name: displayName })
 
-  const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
+  const requestOptions = setRequestOptions('PATCH', getAuthenticationMethod(), 'application/json', jsonData);
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/api/v2/mobile-devices/${mobileDeviceID}`, 
     requestOptions
-  ); 
+  );
 
-  validateResponse(201, response.getResponseCode(), 'Display Name');
+  validateResponse(200, response.getResponseCode(), 'Display Name');
 }
 
 // This is going to be a Management Command in Jamf Pro
 // こちらはJamf Proで管理コマンドとしてある
 function setEnforceName(mobileDeviceID, enforceNameValue) {
   const jsonData = JSON.stringify({ enforceName: enforceNameValue });
-
   const requestOptions = setRequestOptions('PATCH', getAuthenticationMethod(), 'application/json', jsonData);
+
   const response = UrlFetchApp.fetch(
-    `${JAMF_PRO_API_URL}/v2/mobile-devices/${mobileDeviceID}`, 
+    `${JAMF_PRO_URL}/api/v2/mobile-devices/${mobileDeviceID}`, 
     requestOptions
   );
 
@@ -45,10 +45,10 @@ function setEnforceName(mobileDeviceID, enforceNameValue) {
 
 function setAssetTag(serialNumber, assetTag) {
   const xmlData = setPayloadData('general', 'asset_tag', undefined, assetTag);
-
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -58,8 +58,9 @@ function setAssetTag(serialNumber, assetTag) {
 function setUsername(serialNumber, username) {
   const xmlData = setPayloadData('location', 'username', undefined, username);
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -71,7 +72,7 @@ function setRealName(serialNumber, realName) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -83,7 +84,7 @@ function setEmailAddress(serialNumber, emailAddress) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -95,7 +96,7 @@ function setPhoneNumber(serialNumber, phoneNumber) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -107,7 +108,7 @@ function setPosition(serialNumber, position) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -119,7 +120,7 @@ function setDepartment(serialNumber, department) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -131,7 +132,7 @@ function setBuilding(serialNumber, building) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -143,7 +144,7 @@ function setRoom(serialNumber, room) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -155,7 +156,7 @@ function setIsLeased(serialNumber, isLeased) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -167,7 +168,7 @@ function setPoNumber(serialNumber, poNumber) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -179,7 +180,7 @@ function setPoDate(serialNumber, poDate) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -191,7 +192,7 @@ function setVendor(serialNumber, vendor) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -203,7 +204,7 @@ function setWarrantyExpires(serialNumber, warrantyExpires) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -215,7 +216,7 @@ function setAppleCareID(serialNumber, appleCareID) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -227,7 +228,7 @@ function setLeaseExpires(serialNumber, leaseExpires) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -239,7 +240,7 @@ function setPurchasePrice(serialNumber, purchasePrice) {
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
 
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -248,10 +249,10 @@ function setPurchasePrice(serialNumber, purchasePrice) {
 
 function setAirplayPassword(serialNumber, airPlayPassword) {
   const xmlData = setPayloadData('general', 'airplay_password', undefined, airPlayPassword);
-
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -261,10 +262,10 @@ function setAirplayPassword(serialNumber, airPlayPassword) {
 function setSite(serialNumber, site) {
   const childElement = checkIfSiteValueIsNameOrID(site);
   const xmlData = setPayloadData('general', 'site', childElement, site);
-
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 
@@ -272,15 +273,15 @@ function setSite(serialNumber, site) {
 }
 
 function setExtensionAttribute(serialNumber, extensionAttributeID, extensionAttribute) {
-  if ( extensionAttribute instanceof Date) {
+  if (extensionAttribute instanceof Date) {
     extensionAttribute = setDate(extensionAttribute);
   }
 
   const xmlData = setPayloadData('extension_attributes', 'extension_attribute', 'id', extensionAttributeID, 'value', extensionAttribute);
-
   const requestOptions = setRequestOptions('PUT', getAuthenticationMethod(), 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
-    `${CLASSIC_API_URL}/mobiledevices/serialnumber/${serialNumber}`, 
+    `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
   );
 

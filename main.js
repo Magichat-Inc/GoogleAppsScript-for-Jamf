@@ -7,8 +7,8 @@
  Author: Magic Hat Inc. (Melinda Magyar)           
  著者: 株式会社マジックハット (マジャル メリンダ)
 
- Last modified: 2024/03/05
- 最終更新日: 2024年 3月 5日
+ Last modified: 2024/03/26
+ 最終更新日: 2024年 3月 26日
 #################################################################################################### */
 
 // MAIN FUNCTIONS
@@ -17,8 +17,7 @@
 // Variable declaration
 // 変数の宣言
 const PROPERTIES = PropertiesService.getScriptProperties().getProperties();
-const CLASSIC_API_URL = PROPERTIES.CLASSIC_API_URL;
-const JAMF_PRO_API_URL = PROPERTIES.JAMF_PRO_API_URL;
+const JAMF_PRO_URL = PROPERTIES.JAMF_PRO_URL;
 const SPREADSHEET_ID = PROPERTIES.SPREADSHEET_ID;
 // Tab (sheet) name
 // タブ（シート）の名前
@@ -110,7 +109,7 @@ function getDeviceDataFromSpreadsheet() {
 
 // Get all data from spreadsheet (including EA)
 // スプレッドシートから全データを取得する（EAを含む）
-function getDeviceDataFromSpreadsheet () {
+function getDeviceDataFromSpreadsheet() {
   // Open spreadsheet and specific sheet
   // スプレッドシートを開き、指定したシートを表示する
   const SPREADSHEET = SpreadsheetApp.openById(SPREADSHEET_ID); 
@@ -201,7 +200,7 @@ function getDeviceDataFromSpreadsheet () {
 
 // Constructs an XML string (serves as payload in the HTTP request)
 // XML文字列を構築する（HTTPリクエストのペイロードとして使用される）
-function setPayloadData (rootElement, parentElement, childElement = null, objectName, childElement2 = null, objectName2 = null) {
+function setPayloadData(rootElement, parentElement, childElement = null, objectName, childElement2 = null, objectName2 = null) {
   if (childElement2) {
     return `<mobile_device><${rootElement}><${parentElement}>` +
             `<${childElement}>${objectName}</${childElement}>` +
@@ -220,7 +219,7 @@ function setPayloadData (rootElement, parentElement, childElement = null, object
 
 // Sets HTTP request options
 // HTTPリクエストのオプションを設定する
-function setRequestOptions (method, headers, contentType = null, payload = null) {
+function setRequestOptions(method, headers, contentType = null, payload = null) {
   const options = {
     method: method,
     muteHttpExceptions: true
@@ -247,7 +246,7 @@ function setRequestOptions (method, headers, contentType = null, payload = null)
 
 // Validates HTTP request response
 // HTTPリクエストのレスポンスを検証する
-function validateResponse (statusCode, responseCode, objectName) {
+function validateResponse(statusCode, responseCode, objectName) {
   // Check if the response code is success
   // レスポンスコードが成功かどうかを確認する
   if (statusCode === responseCode) {
@@ -259,7 +258,7 @@ function validateResponse (statusCode, responseCode, objectName) {
 
 // Formats the date to yyyy-mm-dd
 // 日付をyyyy-mm-dd形式にフォーマットする
-function setDate (dateValue) {
+function setDate(dateValue) {
   try {
     return Utilities.formatDate(dateValue, SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone(), 'yyyy-MM-dd');
   } catch {
@@ -269,7 +268,7 @@ function setDate (dateValue) {
 
 // Checks if Site value is name or ID
 // Siteの値が名前かIDかをチェックする
-function checkIfSiteValueIsNameOrID (value) {
+function checkIfSiteValueIsNameOrID(value) {
   if (!isNaN(value)) {
     return 'id';
   } 
@@ -279,7 +278,7 @@ function checkIfSiteValueIsNameOrID (value) {
 
 // Parsing XML response from Jamf (returns mobile device ID)
 // JamfからのXMLレスポンスを解析し、モバイルデバイスのIDを返す
-function parseJamfXML (xmlResponse) {
+function parseJamfXML(xmlResponse) {
   // Parse the XML response
   // XMLレスポンスを解析する
   const document = XmlService.parse(xmlResponse);
@@ -300,7 +299,7 @@ function parseJamfXML (xmlResponse) {
 
 //  Uploads device data to Jamf
 // Jamfにデバイスデータをアップロードする
-function uploadDeviceDataToJamf () {
+function uploadDeviceDataToJamf() {
   // Gets device data from spreadsheet
   // スプレッドシートからデバイスデータを取得する
   const DEVICE_DATA = getDeviceDataFromSpreadsheet();
@@ -321,14 +320,15 @@ function uploadDeviceDataToJamf () {
           Logger.log('Device: ' + mobileDeviceSerialNumber);
         }
 
+        const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
+
         // Handles different cases
         // 異なるケースを処理する
         switch (key) {
           case 'displayName':
-            setDisplayName(mobileDeviceSerialNumber, item[key]);
+            setDisplayName(mobileDeviceID, item[key]);
             break;
           case 'enforceName':
-            const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
             (item[key] === 'CLEAR!') 
             ? setEnforceName(mobileDeviceID, false)
             : setEnforceName(mobileDeviceID, item[key]);
@@ -436,7 +436,7 @@ function uploadDeviceDataToJamf () {
 
 // Main function (calls other functions)
 // メイン関数（他の関数を呼び出す）
-function mainFunction () {
+function mainFunction() {
   checkTokenExpiration();
   uploadDeviceDataToJamf();
   invalidateToken();

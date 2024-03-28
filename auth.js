@@ -3,7 +3,7 @@
 
 // Set and handle authentication based on property conditions
 // プロパティ条件に基づいて認証を設定および処理する
-function setAuthenticationMethod () {
+function setAuthenticationMethod() {
   try {
     // Client based authentication (Access token)
     // クライアントベースの認証 (Accessトークン)
@@ -25,7 +25,7 @@ function setAuthenticationMethod () {
   }
 }
 
-function getAuthenticationMethod () {
+function getAuthenticationMethod() {
   if (Object.keys(accessToken).length !== 0) {
     return accessToken;
   }
@@ -41,7 +41,7 @@ function getAuthenticationMethod () {
 
 // Creates a query string from an object to be used in HTTP request (getAccessToken())
 // オブジェクトからクエリ文字列を生成し、HTTPリクエスト（getAccessToken()）で使用する
-function queryString (param) {
+function queryString(param) {
   const array = []
 
   for (let k in param) {
@@ -57,8 +57,8 @@ function queryString (param) {
   return array.join('&')
 }
 
-function getAccessToken () {
-  const API_URL = `${JAMF_PRO_API_URL}/oauth/token`; 
+function getAccessToken() {
+  const API_URL = `${JAMF_PRO_URL}/api/oauth/token`; 
 
   // Key-value pairs for the query string
   // クエリ文字列に使うキーと値のペアのオブジェクト
@@ -93,11 +93,11 @@ function getAccessToken () {
   } 
 }
 
-function getBearerToken () {
+function getBearerToken() {
   // Encode the credentials using base64
   // ベース64で認証情報をエンコードする
   const ENCODED_CREDENTIALS = Utilities.base64Encode(PROPERTIES.CREDENTIALS);
-  const API_URL = `${JAMF_PRO_API_URL}/v1/auth/token`;
+  const API_URL = `${JAMF_PRO_URL}/api/v1/auth/token`;
 
   // Set HTTP request options
   // HTTPリクエストのオプションを設定する
@@ -120,7 +120,7 @@ function getBearerToken () {
   } 
 }
 
-function checkTokenExpiration () {
+function checkTokenExpiration() {
   const token = getAuthenticationMethod();
 
   const nowEpochUTC = Math.floor(Date.now() / 1000);
@@ -137,7 +137,7 @@ function checkTokenExpiration () {
 }
 
 function invalidateToken () {
-  const API_URL = `${JAMF_PRO_API_URL}/v1/auth/invalidate-token`;
+  const API_URL = `${JAMF_PRO_URL}/api/v1/auth/invalidate-token`;
 
   // Set HTTP request options (Authorization header is set to the currently valid token)
   // HTTPリクエストのオプションを設定する（Authorizationヘッダに現在有効なトークンを設定する）
