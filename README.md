@@ -247,7 +247,7 @@ iPadOS 16.7.7
 ・Safari 16.7.7, EN
 
 Windows 11 (arm)  
-・Google Chrome v.123.0.6312.59, JA
+・Google Chrome v.123.0.6312.59, JA  
 ・Microsoft Edge v.122.0.2365.92, JA
 
 Windows 10 (x86)  

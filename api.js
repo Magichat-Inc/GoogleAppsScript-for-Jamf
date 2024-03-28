@@ -19,8 +19,8 @@ function getMobileDeviceID(serialNumber) {
 
 function setDisplayName(mobileDeviceID, displayName) {
   const jsonData = JSON.stringify({ name: displayName })
-
   const requestOptions = setRequestOptions('PATCH', undefined, 'application/json', jsonData);
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/api/v2/mobile-devices/${mobileDeviceID}`, 
     requestOptions
@@ -33,8 +33,8 @@ function setDisplayName(mobileDeviceID, displayName) {
 // こちらはJamf Proで管理コマンドとしてある
 function setEnforceName(mobileDeviceID, enforceNameValue) {
   const jsonData = JSON.stringify({ enforceName: enforceNameValue });
-
   const requestOptions = setRequestOptions('PATCH', undefined, 'application/json', jsonData);
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/api/v2/mobile-devices/${mobileDeviceID}`, 
     requestOptions
@@ -45,8 +45,8 @@ function setEnforceName(mobileDeviceID, enforceNameValue) {
 
 function setAssetTag(serialNumber, assetTag) {
   const xmlData = setPayloadData('general', 'asset_tag', undefined, assetTag);
-
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
@@ -262,8 +262,8 @@ function setAirplayPassword(serialNumber, airPlayPassword) {
 function setSite(serialNumber, site) {
   const childElement = checkIfSiteValueIsNameOrID(site);
   const xmlData = setPayloadData('general', 'site', childElement, site);
-
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
@@ -273,13 +273,13 @@ function setSite(serialNumber, site) {
 }
 
 function setExtensionAttribute(serialNumber, extensionAttributeID, extensionAttribute) {
-  if ( extensionAttribute instanceof Date) {
+  if (extensionAttribute instanceof Date) {
     extensionAttribute = setDate(extensionAttribute);
   }
 
   const xmlData = setPayloadData('extension_attributes', 'extension_attribute', 'id', extensionAttributeID, 'value', extensionAttribute);
-
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+  
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
