@@ -50,7 +50,7 @@ In Jamf Pro, create an API user account as follows.
 1. Click on the "⚙️" icon (Settings).
 2. Click on "User accounts and groups".
 3. Click on "New" in the top right corner.
-4. Check "Create Standard Account" and click "Next."
+4. Check "Create Standard Account" and click "Next".
 5. In the "Account" tab, please configure the following:
    - Username (e.g. api-user)
    - Access Level: Full Access
@@ -96,7 +96,7 @@ Please open the copied spreadsheet and follow these initial setup steps:
 | Property | Value |
 | :---   | :---   |
 | JAMF_PRO_URL | https://instance-name.jamfcloud.com |
-| CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb." |
+| CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb". |
 | SHEET_NAME | MobileDeviceTemplate |
 | SPREADSHEET_ID | The ID of the copied spreadsheet (see the instructions below on how to obtain it) |
 
@@ -163,7 +163,7 @@ In order to do this, you must first identify the Extension Attribute ID number.
 3. Click on the EA you want to update.
 4. Obtain the ID from the URL of the relevant EA.
 
-For example, the EA ID for this Extension Attribute is "17."  
+For example, the EA ID for this Extension Attribute is "17".  
 <img width="505" alt="EA ID" src="./assets/EN/07.png">
 
 To update an Extension Attribute, add a new column **after** all the existing columns in the template and put the string "EA_#" in the header, where "#" represents the ID of the EA you want to update.
@@ -231,9 +231,9 @@ Update completed ↓
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
 <img width="530" alt="Error" src="./assets/EN/15.png">  
-In this case, please try the following:
-Click "Dismiss."
-Wait for 5-10 seconds.
+In this case, please try the following:  
+Click "Dismiss".  
+Wait for 5-10 seconds.  
 Press "Settings" > "Run" again.
 
 ## [Test Environments](#test-environments)

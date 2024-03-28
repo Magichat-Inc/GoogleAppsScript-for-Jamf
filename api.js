@@ -2,7 +2,7 @@
 // Jamf APIの客エンドポイントに関連する関数　（モバイルデバイス）
 
 function getMobileDeviceID(serialNumber) {
-  const API_URL =  `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`;
+  const API_URL = `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`;
 
   const requestOptions = setRequestOptions('GET', undefined, 'application/json');
   const response = UrlFetchApp.fetch(API_URL, requestOptions);
