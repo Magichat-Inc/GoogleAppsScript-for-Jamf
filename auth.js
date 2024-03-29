@@ -42,19 +42,19 @@ function getAuthenticationMethod() {
 // Creates a query string from an object to be used in HTTP request (getAccessToken())
 // オブジェクトからクエリ文字列を生成し、HTTPリクエスト（getAccessToken()）で使用する
 function queryString(param) {
-  const array = []
+  const array = [];
 
   for (let k in param) {
     // Encode the key and value using URI encoding
     // Push the encoded key-value pair to the array
     // キーと値をURIエンコードしてる
     // エンコードされたキーと値のペアを配列に追加する
-    array.push(k + '=' + encodeURI(param[k]))
+    array.push(k + '=' + encodeURI(param[k]));
   }
 
   // Join the array elements using ampersands to form the query string
   // 配列の要素をアンパサンド（&）で結合してクエリ文字列を作成する
-  return array.join('&')
+  return array.join('&');
 }
 
 function getAccessToken() {

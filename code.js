@@ -19,14 +19,14 @@ function onOpen(e) {
 function setLabels() {
   // Set default labels
   // デフォルトのラベルを設定する
-  let settingsLabel = 'Settings'
+  let settingsLabel = 'Settings';
   let runLabel = '⏯ Run';
   let aboutLabel = 'ℹ︎ About';
 
   // If user's language is Japanese
   // ユーザーの言語が日本語の場合
   if (USER_LANGUAGE && USER_LANGUAGE.indexOf('ja') === 0) {
-    settingsLabel = '設定'
+    settingsLabel = '設定';
     runLabel = '⏯ 実行';
     aboutLabel = 'ℹ︎ このツールについて';
   }

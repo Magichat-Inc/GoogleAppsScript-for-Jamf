@@ -18,7 +18,7 @@ function getMobileDeviceID(serialNumber) {
 }
 
 function setDisplayName(mobileDeviceID, displayName) {
-  const jsonData = JSON.stringify({ name: displayName })
+  const jsonData = JSON.stringify({ name: displayName });
   const requestOptions = setRequestOptions('PATCH', getAuthenticationMethod(), 'application/json', jsonData);
 
   const response = UrlFetchApp.fetch(
