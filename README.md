@@ -21,6 +21,7 @@ Based on information within the spreadsheet, the program makes API calls to upda
 - [First Run](#first-run)
 - [Mass Updating](#mass-updating)
 - [Test Environments](#test-environments)
+- [Support](#support)
 
 ## [Introduction](#introduction)
 This mass update tool is a web application written in JavaScript under the Google Apps Script (GAS) web application framework.  
@@ -254,3 +255,6 @@ Windows 10 (x86)
 ・Google Chrome v.123.0.6312.59, EN・JA  
 ・Microsoft Edge v.122.0.2365.92, EN・JA  
 ・Firefox v.124.0.1 (64-bit), EN・JA 
+
+## [Support](#support)
+If you encounter any technical issues, please open an issue on this repository or reach out to us via [email](mailto:support@magichat.jp).

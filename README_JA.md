@@ -19,6 +19,7 @@
 - [First Run](#first-run)
 - [Mass Updating](#mass-updating)
 - [Test Environments](#test-environments)
+- [Support](#support)
 
 ## [Introduction](#introduction)
 この一括更新ツールは、Webアプリケーション フレームワークである Google Apps Script (GAS) の下で JavaScript で書かれた Web アプリケーションです。これにより、Jamf 管理者は、Jamf 内のデバイス (現在は iOS、iPadOS、tvOS 対象のみ) およびユーザーの属性 (ユーザー名、アセットタグ、または拡張属性など) を一括更新できます。 
@@ -258,3 +259,6 @@ Windows 10 (x86)
 ・Google Chrome v.123.0.6312.59、日本語・英語  
 ・Microsoft Edge v.122.0.2365.92、日本語・英語  
 ・Firefox v.124.0.1 (64-bit)、日本語・英語 
+
+## [Support](#support)
+技術的な問題が発生した場合は、このリポジトリに「Issue」を作成するか、[メール](mailto:support@magichat.jp)でお問い合わせください。
