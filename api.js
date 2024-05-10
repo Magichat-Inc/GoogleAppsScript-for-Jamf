@@ -249,8 +249,8 @@ function setPurchasePrice(serialNumber, purchasePrice) {
 
 function setAirplayPassword(serialNumber, airPlayPassword) {
   const xmlData = setPayloadData('general', 'airplay_password', undefined, airPlayPassword);
-
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
@@ -279,7 +279,7 @@ function setExtensionAttribute(serialNumber, extensionAttributeID, extensionAttr
 
   const xmlData = setPayloadData('extension_attributes', 'extension_attribute', 'id', extensionAttributeID, 'value', extensionAttribute);
   const requestOptions = setRequestOptions('PUT', undefined, 'text/xml', xmlData);
-  
+
   const response = UrlFetchApp.fetch(
     `${JAMF_PRO_URL}/JSSResource/mobiledevices/serialnumber/${serialNumber}`, 
     requestOptions
