@@ -102,6 +102,7 @@ function getBearerToken() {
   // Set HTTP request options
   // HTTPリクエストのオプションを設定する
   const requestOptions = setRequestOptions('POST', { Authorization: `Basic ${ENCODED_CREDENTIALS}` });
+
   // Send the HTTP request to fetch the Bearer token from Jamf
   // JamfからBearerトークンを取得するためのHTTPリクエストを送信する
   const response = UrlFetchApp.fetch(API_URL, requestOptions);

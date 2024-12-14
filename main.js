@@ -7,8 +7,8 @@
  Author: Magic Hat Inc. (Melinda Magyar)           
  著者: 株式会社マジックハット (マジャル メリンダ)
 
- Last modified: 2024/03/28
- 最終更新日: 2024年 3月 28日
+ Last modified: 2024/05/10
+ 最終更新日: 2024年 5月 10日
 #################################################################################################### */
 
 // MAIN FUNCTIONS
@@ -221,16 +221,25 @@ function setPayloadData(rootElement, parentElement, childElement = null, objectN
 // HTTPリクエストのオプションを設定する
 function setRequestOptions(method, headers, contentType = null, payload = null) {
   const options = {
-    method: method,
+    method,
     muteHttpExceptions: true
   };
 
   if (headers === accessToken) {
-    options.headers = {Authorization: `Bearer ${accessToken.token}`};
+    options.headers = {
+      Authorization: `Bearer ${accessToken.token}`,
+      "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
+    };
   } else if (headers === bearerToken) {
-    options.headers = {Authorization: `Bearer ${bearerToken.token}`};
+    options.headers = {
+      Authorization: `Bearer ${bearerToken.token}`,
+      "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
+    };
   } else {
-    options.headers = headers;
+    options.headers = {
+      "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
+      ...headers,
+    };
   }
 
   if (contentType) {
@@ -303,6 +312,7 @@ function uploadDeviceDataToJamf() {
   // Gets device data from spreadsheet
   // スプレッドシートからデバイスデータを取得する
   const DEVICE_DATA = getDeviceDataFromSpreadsheet();
+  let mobileDeviceID = 0;
   let mobileDeviceSerialNumber = 0;
 
   // Loops through each item in the device data
@@ -320,15 +330,15 @@ function uploadDeviceDataToJamf() {
           Logger.log('Device: ' + mobileDeviceSerialNumber);
         }
 
-        const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
-
         // Handles different cases
         // 異なるケースを処理する
         switch (key) {
           case 'displayName':
+            mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
             setDisplayName(mobileDeviceID, item[key]);
             break;
           case 'enforceName':
+            mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
             (item[key] === 'CLEAR!') 
             ? setEnforceName(mobileDeviceID, false)
             : setEnforceName(mobileDeviceID, item[key]);

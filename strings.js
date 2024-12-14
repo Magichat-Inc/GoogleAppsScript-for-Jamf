@@ -1,8 +1,9 @@
 // USED STRING LITERALS
 // 使用してる文字列
 
-const VERSION = '1.7.0';
+const VERSION = '1.8.0';
 const COPYRIGHT = '© 2024 Magic Hat Inc. All rights reserved.';
+const PRODUCT_NAME = 'Mass Update on GAS';
 
 const VALID_TOKEN = 'Token valid until the following epoch time: ';
 const INVALID_TOKEN = 'Token already invalid.';
