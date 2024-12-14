@@ -3,7 +3,7 @@
 
 const VERSION = '1.8.0';
 const COPYRIGHT = '© 2024 Magic Hat Inc. All rights reserved.';
-const PRODUCT_NAME = 'Mass Update on GAS';
+const PRODUCT_NAME = 'Mass Update on Google Sheets';
 
 const VALID_TOKEN = 'Token valid until the following epoch time: ';
 const INVALID_TOKEN = 'Token already invalid.';
