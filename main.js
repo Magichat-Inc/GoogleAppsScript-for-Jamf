@@ -26,6 +26,7 @@ const SHEET_NAME = PROPERTIES.SHEET_NAME;
 // ユーザーの言語設定を取得する
 const USER_LANGUAGE = Session.getActiveUserLocale();
 
+let accessToken = {};
 let bearerToken = {};
 
 // Get all data from spreadsheet (excluding EA)
@@ -218,16 +219,28 @@ function setPayloadData(rootElement, parentElement, childElement = null, objectN
 
 // Sets HTTP request options
 // HTTPリクエストのオプションを設定する
-function setRequestOptions(method, headers = { Authorization: `Bearer ${bearerToken.token}` }, contentType = null, payload = null) {
+function setRequestOptions(method, headers, contentType = null, payload = null) {
   const options = {
     method,
     muteHttpExceptions: true
   };
 
-  options.headers = {
-    "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
-    ...headers
-  };
+  if (headers === accessToken) {
+    options.headers = {
+      Authorization: `Bearer ${accessToken.token}`,
+      "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
+    };
+  } else if (headers === bearerToken) {
+    options.headers = {
+      Authorization: `Bearer ${bearerToken.token}`,
+      "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
+    };
+  } else {
+    options.headers = {
+      "User-Agent": encodeURIComponent(PRODUCT_NAME + '/' + VERSION),
+      ...headers,
+    };
+  }
 
   if (contentType) {
     options.contentType = contentType;
@@ -437,6 +450,6 @@ function uploadDeviceDataToJamf() {
 function mainFunction() {
   checkTokenExpiration();
   uploadDeviceDataToJamf();
-  invalidateBearerToken();
+  invalidateToken();
   showSidebar(Logger.getLog());
 }
