@@ -312,7 +312,6 @@ function uploadDeviceDataToJamf() {
   // Gets device data from spreadsheet
   // スプレッドシートからデバイスデータを取得する
   const DEVICE_DATA = getDeviceDataFromSpreadsheet();
-  let mobileDeviceID = 0;
   let mobileDeviceSerialNumber = 0;
 
   // Loops through each item in the device data
@@ -330,15 +329,15 @@ function uploadDeviceDataToJamf() {
           Logger.log('Device: ' + mobileDeviceSerialNumber);
         }
 
+        const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
+
         // Handles different cases
         // 異なるケースを処理する
         switch (key) {
           case 'displayName':
-            mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
             setDisplayName(mobileDeviceID, item[key]);
             break;
           case 'enforceName':
-            mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
             (item[key] === 'CLEAR!') 
             ? setEnforceName(mobileDeviceID, false)
             : setEnforceName(mobileDeviceID, item[key]);
