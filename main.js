@@ -287,7 +287,7 @@ function buildMobileDevicePayload(device) {
   }
 
   if (appleCareID !== null) {
-    purchasing += `<apple_care_id>${escapeXml(appleCareID)}</apple_care_id>`;
+    purchasing += `<applecare_id>${escapeXml(appleCareID)}</applecare_id>`;
   }
 
   if (leaseExpires !== null) {
