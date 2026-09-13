@@ -59,7 +59,7 @@ function queryString(param) {
 }
 
 function getAccessToken() {
-  const API_URL = `${JAMF_PRO_URL}/api/oauth/token`;
+  const API_URL = `${JAMF_PRO_URL}/api/v1/oauth/token`;
 
   // Key-value pairs for the query string
   // クエリ文字列に使うキーと値のペアのオブジェクト

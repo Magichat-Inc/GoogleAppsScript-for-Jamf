@@ -497,9 +497,25 @@ function uploadDeviceDataToJamf() {
 
 // Helper function for logging
 // ログ記録のためのヘルパー関数
+let logBuffer = [];
+
 function logHelper(level, serial, message) {
-  const now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss')
-  logSheet.appendRow([now, level, serial, message])
+  const now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss');
+  logBuffer.push([now, level, serial, message]);
+
+  if (logBuffer.length >= 5) {
+    flushLog();
+  }
+}
+
+function flushLog() {
+  if (!logBuffer.length) {
+    return;
+  }
+
+  logSheet.getRange(logSheet.getLastRow() + 1, 1, logBuffer.length, 4).setValues(logBuffer);
+  logBuffer = [];
+  SpreadsheetApp.flush();
 }
 
 // Starting point
@@ -507,24 +523,48 @@ function logHelper(level, serial, message) {
 function mainFunction() {
   // Validation
   // データの検証
-  if (!sheet) {
-    Logger.log(LOG_MESSAGES.MISSING_SHEET.en)
-    logHelper('ERROR', '', getLocalizedMessage('MISSING_SHEET'));
-    return;
-  }
-
   if (!logSheet) {
     Logger.log(LOG_MESSAGES.MISSING_LOG_SHEET.en);
     Browser.msgBox(getLocalizedMessage('MISSING_LOG_SHEET'));
     return;
   }
 
-  const lastRow = logSheet.getMaxRows();
-  logSheet.getRange(2, 1, lastRow - 1, 4).clearContent();
+  if (!sheet) {
+    Logger.log(LOG_MESSAGES.MISSING_SHEET.en);
+    logHelper('ERROR', '', getLocalizedMessage('MISSING_SHEET'));
+    flushLog();
+    Browser.msgBox(getLocalizedMessage('MISSING_SHEET'));
+    return;
+  }
+
+  const maxRows = logSheet.getMaxRows();
+
+  if (maxRows > 1) {
+    logSheet.getRange(2, 1, maxRows - 1, 4).clearContent();
+  }
   // PropertiesService.getScriptProperties().deleteProperty('LAST_INDEX')
 
-  checkTokenExpiration();
-  uploadDeviceDataToJamf();
-  invalidateToken();
-  logHelper('COMPLETED', '', getLocalizedMessage('INVENTORY_UPDATE_FINISHED'));
+  let completed = false;
+
+  try {
+    checkTokenExpiration();
+    uploadDeviceDataToJamf();
+    completed = true;
+  } finally {
+    // Release the token and write the log even if the run failed
+    // 実行が失敗した場合でも、トークンを無効化してログを書き出す
+    if (Object.keys(getAuthenticationMethod()).length !== 0) {
+      try {
+        invalidateToken();
+      } catch (e) {
+        logHelper('ERROR', '', e.message);
+      }
+    }
+
+    if (completed) {
+      logHelper('COMPLETED', '', getLocalizedMessage('INVENTORY_UPDATE_FINISHED'));
+    }
+
+    flushLog();
+  }
 }
