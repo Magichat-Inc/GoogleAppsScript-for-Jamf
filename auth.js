@@ -1,7 +1,7 @@
 // FUNCTIONS RELATED TO JAMF API TOKEN AUTHENTICATION
 // JAMF APIトークン認証に関連する関数
 
-// Set and handle authentication based on property conditions
+// Sets the authentication method based on available properties
 // プロパティ条件に基づいて認証を設定および処理する
 function setAuthenticationMethod() {
   try {
@@ -9,12 +9,12 @@ function setAuthenticationMethod() {
     // クライアントベースの認証 (Accessトークン)
     if (PROPERTIES.CLIENT_ID !== undefined && PROPERTIES.CLIENT_SECRET !== undefined) {
       getAccessToken();
-    // User based authentication (Bearer token)
-    // ユーザーベースの認証 (Bearerトークン)
+      // User based authentication (Bearer token)
+      // ユーザーベースの認証 (Bearerトークン)
     } else if (PROPERTIES.CREDENTIALS !== undefined) {
       getBearerToken();
     } else {
-      throw new Error(ERROR_PROPERTIES);
+      throw new Error(getLocalizedMessage('MISSING_PROPERTIES'));
     }
   } catch (e) {
     console.error('ERROR:', e.message);
@@ -22,6 +22,7 @@ function setAuthenticationMethod() {
     // Show error message to the user
     const ui = SpreadsheetApp.getUi();
     ui.alert('ERROR', e.message, ui.ButtonSet.OK);
+    throw e;
   }
 }
 
@@ -29,18 +30,18 @@ function getAuthenticationMethod() {
   if (Object.keys(accessToken).length !== 0) {
     return accessToken;
   }
-  
+
   if (Object.keys(bearerToken).length !== 0) {
     return bearerToken;
-  } 
+  }
 
   // Return an empty object if no valid token is available
-  // 有効なトークンが利用できない場合は空のオブジェクトを返する
+  // 有効なトークンが利用できない場合は空のオブジェクトを返す
   return {};
 }
 
 // Creates a query string from an object to be used in HTTP request (getAccessToken())
-// オブジェクトからクエリ文字列を生成し、HTTPリクエスト（getAccessToken()）で使用する
+// HTTPリクエスト（getAccessToken()）で使用するオブジェクトからクエリ文字列を生成する
 function queryString(param) {
   const array = [];
 
@@ -49,7 +50,7 @@ function queryString(param) {
     // Push the encoded key-value pair to the array
     // キーと値をURIエンコードしてる
     // エンコードされたキーと値のペアを配列に追加する
-    array.push(k + '=' + encodeURI(param[k]));
+    array.push(encodeURIComponent(k) + '=' + encodeURIComponent(param[k]));
   }
 
   // Join the array elements using ampersands to form the query string
@@ -58,7 +59,7 @@ function queryString(param) {
 }
 
 function getAccessToken() {
-  const API_URL = `${JAMF_PRO_URL}/api/oauth/token`; 
+  const API_URL = `${JAMF_PRO_URL}/api/oauth/token`;
 
   // Key-value pairs for the query string
   // クエリ文字列に使うキーと値のペアのオブジェクト
@@ -84,13 +85,18 @@ function getAccessToken() {
     const responseData = JSON.parse(response.getContentText());
     accessToken.token = responseData.access_token;
     accessToken.type = responseData.token_type;
-    accessToken.expires = Math.floor(Date.now() / 1000) + responseData.expires_in - 1;
+    // Set expiration time with a buffer of 30 seconds
+    accessToken.expires = Math.floor(Date.now() / 1000) + responseData.expires_in - 30; 
     accessToken.expires_in = responseData.expires_in;
     accessToken.scope = responseData.scope;
+
+    logHelper('INFO', '', getLocalizedMessage('ACCESS_TOKEN_SUCCESS'));
+
     return accessToken.token;
   } else {
-    throw new Error(`${ERROR_AUTH}${responseCode}`);
-  } 
+    logHelper('ERROR', '', `${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`);
+    throw new Error(`${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`);
+  }
 }
 
 function getBearerToken() {
@@ -115,29 +121,33 @@ function getBearerToken() {
     // レスポンスのJSONを解析し、Bearerトークンを取得する
     bearerToken = JSON.parse(response.getContentText());
     bearerToken.expires = Math.floor(new Date(bearerToken.expires).getTime() / 1000);
+
+    logHelper('INFO', '', getLocalizedMessage('BEARER_TOKEN_SUCCESS'));
+
     return bearerToken.token;
   } else {
-    throw new Error(`${ERROR_AUTH}${responseCode}`);
-  } 
+    logHelper('ERROR', '', `${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`);
+    throw new Error(`${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`);
+  }
 }
 
 function checkTokenExpiration() {
   const token = getAuthenticationMethod();
 
   const nowEpochUTC = Math.floor(Date.now() / 1000);
-  // Compare current time with token expiraiton time
+  // Compare current time with token expiration time
   // 現在時刻とトークンの有効期限時刻を比較する
-  if (token.expires > nowEpochUTC) {
-    Logger.log(`${VALID_TOKEN}${token.expires}`);
+  if (token.expires && token.expires > nowEpochUTC) {
+    Logger.log(`${getLocalizedMessage('TOKEN_VALID')}${token.expires}`);
+    logHelper('INFO', '', `${getLocalizedMessage('TOKEN_VALID')}${token.expires}`);
   } else {
-    Logger.log(NO_VALID_TOKEN);
     // Get a new token if no valid token available
     // 有効なトークンがない場合は、認証方法を設定して、新しいトークンを取得する
     setAuthenticationMethod();
   }
 }
 
-function invalidateToken () {
+function invalidateToken() {
   const API_URL = `${JAMF_PRO_URL}/api/v1/auth/invalidate-token`;
 
   // Set HTTP request options (Authorization header is set to the currently valid token)
@@ -151,11 +161,14 @@ function invalidateToken () {
 
   if (responseCode === 204) {
     getAuthenticationMethod() === accessToken ? (accessToken = {}) : (bearerToken = {});
-    Logger.log(INVALIDATED_TOKEN);
+    Logger.log(getLocalizedMessage('TOKEN_INVALIDATED'));
+    logHelper('SUCCESS', '', getLocalizedMessage('TOKEN_INVALIDATED'));
   } else if (responseCode === 401) {
     getAuthenticationMethod() === accessToken ? (accessToken = {}) : (bearerToken = {});
-    Logger.log(INVALID_TOKEN);
+    Logger.log(getLocalizedMessage('TOKEN_INVALID'));
+    logHelper('INFO', '', getLocalizedMessage('TOKEN_INVALID'));
   } else {
-    throw new Error(`${ERROR_TOKEN}${responseCode}`);
+    logHelper('ERROR', '', `${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`);  
+    throw new Error(`${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`);
   }
 }

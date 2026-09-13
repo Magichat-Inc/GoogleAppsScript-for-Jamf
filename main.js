@@ -1,220 +1,344 @@
-/* ##################################################################################################
- A mobile device inventory MUT for Jamf using GAS and Google Sheets. (based on MUT)
- It's possible to use it from a Windows machine as well.
- GAS と Google Sheets を使用した Jamf 用のモバイルデバイス インベントリ MUT。 (MUTアプリを元にした)
- Windowsマシンでも利用可能です。
-                        
- Author: Magic Hat Inc. (Melinda Magyar)           
- 著者: 株式会社マジックハット (マジャル メリンダ)
+/**
+ * @tool Mass Update on Google Sheets
+ * @description 
+ *       A mobile device inventory mass update tool for Jamf Pro utilizing GAS, Google Sheets and the Jamf API. (based on MUT)
+ *       It's possible to use it from a Windows machine as well.
+ *       GAS と Googleスプレッドシートを使用したJamf向けモバイルデバイスインベントリ一括更新ツール (MUTアプリを元にした)
+ *       Windowsマシンでも使用可能です。
+ * @author Magic Hat Inc.
+ * @version 3.0.0
+ * @modified 2026-03-05
+ */
 
- Last modified: 2024/05/10
- 最終更新日: 2024年 5月 10日
-#################################################################################################### */
-
-// MAIN FUNCTIONS
-// メインの関数群
-
-// Variable declaration
+// VARIABLE DECLARATIONS
 // 変数の宣言
+const SHEET_NAME = 'MobileDeviceTemplate';
+const ERROR_LOG = 'ログ';
+
 const PROPERTIES = PropertiesService.getScriptProperties().getProperties();
 const JAMF_PRO_URL = PROPERTIES.JAMF_PRO_URL;
-const SPREADSHEET_ID = PROPERTIES.SPREADSHEET_ID;
-// Tab (sheet) name
-// タブ（シート）の名前
-const SHEET_NAME = PROPERTIES.SHEET_NAME; 
-// Get the user's language setting
+
+// Retrieve the user's language setting
 // ユーザーの言語設定を取得する
 const USER_LANGUAGE = Session.getActiveUserLocale();
 
 let accessToken = {};
 let bearerToken = {};
 
-// Get all data from spreadsheet (excluding EA)
-// スプレッドシートから全データを取得する（EAを除く）
-/*
-function getDeviceDataFromSpreadsheet() {
-  // Open spreadsheet and specific sheet
-  // スプレッドシートを開き、指定したシートを表示する
-  const SPREADSHEET = SpreadsheetApp.openById(SPREADSHEET_ID); 
-  // Get specific sheet
-  // 特定のシートを取得する
-  const SHEET = SPREADSHEET.getSheetByName(SHEET_NAME); 
-  // Get all the values from the sheet
-  // シートからすべての値を取得する
-  const VALUES = SHEET.getDataRange().getValues(); 
+// Open spreadsheet and specific sheet
+// スプレッドシートを開き、指定したシートを表示する
+const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+const sheet = spreadsheet.getSheetByName(SHEET_NAME);
+const logSheet = spreadsheet.getSheetByName(ERROR_LOG);
 
-  // slice(1) method is used to create a new array starting from the first element (without header)
-  // map() method is applied to the array, it iterates over each row (rowData)
-  // slice(1)メソッドは、ヘッダーを除いた最初の要素から新しい配列を作成するために使用され、
-  // map()メソッドは、配列に適用され、各行（rowData）を繰り返する
-  const DEVICE_DATA = VALUES.slice(1).map(rowData => {
-    // Extracts values from the rowData array
-    // rowData配列から値を抽出す
-    const [
-      mobileDeviceSerial,
-      displayName,
-      enforceName,
-      assetTag,
-      username,
-      realName,
-      emailAddress,
-      position,
-      phoneNumber,
-      department,
-      building,
-      room,
-      poNumber,
-      vendor,
-      purchasePrice,
-      poDate,
-      warrantyExpires,
-      isLeased,
-      leaseExpires,
-      appleCareID,
-      airplayPassword,
-      site,
-    ] = rowData;
-
-    // New object is created with the values
-    // 値を使用して新しいオブジェクトが作成される
-    return {
-      mobileDeviceSerial,
-      displayName,
-      enforceName,
-      assetTag,
-      username,
-      realName,
-      emailAddress,
-      position,
-      phoneNumber,
-      department,
-      building,
-      room,
-      poNumber,
-      vendor,
-      purchasePrice,
-      poDate,
-      warrantyExpires,
-      isLeased,
-      leaseExpires,
-      appleCareID,
-      airplayPassword,
-      site,
-    };
-  });
-
-  return DEVICE_DATA;
-}
-*/
+// FUNCTIONS
+// 関数
 
 // Get all data from spreadsheet (including EA)
 // スプレッドシートから全データを取得する（EAを含む）
 function getDeviceDataFromSpreadsheet() {
-  // Open spreadsheet and specific sheet
-  // スプレッドシートを開き、指定したシートを表示する
-  const SPREADSHEET = SpreadsheetApp.openById(SPREADSHEET_ID); 
-  // Get specific sheet
-  // 特定のシートを取得する
-  const SHEET = SPREADSHEET.getSheetByName(SHEET_NAME);
-  // Get all the values from the sheet
-  // シートからすべての値を取得する
-  const VALUES = SHEET.getDataRange().getValues();
+  // Get all rows including header
+  // ヘッダー行を含む全データを取得
+  const data = sheet.getDataRange().getValues();
+  // Get header for dynamic EA property naming
+  // 動的EAプロパティ命名のためのヘッダーを取得
+  const header = data[0];
 
-  // Extract the header names
-  // ヘッダー名を抽出す
-  const HEADER = VALUES[0]; 
-  // slice(1) method is used to create a new array starting from the first element (without header)
-  // map() method is applied to the array, it iterates over each row (rowData)
-  // slice(1)メソッドは、ヘッダーを除いた最初の要素から新しい配列を作成するために使用され、
-  // map()メソッドは、配列に適用され、各行（rowData）を繰り返する
-  const DEVICE_DATA = VALUES.slice(1).map(rowData => {
-    // Destructure the row data into variables
-    // 行データを変数に分割代入する
-    const [
-      mobileDeviceSerial,
-      displayName,
-      enforceName,
-      assetTag,
-      username,
-      realName,
-      emailAddress,
-      phoneNumber,
-      position,
-      department,
-      building,
-      room,
-      isLeased,
-      poNumber,
-      poDate,
-      vendor,
-      warrantyExpires,
-      appleCareID,
-      leaseExpires,
-      purchasePrice,
-      airplayPassword,
-      site,
-      ...extensionAttributes
-    ] = rowData;
+  // Extract the data from the rows, excluding the header and remove blank serial numbers
+  // 行からデータを抽出し、ヘッダーを除外し、空欄のシリアル番号を抜く
+  const targetDevices = data
+    .slice(1) // skip header
+    .filter(row => row[0] && row[0].toString().trim() !== '') // remove blank serials
+    .map(row => {
+      // Destructure the data by rows into variables
+      // 行データを変数に分割代入する
+      const [
+        serialNumber,
+        displayName,
+        enforceName,
+        assetTag,
+        username,
+        realName,
+        emailAddress,
+        phoneNumber,
+        position,
+        department,
+        building,
+        room,
+        isLeased,
+        poNumber,
+        poDate,
+        vendor,
+        warrantyExpires,
+        appleCareID,
+        leaseExpires,
+        purchasePrice,
+        lifeExpectancy,
+        purchasingAccount,
+        purchasingContact,
+        airplayPassword,
+        site,
+        ...extensionAttributes
+      ] = row;
 
-    // New object is created with the values
-    // 値を使用して新しいオブジェクトが作成される
-    const deviceObject = {
-      mobileDeviceSerial,
-      displayName,
-      enforceName,
-      assetTag,
-      username,
-      realName,
-      emailAddress,
-      phoneNumber,
-      position,
-      department,
-      building,
-      room,
-      isLeased,
-      poNumber,
-      poDate,
-      vendor,
-      warrantyExpires,
-      appleCareID,
-      leaseExpires,
-      purchasePrice,
-      airplayPassword,
-      site,
-    };
+      // New object is created with the values
+      // 値を使用して新しいオブジェクトが作成される
+      const deviceObject = {
+        serialNumber,
+        displayName,
+        enforceName,
+        assetTag,
+        username,
+        realName,
+        emailAddress,
+        phoneNumber,
+        position,
+        department,
+        building,
+        room,
+        isLeased,
+        poNumber,
+        poDate,
+        vendor,
+        warrantyExpires,
+        appleCareID,
+        leaseExpires,
+        purchasePrice,
+        lifeExpectancy,
+        purchasingAccount,
+        purchasingContact,
+        airplayPassword,
+        site
+      };
 
-    extensionAttributes.forEach((value, index) => {
-      // Calculates the column name based on the header row and index
-      // ヘッダー行とインデックスに基づいて列名を計算する
-      const columnName = HEADER[index + 22]; 
-      // Assign values to dynamically named properties
-      // 動的に名前付けされたプロパティに値を割り当てる
-      deviceObject[columnName] = value; 
+      extensionAttributes.forEach((value, index) => {
+        // Calculates the column name based on the header row and index
+        // ヘッダー行とインデックスに基づいて列名を計算する
+        const columnName = header[index + 25];
+        // Assign values to dynamically named properties
+        // 動的に名前付けされたプロパティに値を割り当てる
+        deviceObject[columnName] = value;
+      });
+
+      return deviceObject;
     });
 
-    return deviceObject;
-  });
-
-  return DEVICE_DATA;
+  return targetDevices;
 }
 
-// Constructs an XML string (serves as payload in the HTTP request)
-// XML文字列を構築する（HTTPリクエストのペイロードとして使用される）
-function setPayloadData(rootElement, parentElement, childElement = null, objectName, childElement2 = null, objectName2 = null) {
-  if (childElement2) {
-    return `<mobile_device><${rootElement}><${parentElement}>` +
-            `<${childElement}>${objectName}</${childElement}>` +
-            `<${childElement2}>${objectName2}</${childElement2}>` +
-            `</${parentElement}></${rootElement}></mobile_device>`;
+// Convert spreadsheet value
+// スプレッドシートの値を変換する
+function processValue(value) {
+  // CLEAR! → empty value (clear field)
+  if (typeof value === 'string' && value.trim().toUpperCase() === 'CLEAR!') {
+    return '';
   }
 
-  if (childElement) {
-    return `<mobile_device><${rootElement}><${parentElement}>` +
-           `<${childElement}>${objectName}</${childElement}>` +
-           `</${parentElement}></${rootElement}></mobile_device>`;
+  // blank → null (ignore field)
+  if (value === '' || value === null || value === undefined) {
+    return null;
   }
 
-  return `<mobile_device><${rootElement}><${parentElement}>${objectName}</${parentElement}></${rootElement}></mobile_device>`;
+  return value;
+}
+
+// Convert spreadsheet boolean value
+// スプレッドシートの真偽値を変換する
+function processBooleanValue(value) {
+  // CLEAR! → false (clear boolean field)
+  if (typeof value === 'string' && value.trim().toUpperCase() === 'CLEAR!') {
+    return 'false';
+  }
+
+  // blank → null (ignore field)
+  if (value === '' || value === null || value === undefined) {
+    return null;
+  }
+
+  return value;
+}
+
+// Convert spreadsheet integer value
+// スプレッドシートの整数値を変換する
+function processIntegerValue(value) {
+  // CLEAR! → 0 (clear integer field)
+  if (typeof value === 'string' && value.trim().toUpperCase() === 'CLEAR!') {
+    return '0';
+  }
+
+  // blank → null (ignore field)
+  if (value === '' || value === null || value === undefined) {
+    return null;
+  }
+
+  return value;
+}
+
+// Escape XML special characters
+// XMLの特殊文字をエスケープする
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+// Build ONE XML payload per device
+// デバイスごとに1つのXMLペイロードを作成する
+function buildMobileDevicePayload(device) {
+  let general = '';
+  let location = '';
+  let purchasing = '';
+  let extensionAttributes = '';
+
+  // GENERAL
+  const assetTag = processValue(device.assetTag);
+  const airplayPassword = processValue(device.airplayPassword);
+  const site = processValue(device.site);
+  // LOCATION
+  const username = processValue(device.username);
+  const realName = processValue(device.realName);
+  const emailAddress = processValue(device.emailAddress);
+  const phoneNumber = processValue(device.phoneNumber);
+  const position = processValue(device.position);
+  const department = processValue(device.department);
+  const building = processValue(device.building);
+  const room = processValue(device.room);
+  // PURCHASING
+  const isLeased = processValue(device.isLeased);
+  const poNumber = processValue(device.poNumber);
+  const poDate = processValue(device.poDate);
+  const vendor = processValue(device.vendor);
+  const warrantyExpires = processValue(device.warrantyExpires);
+  const appleCareID = processValue(device.appleCareID);
+  const leaseExpires = processValue(device.leaseExpires);
+  const purchasePrice = processValue(device.purchasePrice);
+  const lifeExpectancy = processIntegerValue(device.lifeExpectancy);
+  const purchasingAccount = processValue(device.purchasingAccount);
+  const purchasingContact = processValue(device.purchasingContact);
+
+  if (assetTag !== null) {
+    general += `<asset_tag>${escapeXml(assetTag)}</asset_tag>`;
+  }
+
+  if (airplayPassword !== null) {
+    general += `<airplay_password>${escapeXml(airplayPassword)}</airplay_password>`;
+  }
+
+  if (site !== null) {
+    const child = checkIfSiteValueIsNameOrID(site);
+    general += `<site><${child}>${escapeXml(site)}</${child}></site>`;
+  }
+
+  if (username !== null) {
+    location += `<username>${escapeXml(username)}</username>`;
+  }
+
+  if (realName !== null) {
+    location += `<real_name>${escapeXml(realName)}</real_name>`;
+  }
+
+  if (emailAddress !== null) {
+    location += `<email_address>${escapeXml(emailAddress)}</email_address>`;
+  }
+
+  if (phoneNumber !== null) {
+    location += `<phone>${escapeXml(phoneNumber)}</phone>`;
+  }
+
+  if (position !== null) {
+    location += `<position>${escapeXml(position)}</position>`;
+  }
+
+  if (department !== null) {
+    location += `<department>${escapeXml(department)}</department>`;
+  }
+
+  if (building !== null) {
+    location += `<building>${escapeXml(building)}</building>`;
+  }
+
+  if (room !== null) {
+    location += `<room>${escapeXml(room)}</room>`;
+  }
+
+  if (isLeased !== null) {
+    purchasing += `<is_leased>${escapeXml(isLeased)}</is_leased>`;
+  }
+
+  if (poNumber !== null) {
+    purchasing += `<po_number>${escapeXml(poNumber)}</po_number>`;
+  }
+
+  if (poDate !== null) {
+    const formattedDate = setDate(poDate);
+    purchasing += `<po_date>${escapeXml(formattedDate)}</po_date>`;
+  }
+
+  if (vendor !== null) {
+    purchasing += `<vendor>${escapeXml(vendor)}</vendor>`;
+  }
+
+  if (warrantyExpires !== null) {
+    const formattedDate = setDate(warrantyExpires);
+    purchasing += `<warranty_expires>${escapeXml(formattedDate)}</warranty_expires>`;
+  }
+
+  if (appleCareID !== null) {
+    purchasing += `<apple_care_id>${escapeXml(appleCareID)}</apple_care_id>`;
+  }
+
+  if (leaseExpires !== null) {
+    const formattedDate = setDate(leaseExpires);
+    purchasing += `<lease_expires>${escapeXml(formattedDate)}</lease_expires>`;
+  }
+
+  if (purchasePrice !== null) {
+    purchasing += `<purchase_price>${escapeXml(purchasePrice)}</purchase_price>`;
+  }
+
+  if (lifeExpectancy !== null) {
+    purchasing += `<life_expectancy>${escapeXml(lifeExpectancy)}</life_expectancy>`;
+  }
+
+  if (purchasingAccount !== null) {
+    purchasing += `<purchasing_account>${escapeXml(purchasingAccount)}</purchasing_account>`;
+  }
+
+  if (purchasingContact !== null) {
+    purchasing += `<purchasing_contact>${escapeXml(purchasingContact)}</purchasing_contact>`;
+  }
+
+  Object.keys(device).forEach(key => {
+    if (!key.startsWith('EA_')) {
+      return;
+    }
+
+    const value = processValue(device[key]);
+
+    if (value === null) {
+      return;
+    }
+
+    const id = key.substring(3);
+
+    extensionAttributes += `
+      <extension_attribute>
+        <id>${id}</id>
+        <value>${escapeXml(value)}</value>
+      </extension_attribute>`;
+  });
+
+  return `
+    <mobile_device>
+      ${general ? `<general>${general}</general>` : ''}
+      ${location ? `<location>${location}</location>` : ''}
+      ${purchasing ? `<purchasing>${purchasing}</purchasing>` : ''}
+      ${extensionAttributes ? `<extension_attributes>${extensionAttributes}</extension_attributes>` : ''}
+    </mobile_device>
+  `;
 }
 
 // Sets HTTP request options
@@ -253,15 +377,36 @@ function setRequestOptions(method, headers, contentType = null, payload = null) 
   return options;
 }
 
+// Extracts error message from Jamf API response content
+// Jamf APIのレスポンス内容からエラーメッセージを抽出する
+function extractResponseContent(responseContentText) {
+  if (!responseContentText) {
+    return '';
+  }
+
+  const match = responseContentText.match(/Error:\s*([^<]+)/i);
+  return match ? match[1].trim() : '';
+}
+
 // Validates HTTP request response
 // HTTPリクエストのレスポンスを検証する
-function validateResponse(statusCode, responseCode, objectName) {
+function validateResponse(statusCode, responseCode, responseContentText, message) {
   // Check if the response code is success
   // レスポンスコードが成功かどうかを確認する
   if (statusCode === responseCode) {
-    Logger.log(`${SUCCESS}${objectName}.`);
+    Logger.log(`SUCCESS: ${message}`);
+    logHelper('SUCCESS', '', `${message}`);
+    return true;
   } else {
-    Logger.log(`${objectName}${ERROR}${responseCode}`);
+    const parsedError = extractResponseContent(responseContentText);
+
+    const errorText = parsedError
+      ? `${message} ー ${parsedError}`
+      : `${message} ー ${getLocalizedMessage('REQUEST_FAILED')}${responseCode}`;
+
+    Logger.log(`ERROR: ${errorText}`);
+    logHelper('ERROR', '', errorText);
+    return false;
   }
 }
 
@@ -270,8 +415,8 @@ function validateResponse(statusCode, responseCode, objectName) {
 function setDate(dateValue) {
   try {
     return Utilities.formatDate(dateValue, SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone(), 'yyyy-MM-dd');
-  } catch {
-    validateResponse(undefined, 'setDate()', ERROR_DATE);
+  } catch (e) {
+    return null;
   }
 }
 
@@ -280,7 +425,7 @@ function setDate(dateValue) {
 function checkIfSiteValueIsNameOrID(value) {
   if (!isNaN(value)) {
     return 'id';
-  } 
+  }
 
   return 'name';
 }
@@ -291,7 +436,6 @@ function parseJamfXML(xmlResponse) {
   // Parse the XML response
   // XMLレスポンスを解析する
   const document = XmlService.parse(xmlResponse);
-  // console.log(XmlService.getPrettyFormat().format(document));
 
   // Access specific elements and values from the XML
   // XMLから特定の要素や値にアクセスする
@@ -311,144 +455,76 @@ function parseJamfXML(xmlResponse) {
 function uploadDeviceDataToJamf() {
   // Gets device data from spreadsheet
   // スプレッドシートからデバイスデータを取得する
-  const DEVICE_DATA = getDeviceDataFromSpreadsheet();
-  let mobileDeviceSerialNumber = 0;
+  const targetDevices = getDeviceDataFromSpreadsheet();
 
   // Loops through each item in the device data
   // デバイスデータ内の各アイテムをループする
-  DEVICE_DATA.forEach((item, index) => {
-    // Loops through each key in the item
-    // アイテム内の各キーをループする
-    for (let key in item) {
-      // Checks whether values is truthy or boolean
-      // 値が真偽値またはブール値であるかをチェックする
-      if (item[key] || typeof item[key] === 'boolean') {
+  targetDevices.forEach((item) => {
+    logHelper('RUNNING', item.serialNumber, getLocalizedMessage('PROCESSING_DEVICE'));
 
-        if (key === 'mobileDeviceSerial') {
-          mobileDeviceSerialNumber = item[key];
-          Logger.log('Device: ' + mobileDeviceSerialNumber);
-        }
+    try {
+      const mobileDeviceID = getMobileDeviceID(item.serialNumber);
+      const displayName = processValue(item.displayName);
+      const enforceName = processBooleanValue(item.enforceName);
+      const payload = buildMobileDevicePayload(item);
 
-        const mobileDeviceID = getMobileDeviceID(mobileDeviceSerialNumber);
+      const hasInventoryChanges =
+        payload.includes('<general>') ||
+        payload.includes('<location>') ||
+        payload.includes('<purchasing>') ||
+        payload.includes('<extension_attributes>');
 
-        // Handles different cases
-        // 異なるケースを処理する
-        switch (key) {
-          case 'displayName':
-            setDisplayName(mobileDeviceID, item[key]);
-            break;
-          case 'enforceName':
-            (item[key] === 'CLEAR!') 
-            ? setEnforceName(mobileDeviceID, false)
-            : setEnforceName(mobileDeviceID, item[key]);
-            break;
-          case 'assetTag':
-            (item[key] === 'CLEAR!') 
-            ? setAssetTag(mobileDeviceSerialNumber, '') 
-            : setAssetTag(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'username':
-            (item[key] === 'CLEAR!') 
-            ? setUsername(mobileDeviceSerialNumber, '')
-            : setUsername(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'realName':
-            (item[key] === 'CLEAR!') 
-            ? setRealName(mobileDeviceSerialNumber, '')
-            : setRealName(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'emailAddress':
-            (item[key] === 'CLEAR!') 
-            ? setEmailAddress(mobileDeviceSerialNumber, '')
-            : setEmailAddress(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'phoneNumber':
-            (item[key] === 'CLEAR!') 
-            ? setPhoneNumber(mobileDeviceSerialNumber, '')
-            : setPhoneNumber(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'position':
-            (item[key] === 'CLEAR!') 
-            ? setPosition(mobileDeviceSerialNumber, '')
-            : setPosition(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'department':
-            (item[key] === 'CLEAR!') 
-            ? setDepartment(mobileDeviceSerialNumber, '')
-            : setDepartment(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'building':
-            (item[key] === 'CLEAR!') 
-            ? setBuilding(mobileDeviceSerialNumber, '')
-            : setBuilding(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'room':
-            (item[key] === 'CLEAR!') 
-            ? setRoom(mobileDeviceSerialNumber, '')
-            : setRoom(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'isLeased':
-            setIsLeased(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'poNumber':
-            (item[key] === 'CLEAR!') 
-            ? setPoNumber(mobileDeviceSerialNumber, '')
-            : setPoNumber(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'poDate':
-            setPoDate(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'vendor':
-            (item[key] === 'CLEAR!') 
-            ? setVendor(mobileDeviceSerialNumber, '')
-            : setVendor(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'warrantyExpires':
-            setWarrantyExpires(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'appleCareID':
-            (item[key] === 'CLEAR!') 
-            ? setAppleCareID(mobileDeviceSerialNumber, '')
-            : setAppleCareID(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'leaseExpires':
-            setLeaseExpires(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'purchasePrice':
-            (item[key] === 'CLEAR!') 
-            ? setPurchasePrice(mobileDeviceSerialNumber, '')
-            : setPurchasePrice(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'airplayPassword':
-            (item[key] === 'CLEAR!') 
-            ? setAirplayPassword(mobileDeviceSerialNumber, '')
-            : setAirplayPassword(mobileDeviceSerialNumber, item[key]);
-            break;
-          case 'site':
-            (item[key] === 'CLEAR!') 
-            ? setSite(mobileDeviceSerialNumber, -1)
-            : setSite(mobileDeviceSerialNumber, item[key]);
-            break;     
-          default:
-            if (key.startsWith('EA_')) {
-              const extensionAttributeID = key.substring(3); 
-              
-              (item[key] === 'CLEAR!') 
-              ? setExtensionAttribute(mobileDeviceSerialNumber, extensionAttributeID, '')
-              : setExtensionAttribute(mobileDeviceSerialNumber, extensionAttributeID, item[key]);
-            }
-            break;               
-        }
-      } 
+      if (displayName !== null) {
+        setDisplayName(mobileDeviceID, displayName);
+      }
+
+      if (enforceName !== null) {
+        setEnforceName(mobileDeviceID, enforceName);
+      }
+
+      if (hasInventoryChanges) {
+        updateMobileDevice(item.serialNumber, payload);
+      }
+
+    } catch (e) {
+      logHelper('ERROR', item.serialNumber, e.message);
     }
+
+    // Sleep for 100 milliseconds to avoid hitting API rate limits  
+    Utilities.sleep(100);
   });
 }
 
-// Main function (calls other functions)
-// メイン関数（他の関数を呼び出す）
+// Helper function for logging
+// ログ記録のためのヘルパー関数
+function logHelper(level, serial, message) {
+  const now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss')
+  logSheet.appendRow([now, level, serial, message])
+}
+
+// Starting point
+// ここから始まる
 function mainFunction() {
+  // Validation
+  // データの検証
+  if (!sheet) {
+    Logger.log(LOG_MESSAGES.MISSING_SHEET.en)
+    logHelper('ERROR', '', getLocalizedMessage('MISSING_SHEET'));
+    return;
+  }
+
+  if (!logSheet) {
+    Logger.log(LOG_MESSAGES.MISSING_LOG_SHEET.en);
+    Browser.msgBox(getLocalizedMessage('MISSING_LOG_SHEET'));
+    return;
+  }
+
+  const lastRow = logSheet.getMaxRows();
+  logSheet.getRange(2, 1, lastRow - 1, 4).clearContent();
+  // PropertiesService.getScriptProperties().deleteProperty('LAST_INDEX')
+
   checkTokenExpiration();
   uploadDeviceDataToJamf();
   invalidateToken();
-  showSidebar(Logger.getLog());
+  logHelper('COMPLETED', '', getLocalizedMessage('INVENTORY_UPDATE_FINISHED'));
 }
