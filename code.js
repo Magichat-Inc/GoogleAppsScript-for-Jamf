@@ -1,37 +1,41 @@
-// FUNCTIONS RELATED TO MENU & SIDEBAR
-// メニュー＆サイドバー関連の機能
+// FUNCTIONS RELATED TO MENU & LOCALIZATION
+// メニュー関連の機能 & ローカリゼーション
 
 function onOpen(e) {
   // Get the menu labels based on the user's language
   // ユーザーの言語に基づいてメニューのラベルを取得する
-  let { settingsLabel, runLabel, aboutLabel } = setLabels();
+  const { menuLabel, runLabel, aboutLabel } = setLabels();
 
   // Adds custom menus to the spreadsheet
   // カスタム メニューをスプレッドシートに追加する
   SpreadsheetApp.getUi()
-      .createMenu(settingsLabel)
-      .addItem(runLabel, 'mainFunction')
-      .addSeparator()
-      .addItem(aboutLabel, 'showAbout')
-      .addToUi();
+    .createMenu(menuLabel)
+    .addItem(runLabel, 'mainFunction')
+    .addSeparator()
+    .addItem(aboutLabel, 'showAbout')
+    .addToUi();
+}
+
+function isJapaneseUser() {
+  return USER_LANGUAGE && USER_LANGUAGE.startsWith('ja');
 }
 
 function setLabels() {
   // Set default labels
   // デフォルトのラベルを設定する
-  let settingsLabel = 'Settings';
+  let menuLabel = 'Mass Update Tool';
   let runLabel = '⏯ Run';
   let aboutLabel = 'ℹ︎ About';
 
   // If user's language is Japanese
   // ユーザーの言語が日本語の場合
-  if (USER_LANGUAGE && USER_LANGUAGE.indexOf('ja') === 0) {
-    settingsLabel = '設定';
+  if (isJapaneseUser()) {
+    menuLabel = 'Jamf Pro一括更新ツール';
     runLabel = '⏯ 実行';
     aboutLabel = 'ℹ︎ このツールについて';
   }
 
-  return { settingsLabel, runLabel, aboutLabel };
+  return { menuLabel, runLabel, aboutLabel };
 }
 
 // Utility function to include content from an HTML file into another HTML file
@@ -45,51 +49,32 @@ function include(filename) {
 function showAbout() {
   let dialogTitle = 'About This Utility';
   let htmlFileName = 'about_en';
+  let height = 190;
 
-  let htmlContent = HtmlService.createTemplateFromFile(htmlFileName)
-      .evaluate()
-      .setWidth(400)
-      .setHeight(190);
-  
-  if (USER_LANGUAGE && USER_LANGUAGE.startsWith('ja')) {
+  if (isJapaneseUser()) {
     dialogTitle = 'このツールについて';
     htmlFileName = 'about_ja';
-
-    htmlContent = HtmlService.createTemplateFromFile(htmlFileName)
-      .evaluate()
-      .setWidth(400)
-      .setHeight(250);
+    height = 250;
   }
 
-  htmlContent.VERSION = VERSION;
-  htmlContent.COPYRIGHT = COPYRIGHT;
+  const template = HtmlService.createTemplateFromFile(htmlFileName);
+  template.VERSION = VERSION;
+  template.COPYRIGHT = COPYRIGHT;
+  template.PRODUCT_NAME = PRODUCT_NAME;
+
+  const htmlContent = template.evaluate()
+    .setWidth(400)
+    .setHeight(height);
 
   SpreadsheetApp.getUi().showModalDialog(htmlContent, dialogTitle);
 }
 
-// Displays execution logs
-// 実行ログを表示する
-function showSidebar(executionLogs) {
-  let array = executionLogs.split('\n');
-  let formattedOutput = array.map(line => `<p>${line.trim()}</p>`).join('');
-  let sidebarTitle = 'Execution Log';
+function getLocalizedMessage(key) {
+  const lang = isJapaneseUser() ? 'ja' : 'en';
 
-  if (USER_LANGUAGE && USER_LANGUAGE.startsWith('ja')) {
-    sidebarTitle = '実行ログ';
+  if (!LOG_MESSAGES[key]) {
+    return key;
   }
 
-  let css = `
-    <style>
-      p {
-        margin: 0;
-        font-size: 12px; 
-        font-family: Arial, sans-serif;
-      }
-    </style>
-  `;
-  
-  const htmlContent = HtmlService.createHtmlOutput(css + formattedOutput)
-    .setTitle(sidebarTitle);
-
-  SpreadsheetApp.getUi().showSidebar(htmlContent);
+  return LOG_MESSAGES[key][lang] || LOG_MESSAGES[key].en;
 }
