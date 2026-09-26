@@ -147,10 +147,10 @@ Please open the copied spreadsheet and follow these initial setup steps:
 4. Configure as shown below then click "Save".
 
 If you created an **API account**, you need to create the following properties:  
-JAMF_PRO_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
+JAMF_PRO_URL, CREDENTIALS
 
 Otherwise, if you used **API Roles and Clients**, you need to create the following ones:  
-JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
+JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET
 
 | Property | Value |
 | :---   | :---   |
@@ -158,10 +158,6 @@ JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
 | CREDENTIALS | CreatedJamfAPIUsername:JamfPassword<br />Example: If the username is "aaa" and the password is "bbb," it should be "aaa:bbb". |
 | CLIENT_ID | ClientIDFromCreatedAPIClient |
 | CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
-| SHEET_NAME | MobileDeviceTemplate |
-| SPREADSHEET_ID | The ID of the copied spreadsheet (see the instructions below on how to obtain it) |
-
-You can extract the spreadsheet ID from the URL. For example, if the URL is https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0, the spreadsheet ID would be 'abc1234567'.
 
 In case of using Jamf API Account:   
 <img width="730" alt="Initial spreadsheet settings" src="./assets/EN/04.png">
@@ -218,6 +214,10 @@ For the "Department" and "Building" attributes you must input values (strings) t
 - Lease Expiration
   - yyyy-mm-dd OR yyyy/mm/dd format
 - Purchase Price
+- Life Expectancy
+  - years ie. 5 
+- Purchasing Account
+- Purchasing Contact
 
 ### [Updating Extension Attributes](#updating-extension-attributes)  
 It is possible to update Extension Attributes for devices.  
@@ -289,10 +289,8 @@ When clearing user information from a device, the spreadsheet will look like thi
 
 Updating in progress ↓  
 <img width="1415" alt="Mass updating in progress" src="./assets/EN/13.png">
+In the "Logs" spreadsheet you can see real time logs.
 
-After the update is complete, a sidebar with logs will open on the right.  
-Update completed ↓  
-<img width="1415" alt="Mass update completed" src="./assets/EN/14.png">
 
 When clicking the "Settings" > "Run" button, you may occasionally encounter the following error.  
 <img width="530" alt="Error" src="./assets/EN/15.png">  

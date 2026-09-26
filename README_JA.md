@@ -143,10 +143,10 @@ API クライアントを作成した後に、次にクライアントシーク�
 4. 以下の内容を設定して「保存」をクリック。
 
 **API アカウント**を作成した場合、以下のプロパティを作成する必要があります：  
-JAMF_PRO_URL, CREDENTIALS, SHEET_NAME, SPREADSHEET_ID
+JAMF_PRO_URL, CREDENTIALS
 
 **API ロールとクライアント**機能を使用した場合は、以下のプロパティを作成する必要があります：  
-JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
+JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET
 
 | プロパティ | 値 |
 | :---   | :---   |
@@ -154,12 +154,6 @@ JAMF_PRO_URL, CLIENT_ID, CLIENT_SECRET, SHEET_NAME, SPREADSHEET_ID
 | CREDENTIALS | 作成したJamfAPIユーザー名:Jamfパスワード<br />例: ユーザー名がaaa、パスワードがbbbであれば<br />「aaa:bbb」となる。 |
 | CLIENT_ID | ClientIDFromCreatedAPIClient |
 | CLIENT_SECRET | ClientSecretGeneratedFromCreatedAPIClient |
-| SHEET_NAME | MobileDeviceTemplate |
-| SPREADSHEET_ID | コピーしたスプレッドシートID (取得方は以下の説明をご覧） |
-
-スプレッドシート ID は URL から抽出できます。  
-例えば、URLは https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 の場合、 
-スプレッドシート ID は「abc1234567」となります。
 
 Jamf API アカウントを使用する場合：  
 <img width="730" alt="スプレッドシートの初期設定" src="./assets/JA/04.png">
@@ -219,6 +213,11 @@ Jamf API ロールとクライアント機能を使用する場合：
 - リース有効期限
   - yyyy-mm-dd または yyyy/mm/dd形
 - 購入価格
+- 耐用年数
+  - 番号 例）5
+- 購入用アカウント
+- 購入に関する問い合わせ
+
 
 ### [Updating Extension Attributes](#updating-extension-attributes)  
 デバイス用の拡張属性を更新するのは可能です。  
@@ -293,10 +292,7 @@ Jamf API ロールとクライアント機能を使用する場合：
 
 更新中↓  
 <img width="1415" alt="更新中" src="./assets/JA/13.png">
-
-更新完了したら、右にログのサイドバーが開きます。
-更新完了↓  
-<img width="1415" alt="更新完了" src="./assets/JA/14.png">
+「ログ」シートには更新中にリアルタイムのログ確認は可能です。
 
 「設定」>「実行」ボタンを押すと、ときどき以下のエラーとなります。  
 <img width="530" alt="エラー" src="./assets/JA/15.png">  
