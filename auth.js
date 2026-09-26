@@ -18,10 +18,20 @@ function setAuthenticationMethod() {
     }
   } catch (e) {
     console.error('ERROR:', e.message);
+    logHelper('ERROR', '', e.message);
 
     // Show error message to the user
-    const ui = SpreadsheetApp.getUi();
-    ui.alert('ERROR', e.message, ui.ButtonSet.OK);
+    // getUi() is unavailable on a resumed batch, which runs from a trigger
+    // ユーザーにエラーメッセージを表示する
+    // トリガーから実行される再開バッチでは getUi() が使えない
+    try {
+      const ui = SpreadsheetApp.getUi();
+      ui.alert('ERROR', e.message, ui.ButtonSet.OK);
+    } catch (uiError) {
+      // No UI context — the log sheet is the only channel
+      // UIコンテキストがない — ログシートが唯一の通知手段
+    }
+
     throw e;
   }
 }

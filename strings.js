@@ -79,5 +79,25 @@ const LOG_MESSAGES = {
   INVENTORY_UPDATE_FINISHED: {
     en: '** ALL DEVICES PROCESSED **',
     ja: '** 全てのデバイスの処理が完了しました **'
+  },
+
+  NO_DEVICES: {
+    en: 'No serial numbers found in the sheet.',
+    ja: 'シートにシリアル番号が見つかりませんでした。'
+  },
+
+  BATCH_STARTED: {
+    en: 'Batch starting at device ',
+    ja: 'バッチ開始位置: '
+  },
+
+  BATCH_PAUSED: {
+    en: 'Paused — will resume automatically. Do not press Run or edit the sheet. Device ',
+    ja: '一時停止中 — 自動的に再開します。「実行」を押したりシートを編集したりしないでください。デバイス '
+  },
+
+  BATCH_IN_PROGRESS: {
+    en: 'A mass update is still in progress. Start over from the beginning?',
+    ja: '一括更新がまだ実行中です。最初からやり直しますか？'
   }
 };

@@ -7,7 +7,7 @@
  *       Windowsマシンでも使用可能です。
  * @author Magic Hat Inc.
  * @version 3.0.0
- * @modified 2026-03-05
+ * @modified 2026-09-13
  */
 
 // VARIABLE DECLARATIONS
@@ -17,6 +17,19 @@ const ERROR_LOG = 'ログ';
 
 const PROPERTIES = PropertiesService.getScriptProperties().getProperties();
 const JAMF_PRO_URL = PROPERTIES.JAMF_PRO_URL;
+
+// A single Apps Script execution is capped at 6 minutes, so a run stops short
+// of that and schedules a trigger to continue where it left off
+// Apps Scriptの1回の実行は6分が上限のため、その手前で停止し、
+// 続きから再開するトリガーをスケジュールする
+const MAX_RUNTIME = 5 * 60 * 1000;
+const RESUME_HANDLER = 'runBatch';
+
+// PROPERTIES above is a snapshot object and cannot write; this is the service
+// 上の PROPERTIES はスナップショットのため書き込めない、こちらがサービス本体
+function scriptProperties() {
+  return PropertiesService.getScriptProperties();
+}
 
 // Retrieve the user's language setting
 // ユーザーの言語設定を取得する
@@ -450,48 +463,126 @@ function parseJamfXML(xmlResponse) {
   return mobileDeviceID;
 }
 
-//  Uploads device data to Jamf
-// Jamfにデバイスデータをアップロードする
-function uploadDeviceDataToJamf() {
-  // Gets device data from spreadsheet
-  // スプレッドシートからデバイスデータを取得する
-  const targetDevices = getDeviceDataFromSpreadsheet();
+// Uploads one device's data to Jamf
+// Extracted from the batch loop so a run can be interrupted between devices,
+// never in the middle of one device's three API calls
+// 1台分のデバイスデータをJamfにアップロードする
+// バッチループから切り出し、デバイスの3回のAPI呼び出しの途中ではなく、
+// デバイスとデバイスの間で中断できるようにしている
+function processDevice(item) {
+  logHelper('RUNNING', item.serialNumber, getLocalizedMessage('PROCESSING_DEVICE'));
 
-  // Loops through each item in the device data
-  // デバイスデータ内の各アイテムをループする
-  targetDevices.forEach((item) => {
-    logHelper('RUNNING', item.serialNumber, getLocalizedMessage('PROCESSING_DEVICE'));
+  try {
+    const mobileDeviceID = getMobileDeviceID(item.serialNumber);
+    const displayName = processValue(item.displayName);
+    const enforceName = processBooleanValue(item.enforceName);
+    const payload = buildMobileDevicePayload(item);
 
-    try {
-      const mobileDeviceID = getMobileDeviceID(item.serialNumber);
-      const displayName = processValue(item.displayName);
-      const enforceName = processBooleanValue(item.enforceName);
-      const payload = buildMobileDevicePayload(item);
+    const hasInventoryChanges =
+      payload.includes('<general>') ||
+      payload.includes('<location>') ||
+      payload.includes('<purchasing>') ||
+      payload.includes('<extension_attributes>');
 
-      const hasInventoryChanges =
-        payload.includes('<general>') ||
-        payload.includes('<location>') ||
-        payload.includes('<purchasing>') ||
-        payload.includes('<extension_attributes>');
-
-      if (displayName !== null) {
-        setDisplayName(mobileDeviceID, displayName);
-      }
-
-      if (enforceName !== null) {
-        setEnforceName(mobileDeviceID, enforceName);
-      }
-
-      if (hasInventoryChanges) {
-        updateMobileDevice(item.serialNumber, payload);
-      }
-
-    } catch (e) {
-      logHelper('ERROR', item.serialNumber, e.message);
+    if (displayName !== null) {
+      setDisplayName(mobileDeviceID, displayName);
     }
 
-    // Sleep for 100 milliseconds to avoid hitting API rate limits  
-    Utilities.sleep(100);
+    if (enforceName !== null) {
+      setEnforceName(mobileDeviceID, enforceName);
+    }
+
+    if (hasInventoryChanges) {
+      updateMobileDevice(item.serialNumber, payload);
+    }
+
+  } catch (e) {
+    logHelper('ERROR', item.serialNumber, e.message);
+  }
+}
+
+// Processes devices until the run is done or the time budget is spent
+// Also the handler the resume trigger calls, so it must never clear the log
+// 処理が完了するか、実行時間の上限に達するまでデバイスを処理する
+// 再開トリガーからも呼ばれるため、ログを消去してはならない
+function runBatch() {
+  if (!sheet || !logSheet) {
+    return;
+  }
+
+  const properties = scriptProperties();
+  const startIndex = Number(properties.getProperty('LAST_INDEX')) || 0;
+  const startTime = Date.now();
+
+  let completed = false;
+
+  try {
+    // Each batch is a separate execution, so it acquires its own token
+    // バッチごとに別の実行になるため、それぞれ独自にトークンを取得する
+    checkTokenExpiration();
+
+    const targetDevices = getDeviceDataFromSpreadsheet();
+
+    if (targetDevices.length === 0) {
+      logHelper('ERROR', '', getLocalizedMessage('NO_DEVICES'));
+      return;
+    }
+
+    logHelper('INFO', '', `${getLocalizedMessage('BATCH_STARTED')}${startIndex + 1}/${targetDevices.length}`);
+
+    for (let i = startIndex; i < targetDevices.length; i++) {
+      processDevice(targetDevices[i]);
+
+      // Stop short of the 6-minute limit and hand the rest to a trigger
+      // 6分の制限に達する前に停止し、残りをトリガーに引き継ぐ
+      if (Date.now() - startTime > MAX_RUNTIME && i + 1 < targetDevices.length) {
+        properties.setProperty('LAST_INDEX', i + 1);
+        scheduleNextBatch();
+        logHelper('SCHEDULED', '', `${getLocalizedMessage('BATCH_PAUSED')}${i + 1}/${targetDevices.length}`);
+        return;
+      }
+    }
+
+    properties.deleteProperty('LAST_INDEX');
+    cleanupTriggers();
+    completed = true;
+  } finally {
+    // Release the token and write the log even if the batch failed
+    // バッチが失敗した場合でも、トークンを無効化してログを書き出す
+    if (Object.keys(getAuthenticationMethod()).length !== 0) {
+      try {
+        invalidateToken();
+      } catch (e) {
+        logHelper('ERROR', '', e.message);
+      }
+    }
+
+    if (completed) {
+      logHelper('COMPLETED', '', getLocalizedMessage('INVENTORY_UPDATE_FINISHED'));
+    }
+
+    flushLog();
+  }
+}
+
+// Schedules the next batch to start shortly after this execution ends
+// この実行終了直後に次のバッチが始まるようスケジュールする
+function scheduleNextBatch() {
+  cleanupTriggers();
+
+  ScriptApp.newTrigger(RESUME_HANDLER)
+    .timeBased()
+    .after(15000)
+    .create();
+}
+
+// Removes resume triggers so they cannot accumulate against the trigger quota
+// 再開トリガーがトリガー数の上限に対して蓄積しないよう削除する
+function cleanupTriggers() {
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getHandlerFunction() === RESUME_HANDLER) {
+      ScriptApp.deleteTrigger(trigger);
+    }
   });
 }
 
@@ -537,34 +628,27 @@ function mainFunction() {
     return;
   }
 
+  const properties = scriptProperties();
+
+  // A previous run is still going, or crashed and left its position behind
+  // 前回の実行が継続中、または異常終了して位置情報が残っている
+  if (properties.getProperty('LAST_INDEX')) {
+    const ui = SpreadsheetApp.getUi();
+    const answer = ui.alert(getLocalizedMessage('BATCH_IN_PROGRESS'), ui.ButtonSet.YES_NO);
+
+    if (answer !== ui.Button.YES) {
+      return;
+    }
+
+    cleanupTriggers();
+    properties.deleteProperty('LAST_INDEX');
+  }
+
   const maxRows = logSheet.getMaxRows();
 
   if (maxRows > 1) {
     logSheet.getRange(2, 1, maxRows - 1, 4).clearContent();
   }
-  // PropertiesService.getScriptProperties().deleteProperty('LAST_INDEX')
 
-  let completed = false;
-
-  try {
-    checkTokenExpiration();
-    uploadDeviceDataToJamf();
-    completed = true;
-  } finally {
-    // Release the token and write the log even if the run failed
-    // 実行が失敗した場合でも、トークンを無効化してログを書き出す
-    if (Object.keys(getAuthenticationMethod()).length !== 0) {
-      try {
-        invalidateToken();
-      } catch (e) {
-        logHelper('ERROR', '', e.message);
-      }
-    }
-
-    if (completed) {
-      logHelper('COMPLETED', '', getLocalizedMessage('INVENTORY_UPDATE_FINISHED'));
-    }
-
-    flushLog();
-  }
+  runBatch();
 }
